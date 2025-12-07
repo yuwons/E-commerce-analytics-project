@@ -69,7 +69,7 @@ Python을 활용해 실제 환경을 모방한 Synthetic Dataset을 생성합니
 - Faker
 - Random sampling
 
-### Code Directory: src/data_generation/
+#### Code Directory: src/data_generation/
 
 
 ## 4.Data Mart (BigQuery)
@@ -88,7 +88,7 @@ SQL 기반 분석 효율을 높이기 위해 Data Mart를 설계했습니다.
 - Clustering: user_events (user_id, event_type)
 - Funnel 분석에서 user_id 기반 필터링 성능 개선
 
-### Code: src/sql/*
+#### Code: src/sql/*
 
 ## 5. Airflow Automation
 Airflow로 Synthetic Dataset 생성 및 Data Mart 업데이트 작업을 자동화합니다.
@@ -100,7 +100,7 @@ Airflow로 Synthetic Dataset 생성 및 Data Mart 업데이트 작업을 자동�
 
 Airflow Directory: airflow/dags/
 
-### Code: airflow/dags/*
+#### Code: airflow/dags/*
 
 ## 6, SQL-based Analysis
 BigQuery SQL을 활용하여 주요 분석을 수행합니다:
@@ -112,7 +112,7 @@ BigQuery SQL을 활용하여 주요 분석을 수행합니다:
 4. 카테고리 성과 분석 (AOV, 매출 기여도, 성장률)
 5. Funnel 단계별 Drop-off 분석
 
-### SQL 분석 Notebook: src/sql/
+#### SQL 분석 Notebook: src/sql/
 
 ## 7. Python EDA & Statistical Analysis
 SQL 결과를 기반으로 Python에서 심화 분석을 수행합니다:
@@ -125,7 +125,7 @@ SQL 결과를 기반으로 Python에서 심화 분석을 수행합니다:
 5. Retention Heatmap 시각화
 6. Funnel 이벤트 상세 분석
 
-### Python Notebooks: src/python/
+#### Python Notebooks: src/python/
 
 ## 8. Tableau Dashboard
 최종 분석 결과를 Tableau Dashboard로 구성합니다.
@@ -140,7 +140,7 @@ SQL 결과를 기반으로 Python에서 심화 분석을 수행합니다:
 - Tableau Desktop ↔ BigQuery Live Connection
 - BigQuery Data Mart 업데이트 시 Tableau가 자동 반영
 
-### Directory: tableau/
+#### Directory: tableau/
 
 ## 9. Final Insights
 분석을 통해 다음과 같은 핵심 인사이트를 도출합니다:
