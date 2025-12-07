@@ -47,10 +47,11 @@ End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python EDA · 
 
 ### ERD 구조
 
-```text
+```
 users (1) ---- (N) orders ---- (N) order_items ---- (1) products
 users (1) ---- (N) user_events
 
+```
 2, Dataset Generation (Python)
 
 Python을 활용해 실제 환경을 모방한 Synthetic Dataset을 생성합니다:
