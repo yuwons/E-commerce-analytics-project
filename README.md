@@ -6,7 +6,7 @@ End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python EDA · 
 데이터 생성 → 데이터 모델링 → SQL 기반 Data Mart → Python 통계/EDA → Funnel 분석 → Tableau Dashboard까지
 엔드투엔드(End-to-End) 분석 전 과정을 구현한 사이드 프로젝트입니다.
 
-## 프로젝트 목표 (Project Objective)
+## 1. 프로젝트 목표 (Project Objective)
 
 현실적인 커머스 환경을 가정하여 아래 분석 목표를 수행합니다:
 
@@ -22,14 +22,28 @@ End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python EDA · 
 최종적으로 Retention 개선, 전환율 최적화, 매출 성장 전략을 도출합니다.
 
 
-1, 데이터 모델(ERD)
+## 2. 데이터 모델(ERD)
 본 프로젝트는 실제 커머스 기업 구조를 기반으로 다음 5개 테이블로 구성됩니다.
 
-- users : 사용자 정보
-- orders : 주문 정보
-- order_items : 주문 상세 정보
-- products : 상품 정보
-- user_events : 로그 기반 행동 데이터 (view, cart, order 등)
+1. **users**
+   - 사용자 정보
+   - 가입일, 디바이스, 지역, 유입 채널 등
+
+2. **orders**
+   - 주문 단위 데이터
+   - 주문일, 주문 금액, 결제 여부
+   
+3. **order_items**
+   - 주문 내 상품 상세 정보
+   - 단가, 수량, product_id
+
+4. **product**
+   - 상품 정보
+   - 카테고리, 가격, 브랜드 등
+
+5. **user_events**
+   - Log 기반 사용자 행동 데이터
+   - view, cart, order 이벤트 포함 (세션 기반)
 
 ERD 구
 
