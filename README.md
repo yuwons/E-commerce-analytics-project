@@ -50,20 +50,24 @@ End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python EDA · 
 ```
 users (1) ---- (N) orders ---- (N) order_items ---- (1) products
 users (1) ---- (N) user_events
-
 ```
 ![ERD](docs/erd.png)
 
-2, Dataset Generation (Python)
+## 3. Dataset Generation (Python)
 
 Python을 활용해 실제 환경을 모방한 Synthetic Dataset을 생성합니다:
 
-User 생성 (가입일, 디바이스, 지역, 마케팅 소스 포함)
-Product 생성 (카테고리별 가격 분포 설계)
-Orders / Order Items 생성 (구매 빈도 및 금액 분포 반영)
-User Events 생성
-session 기반
-view → cart → order 흐름 모델링
+### 생성 데이터
+1. User 생성 (가입일, 디바이스, 지역, 마케팅 소스 포함)
+2. Product 생성 (카테고리별 가격 분포 설계)
+3. Orders / Order Items 생성 (구매 빈도 및 금액 분포 반영)
+4. Funnel 이벤트 기반 User Events (view → cart → order 흐름 모델링)
+
+### 사용 기술
+- Pandas
+- NumPy
+- Faker
+- Random sampling
 Code Directory: src/data_generation/
 
 
