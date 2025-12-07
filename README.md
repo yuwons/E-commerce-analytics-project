@@ -71,15 +71,15 @@ Python을 활용해 실제 환경을 모방한 Synthetic Dataset을 생성합니
 #### Code Directory: src/data_generation/
 
 
-## 4.Data Mart (BigQuery)
+## 4. Data Mart (BigQuery)
 SQL 기반 분석 효율을 높이기 위해 Data Mart를 설계했습니다.
 
 ### Data Mart 구성
 1. dm_user_purchase_summary
    - 사용자별 LTV, 구매 패턴, 재구매 여부
-3. dm_category_performance
+2. dm_category_performance
    - 카테고리별 매출, 전환율, 성과 요약
-5. dm_funnel_events
+3. dm_funnel_events
    - view → cart → purchase funnel 단계별 전환/이탈
 
 ### BigQuery Optimization:
@@ -101,7 +101,7 @@ Airflow Directory: airflow/dags/
 
 #### Code: airflow/dags/*
 
-## 6, SQL-based Analysis
+## 6. SQL-based Analysis
 BigQuery SQL을 활용하여 주요 분석을 수행합니다:
 
 ### 분석 항목
