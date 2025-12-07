@@ -2,8 +2,11 @@
 
 📦 E-commerce Analytics Project
 End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python EDA · Funnel Analysis · Tableau Dashboard
+
 본 프로젝트는 실제 커머스 환경을 모델링하여,
+
 데이터 생성 → 데이터 모델링 → SQL 기반 Data Mart → Python 통계/EDA → Funnel 분석 → Tableau Dashboard까지
+
 엔드투엔드(End-to-End) 분석 전 과정을 구현한 사이드 프로젝트입니다.
 
 ## 1. 프로젝트 목표 (Project Objective)
