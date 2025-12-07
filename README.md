@@ -111,7 +111,11 @@ Retention 개선을 위한 actionable 전략 제안
 
 🛠 Tech Stack
 Python: Pandas, NumPy, Faker, Matplotlib
+
 SQL: BigQuery
+
 Airflow: DAG Scheduling
+
 Visualization: Tableau
+
 Version Control: GitHub
