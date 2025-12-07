@@ -9,13 +9,17 @@ End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python EDA · 
 프로젝트 목표 (Project Objective)
 
 현실적인 커머스 환경을 가정하여 아래 분석 목표를 수행합니다:
+ 
  1.Customer Behavior Analysis
+ 
     - LTV, 재구매율, RFM 기반 고객군 분석
 
  2.Category Performance Analysis
+ 
     - 카테고리/상품 매출 기여도, 성장률, AOV 분석
 
  3.Funnel Analysis (Log-based)
+ 
     - view → cart → order → purchase 단계별 전환 및 이탈(drop-off) 분석
 
 최종적으로 Retention 개선, 전환율 최적화, 매출 성장 전략을 도출합니다.
