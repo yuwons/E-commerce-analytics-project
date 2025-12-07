@@ -34,7 +34,7 @@ ERD 구
 users (1) ─── (N) orders ─── (N) order_items ─── (1) products
 users (1) ─── (N) user_events (funnel log)
 
-2. Dataset Generation (Python)
+2, Dataset Generation (Python)
 
 Python을 활용해 실제 환경을 모방한 Synthetic Dataset을 생성합니다:
 
@@ -47,7 +47,7 @@ view → cart → order 흐름 모델링
 Code Directory: src/data_generation/
 
 
-3. Data Mart (BigQuery)
+3, Data Mart (BigQuery)
 
 SQL 기반 분석 효율을 높이기 위해 Data Mart를 설계했습니다.
 
@@ -64,7 +64,7 @@ BigQuery Optimization:
 
 Code: src/sql/*
 
-4. Airflow Automation
+4, Airflow Automation
 
 Airflow로 Synthetic Dataset 생성 및 Data Mart 업데이트 작업을 자동화합니다.
 
@@ -77,7 +77,7 @@ DAG 구성
 
 Code: airflow/dags/*
 
-5. SQL-based Analysis
+5, SQL-based Analysis
 
 BigQuery SQL을 활용하여 주요 분석을 수행합니다:
 
@@ -88,7 +88,7 @@ RFM 세그멘테이션 (SQL 버전)
 Funnel 단계별 Drop-off 분석
 SQL 분석 Notebook: src/sql/
 
-6. Python EDA & Statistical Analysis
+6, Python EDA & Statistical Analysis
 
 SQL 결과를 기반으로 Python에서 심화 분석을 수행합니다:
 
@@ -101,7 +101,7 @@ SQL 결과를 기반으로 Python에서 심화 분석을 수행합니다:
 
 Python Notebooks: src/python/
 
-📈 Tableau Dashboard
+7, Tableau Dashboard
 
 최종 분석 결과를 Tableau Dashboard로 구성합니다.
 
@@ -115,14 +115,13 @@ Dashboard 구성 (4 pages)
 데이터 자동 업데이트
 
 - Tableau Desktop ↔ BigQuery Live Connection
-
 - BigQuery Data Mart 업데이트 시 Tableau가 자동 반영
 
 Dashboard Assets: tableau/
 
 Dashboard 이미지: tableau/*
 
-8. Final Insights
+8, Final Insights
 
 분석을 통해 다음과 같은 핵심 인사이트를 도출합니다:
 
@@ -134,11 +133,7 @@ Dashboard 이미지: tableau/*
 🛠 Tech Stack
 
 - Python: Pandas, NumPy, Faker, Matplotlib
-
 - SQL: BigQuery
-
 - Airflow: DAG Scheduling
-
 - Visualization: Tableau
-
 - Version Control: GitHub
