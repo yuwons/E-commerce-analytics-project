@@ -110,6 +110,7 @@ Funnel 단계별 주요 이탈 포인트
 Retention 개선을 위한 actionable 전략 제안
 
 🛠 Tech Stack
+
 Python: Pandas, NumPy, Faker, Matplotlib
 
 SQL: BigQuery
