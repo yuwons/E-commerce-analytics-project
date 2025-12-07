@@ -71,20 +71,21 @@ Python을 활용해 실제 환경을 모방한 Synthetic Dataset을 생성합니
 Code Directory: src/data_generation/
 
 
-3, Data Mart (BigQuery)
-
+## 4.Data Mart (BigQuery)
 SQL 기반 분석 효율을 높이기 위해 Data Mart를 설계했습니다.
 
-Data Mart 구성
-Data Mart	                                설명
-dm_user_purchase_summary	    사용자별 LTV, 구매 패턴, 재구매 여부
-dm_category_performance	        카테고리별 매출, 전환율, 성과 요약
-dm_funnel_events	            view → cart → purchase funnel 단계별 전환/이탈
+### Data Mart 구성
+1. dm_user_purchase_summary
+   - 사용자별 LTV, 구매 패턴, 재구매 여부
+3. dm_category_performance
+   - 카테고리별 매출, 전환율, 성과 요약
+5. dm_funnel_events
+   - view → cart → purchase funnel 단계별 전환/이탈
 
-BigQuery Optimization:
+### BigQuery Optimization:
 - Partition: order_date
 - Clustering: user_events (user_id, event_type)
-→ Funnel 분석에서 user_id 기반 필터링 성능 개선
+- Funnel 분석에서 user_id 기반 필터링 성능 개선
 
 Code: src/sql/*
 
