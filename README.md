@@ -23,11 +23,12 @@ End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python EDA · 
 
 1, 데이터 모델(ERD)
 본 프로젝트는 실제 커머스 기업 구조를 기반으로 다음 5개 테이블로 구성됩니다.
-users : 사용자 정보
-orders : 주문 정보
-order_items : 주문 상세 정보
-products : 상품 정보
-user_events : 로그 기반 행동 데이터 (view, cart, order 등)
+
+- users : 사용자 정보
+- orders : 주문 정보
+- order_items : 주문 상세 정보
+- products : 상품 정보
+- user_events : 로그 기반 행동 데이터 (view, cart, order 등)
 
 ERD 구
 
