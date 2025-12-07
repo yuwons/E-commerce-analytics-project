@@ -45,10 +45,11 @@ End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python EDA · 
    - Log 기반 사용자 행동 데이터
    - view, cart, order 이벤트 포함 (세션 기반)
 
-ERD 구
+### ERD 구조
 
-users (1) ─── (N) orders ─── (N) order_items ─── (1) products
-users (1) ─── (N) user_events (funnel log)
+```text
+users (1) ---- (N) orders ---- (N) order_items ---- (1) products
+users (1) ---- (N) user_events
 
 2, Dataset Generation (Python)
 
