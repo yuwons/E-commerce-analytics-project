@@ -68,7 +68,8 @@ Python을 활용해 실제 환경을 모방한 Synthetic Dataset을 생성합니
 - NumPy
 - Faker
 - Random sampling
-Code Directory: src/data_generation/
+
+### Code Directory: src/data_generation/
 
 
 ## 4.Data Mart (BigQuery)
@@ -87,76 +88,68 @@ SQL 기반 분석 효율을 높이기 위해 Data Mart를 설계했습니다.
 - Clustering: user_events (user_id, event_type)
 - Funnel 분석에서 user_id 기반 필터링 성능 개선
 
-Code: src/sql/*
+### Code: src/sql/*
 
-4, Airflow Automation
-
+## 5. Airflow Automation
 Airflow로 Synthetic Dataset 생성 및 Data Mart 업데이트 작업을 자동화합니다.
 
-DAG 구성
-
+### DAG 구성
 - Synthetic Dataset Daily 생성 DAG
 - Data Mart Refresh DAG
 - Task Dependencies 구성
-- Airflow Directory: airflow/dags/
 
-Code: airflow/dags/*
+Airflow Directory: airflow/dags/
 
-5, SQL-based Analysis
+### Code: airflow/dags/*
 
+## 6, SQL-based Analysis
 BigQuery SQL을 활용하여 주요 분석을 수행합니다:
 
-Cohort & Retention 분석
-LTV & 재구매율 분석
-RFM 세그멘테이션 (SQL 버전)
-카테고리 성과 분석 (AOV, 매출 기여도, 성장률)
-Funnel 단계별 Drop-off 분석
-SQL 분석 Notebook: src/sql/
+### 분석 항목
+1. Cohort & Retention 분석
+2. LTV & 재구매율 분석
+3. RFM 세그멘테이션 (SQL 버전)
+4. 카테고리 성과 분석 (AOV, 매출 기여도, 성장률)
+5. Funnel 단계별 Drop-off 분석
 
-6, Python EDA & Statistical Analysis
+### SQL 분석 Notebook: src/sql/
 
+## 7. Python EDA & Statistical Analysis
 SQL 결과를 기반으로 Python에서 심화 분석을 수행합니다:
 
-- EDA (분포, 상관관계 분석)
-- 고객군 AOV 비교 (t-test / Mann-Whitney U test)
-- Bootstrap 기반 A/B Test
-- RFM 분석 (Python 버전)
-- Retention Heatmap 시각화
-- Funnel 이벤트 상세 분석
+### 분석 항목
+1. EDA (분포, 상관관계 분석)
+2. 고객군 AOV 비교 (t-test / Mann-Whitney U test)
+3. Bootstrap 기반 A/B Test
+4. RFM 분석 (Python 버전)
+5. Retention Heatmap 시각화
+6. Funnel 이벤트 상세 분석
 
-Python Notebooks: src/python/
+### Python Notebooks: src/python/
 
-7, Tableau Dashboard
-
+## 8. Tableau Dashboard
 최종 분석 결과를 Tableau Dashboard로 구성합니다.
 
-Dashboard 구성 (4 pages)
+### Dashboard 구성 (4 pages)
+1. KPI Overview
+2. Category Performance
+3. Cohort / Retention
+4. Funnel Analysis (Log-based)
 
-- KPI Overview
-- Category Performance
-- Cohort / Retention
-- Funnel Analysis (Log-based)
-
-데이터 자동 업데이트
-
+### 데이터 자동 업데이트
 - Tableau Desktop ↔ BigQuery Live Connection
 - BigQuery Data Mart 업데이트 시 Tableau가 자동 반영
 
-Dashboard Assets: tableau/
+### Directory: tableau/
 
-Dashboard 이미지: tableau/*
-
-8, Final Insights
-
+## 9. Final Insights
 분석을 통해 다음과 같은 핵심 인사이트를 도출합니다:
+1. LTV가 높은 핵심 고객군의 행동적 특징
+2. Funnel 단계별 이탈 원인 및 개선 우선순위
+3. 고성장/저효율 카테고리 식별 및 최적화 방안
+4. Retention 개선을 위한 actionable 전략
 
-- LTV가 높은 핵심 고객군의 행동적 특징
-- Funnel 단계별 이탈 원인 및 개선 우선순위
-- 고성장/저효율 카테고리 식별 및 최적화 방안
-- Retention 개선을 위한 actionable 전략
-
-🛠 Tech Stack
-
+## Tech Stack
 - Python: Pandas, NumPy, Faker, Matplotlib
 - SQL: BigQuery
 - Airflow: DAG Scheduling
