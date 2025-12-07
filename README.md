@@ -31,19 +31,15 @@ End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python EDA · 
 1. **users**
    - 사용자 정보
    - 가입일, 디바이스, 지역, 유입 채널 등
-
 2. **orders**
    - 주문 단위 데이터
    - 주문일, 주문 금액, 결제 여부
-   
 3. **order_items**
    - 주문 내 상품 상세 정보
    - 단가, 수량, product_id
-
 4. **product**
    - 상품 정보
    - 카테고리, 가격, 브랜드 등
-
 5. **user_events**
    - Log 기반 사용자 행동 데이터
    - view, cart, order 이벤트 포함 (세션 기반)
