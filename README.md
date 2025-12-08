@@ -80,12 +80,19 @@ Retention 개선, Funnel 최적화, 매출 성장 전략 도출
 - 최근 유입 증가 패턴 반영
 - Subscription 분석 가능하도록 구조를 설계
 
+### 3.2 Products Table 
 
-1. **users** — 사용자 프로필  
-2. **products** — 상품 정보 + 가격 + category + discount rule  
-3. **orders** — 주문 정보 (seasonality, payment_status 포함)  
-4. **order_items** — 주문 상세 (denormalized category & price 포함)  
-5. **user_events** — Funnel 로그 데이터
+| column     | description      |
+| ---------- | ---------------- |
+| product_id | PK               |
+| category   | 7개 카테고리          |
+| price      | 카테고리별 가격대 기반 생성  |
+| price_tier | Low / Mid / High |
+| brand      | 국내 브랜드명 랜덤 생성    |
+
+### 설계 포인트
+- category 가격 분포 + price_tier 조합으로 KPI 분석 가능
+- brand 컬럼 추가로 브랜드별 성과 분석도 가능 (AOV, 매출 기여도 등)
 
 ### ERD 구조
 
