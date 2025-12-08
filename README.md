@@ -94,6 +94,43 @@ Retention 개선, Funnel 최적화, 매출 성장 전략 도출
 - category 가격 분포 + price_tier 조합으로 KPI 분석 가능
 - brand 컬럼 추가로 브랜드별 성과 분석도 가능 (AOV, 매출 기여도 등)
 
+
+### 3.3 Orders Table
+
+| column            | description               |
+| ----------------- | ------------------------- |
+| order_id          | PK                        |
+| user_id           | FK                        |
+| order_date        | 주문 날짜                     |
+| payment_attempted | 결제 시도 여부                  |
+| payment_status    | 결제 성공 여부                  |
+| total_amount      | 주문 총액 (order_items 집계 기반) |
+
+### 3.4 Order Items Table
+
+| column        | description |
+| ------------- | ----------- |
+| order_item_id | PK          |
+| order_id      | FK          |
+| product_id    | FK          |
+| category      | snapshot    |
+| price         | snapshot    |
+| price_tier    | snapshot    |
+| quantity      | 수량          |
+
+### 3.5 User Events Table
+
+| column     | description                                                |
+| ---------- | ---------------------------------------------------------- |
+| event_id   | PK                                                         |
+| user_id    | FK                                                         |
+| event_type | view / add_to_cart / checkout / payment_attempt / purchase |
+| product_id | 이벤트 발생 제품                                                  |
+| event_time | 타임스탬프                                                      |
+| referrer   | direct / search / ads / push                               |
+| session_id | session 구분용                                                |
+
+
 ### ERD 구조
 
 ![ERD](docs/erd.png)
