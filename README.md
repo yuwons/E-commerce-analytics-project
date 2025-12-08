@@ -58,7 +58,28 @@ Retention 개선, Funnel 최적화, 매출 성장 전략 도출
 
 # 3. 🗂 데이터 모델 (ERD)
 
-본 프로젝트는 실제 커머스 기업 구조 기반으로 아래 5개 테이블로 구성됩니다.
+본 프로젝트의 데이터 구조는 실제 E-commerce 환경을 최대한 현실적으로 재현하기 위해
+5개의 핵심 테이블(users, products, orders, order_items, user_events) 로 구성되었습니다.
+
+이 구조는 고객 분석(LTV, Retention), 구매 분석(Category KPI), Funnel 분석(Log 기반)을 모두 수행할 수 있도록 설계되었습니다.
+
+### 3.1 Users Table
+
+| column                 | description               |
+| ---------------------- | ------------------------- |
+| user_id                | PK                        |
+| signup_date            | 가입일                       |
+| device                 | iOS / Android / Web       |
+| region                 | Seoul / Gyeonggi / Others |
+| marketing_source       | Organic / Paid / Referral |
+| subscription_type      | Free / Plus / Premium     |
+| subscription_join_date | 유료가입 시점                   |
+| is_new_user            | 신규 유저 여부 (30일 기준)         |
+
+### 설계 포인트
+- 최근 유입 증가 패턴 반영
+- Subscription 분석 가능하도록 구조를 설계
+
 
 1. **users** — 사용자 프로필  
 2. **products** — 상품 정보 + 가격 + category + discount rule  
