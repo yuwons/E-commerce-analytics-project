@@ -67,3 +67,134 @@ Retention 개선, 전환율 최적화, 매출 성장 전략을 도출하는 실�
 5. **user_events** — Log 기반 행동 이벤트 (세션 기반 Funnel)
 
 ### ERD 구조
+
+![ERD](docs/erd.png)
+
+---
+
+# 4. 🛠 Synthetic Dataset Generation (Python)
+
+Python을 활용해 현실적인 고객 행동·구매 패턴·Funnel 흐름을 반영한 Synthetic Dataset을 생성합니다.
+
+### ✔ Users
+- 최근 36개월 분포 (최근 18개월 70%)  
+- device / region / marketing_source 기반 프로필  
+- Subscription (Free / Plus / Premium) + 가입 시점 로직  
+- anomaly 1% 포함
+
+### ✔ Products
+- 7개 카테고리  
+- 카테고리별 normal/log-normal 가격 분포  
+- price_tier (low/mid/high)  
+- discount_day_of_week  
+
+### ✔ Orders / Order Items
+- 시즌성(Seasonality) 반영  
+- 사용자 타입별 구매 빈도 차등  
+- denormalized category/price  
+- anomaly 포함  
+
+### ✔ User Events (Funnel Log)
+- view → add_to_cart → checkout_start → payment_attempt → purchase  
+- Medium volume (15~25 events/user)  
+- session_id 별 자연스러운 timestamp 흐름  
+- 정상 branch + 실제 서비스 branch 포함  
+- anomaly 2% 포함  
+
+### 사용 라이브러리
+`pandas`, `numpy`, `faker`, `random`, `datetime`
+
+📁 코드 경로: `src/data_generation/`
+
+---
+
+# 5. 🧱 Data Mart (BigQuery)
+
+분석 효율을 극대화하기 위해 SQL 기반 Data Mart를 구성합니다.
+
+### Data Mart 구성
+#### **1) dm_user_purchase_summary**
+- LTV  
+- 구매횟수 / 첫구매일 / 재구매 여부  
+- Subscription별 지표 비교  
+
+#### **2) dm_category_performance**
+- 카테고리 매출  
+- AOV  
+- 성장률 / 시즌성  
+
+#### **3) dm_funnel_events**
+- 단계별 전환율  
+- Drop-off 분석  
+- session 기반 행동 데이터  
+
+### BigQuery 성능 최적화
+- **Partition**: `orders.order_date`  
+- **Clustering**: `user_events(user_id, event_type)`  
+
+📁 SQL 코드: `src/sql/`
+
+---
+
+# 6. 📊 SQL-Based Analysis
+
+### 주요 분석 항목
+1. Cohort & Retention  
+2. LTV & 재구매 패턴  
+3. Subscription 효과 분석  
+4. 카테고리 성과 분석  
+5. Funnel Drop-off & Behavior 기반 분석  
+
+📁 Notebook: `src/sql/`
+
+---
+
+# 7. 🐍 Python EDA & Statistical Analysis
+
+### 분석 항목
+- 분포 분석  
+- 사용자군 KPI 비교 (t-test, Mann-Whitney U)  
+- Bootstrap 기반 통계 검정  
+- Retention Heatmap  
+- Funnel Visualization  
+- Behavior Pattern Analysis  
+
+📁 Notebook: `src/python/`
+
+---
+
+# 8. 📈 Tableau Dashboard
+
+### Dashboard 구성 (4 pages)
+1. KPI Overview  
+2. Category Performance  
+3. Cohort / Retention  
+4. Funnel & Drop-off (Log 기반)
+
+### 데이터 자동 업데이트
+- BigQuery Live Connection  
+- Data Mart 갱신 시 Tableau 자동 반영  
+
+📁 Tableau 파일: `tableau/`
+
+---
+
+# 9. 🔍 Final Insights
+
+최종 분석을 통해 아래와 같은 핵심 인사이트를 도출합니다:
+
+1. 높은 LTV 고객군의 행동적 특징  
+2. Funnel 단계별 주요 이탈 요인 및 개선 전략  
+3. Discount Day가 신규 고객 전환에 미치는 영향  
+4. 성장/저효율 카테고리 식별  
+5. Retention 개선을 위한 초기 Activation Indicator 도출
+
+---
+
+# 🧰 Tech Stack
+- **Python**: pandas, numpy, faker, matplotlib  
+- **SQL**: BigQuery  
+- **Airflow**: DAG Scheduling  
+- **Visualization**: Tableau  
+- **Infra**: GitHub  
+
