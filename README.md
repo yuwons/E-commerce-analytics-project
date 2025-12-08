@@ -93,6 +93,7 @@ Retention 개선, Funnel 최적화, 매출 성장 전략 도출
 ### 설계 포인트
 - category 가격 분포 + price_tier 조합으로 KPI 분석 가능
 - brand 컬럼 추가로 브랜드별 성과 분석도 가능 (AOV, 매출 기여도 등)
+- 브랜드별 AOV 비교나 브랜드 충성도 분석 가능
 
 
 ### 3.3 Orders Table
@@ -105,6 +106,9 @@ Retention 개선, Funnel 최적화, 매출 성장 전략 도출
 | payment_attempted | 결제 시도 여부                  |
 | payment_status    | 결제 성공 여부                  |
 | total_amount      | 주문 총액 (order_items 집계 기반) |
+
+### 설계 포인트
+- 전처리 및 Anomaly detection 시나리오 학습을 위해 1% 정도의 의도적 오류 포함함
 
 ### 3.4 Order Items Table
 
@@ -130,6 +134,10 @@ Retention 개선, Funnel 최적화, 매출 성장 전략 도출
 | referrer   | direct / search / ads / push                               |
 | session_id | session 구분용                                                |
 
+### 설계 포인트
+- session 단위 이벤트 생성
+- realistic branching
+- 일부 checkout without add_to_cart 포함 
 
 ### ERD 구조
 
