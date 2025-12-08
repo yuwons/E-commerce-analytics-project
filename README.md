@@ -1,9 +1,9 @@
 # 📦 E-commerce Analytics Project  
-_End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python Behavioral Analysis · Funnel Analysis · Tableau Dashboard_
+_End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python Behavioral Analysis · Funnel Analysis · Airflow Automation · Tableau Dashboard_
 
-본 프로젝트는 실제 커머스 환경을 기반으로 한 **E-commerce 데이터 분석 End-to-End 파이프라인**을 구축하는 것을 목표로 합니다.  
-Synthetic 데이터 생성 → 데이터 모델링 → BigQuery Data Mart → SQL 분석 → Python 행동 분석 → Tableau Dashboard까지  
-실제 기업 데이터 분석 플로우를 그대로 재현한 프로젝트입니다.
+본 프로젝트는 실제 커머스 환경을 기반으로 한 **End-to-End 분석 파이프라인**을 구축하는 것을 목표로 합니다.  
+Synthetic 데이터 생성 → ERD 설계 → BigQuery Data Mart → Airflow 자동화 → SQL 분석 → Python Behavioral Analysis → Tableau Dashboard까지  
+기업 데이터 분석 환경을 그대로 재현한 실무형 프로젝트입니다.
 
 ---
 
@@ -13,58 +13,58 @@ Synthetic 데이터 생성 → 데이터 모델링 → BigQuery Data Mart → SQ
 
 ### **1) 고객 행동 분석 (Customer Behavior Analysis)**  
 - LTV, 재구매율, Time-to-First-Purchase  
-- Subscription 유형(Free/Plus/Premium)별 행동 및 가치 분석  
-- 신규 vs 기존 고객군의 초기 행동 차이
+- Subscription(Free/Plus/Premium)별 행동 · 가치 분석  
+- 신규 vs 기존 고객의 초기 구매 패턴 비교
 
 ### **2) 카테고리 매출 & 할인 효과 분석 (Category Performance)**  
-- 카테고리별 매출 기여도 / AOV / 구매 빈도  
-- Discount Day(요일별 할인 이벤트)가 전환율에 미치는 영향  
-- 시즌성(Seasonality) 기반 카테고리 소비 패턴
+- 카테고리별 매출 기여도, AOV, 구매 빈도  
+- Discount Day(요일별 할인) 효과 분석  
+- 시즌성(Seasonality) 반영 패턴 분석
 
 ### **3) Funnel 분석 (User Journey · Log-based)**  
-- view → add_to_cart → checkout_start → payment_attempt → purchase 단계별 전환  
-- Drop-off 지점 및 원인 분석  
-- 디바이스/구독/지역/마케팅 소스별 전환율 비교
+- view → add_to_cart → checkout → payment → purchase  
+- 단계별 이탈(drop-off) 탐지 및 원인 분석  
+- 기기/지역/구독 상태/채널별 전환율 비교
 
 🎯 **최종 목표:**  
-Retention 개선, 전환율 최적화, 매출 성장 전략을 도출하는 실무형 분석 환경 구축.
+Retention 개선, Funnel 최적화, 매출 성장 전략 도출
 
 ---
 
 # 2. 🔍 Analytical Questions (핵심 분석 질문)
 
-본 프로젝트는 아래 주요 질문들에 답하는 것을 목표로 설계되었습니다.
+본 프로젝트는 아래 질문들에 답하기 위해 설계되었습니다.
 
 ## **Customer Behavior & LTV**
-- 어떤 행동 패턴이 장기 LTV를 가장 잘 설명하는가?  
+- 어떤 행동 변수들이 장기 LTV를 결정하는가?  
 - Subscription 가입 고객과 Free 고객의 재구매율 차이는 왜 발생하는가?  
-- 첫 구매 전환까지 걸리는 시간(Time-to-First-Purchase)은 LTV와 어떤 상관관계를 가지는가?  
+- Time-to-First-Purchase는 장기 잔존율에 어떤 영향을 미치는가?
 
 ## **Funnel & Drop-off Analysis**
-- view → add_to_cart → checkout → payment → purchase 단계에서 가장 큰 이탈은 어디서 발생하는가?  
-- 장바구니를 건너뛰고 바로 checkout/purchase하는 유저는 어떤 특성을 가지는가?  
-- 신규/기존, 디바이스, 지역, 마케팅 채널에 따른 전환 패턴은 어떻게 다른가?  
+- Funnel 단계별 가장 큰 이탈은 어디에서 발생하는가?  
+- add_to_cart 없이 바로 checkout/purchase 하는 고객의 특징은?  
+- 유입 채널/디바이스/Subscription에 따라 전환율이 어떻게 달라지는가?
 
 ## **Category & Discount Effect**
-- 카테고리별 구매 빈도·AOV·재구매율은 어떻게 다른가?  
-- Discount Day는 신규 고객 전환에 어떤 영향을 주는가?  
-- 고가 제품군(high-tier) 구매 고객은 어떤 행동적 특징을 보이는가?  
+- 카테고리별 구매 패턴(빈도, AOV, 재구매율)은 어떻게 다른가?  
+- Discount Day는 신규 고객 전환율을 얼마나 높이는가?  
+- high-tier 제품을 구매하는 고객군의 행동적 특징은?
 
 ## **Retention & Cohort**
-- D1/D7/D30 Retention은 어떤 초기 행동 변수와 가장 큰 상관관계를 가지는가?  
-- 초기 이탈 고객과 장기 잔존 고객의 차이는 무엇인가?  
+- D1/D7/D30 Retention을 결정하는 초기 행동 지표는 무엇인가?  
+- 초기 Activation이 장기 잔존율을 어떻게 설명하는가?  
 
 ---
 
-# 3. 🗂 데이터 모델(ERD)
+# 3. 🗂 데이터 모델 (ERD)
 
-본 프로젝트는 실제 커머스 구조를 기반으로 **5개 테이블**로 구성됩니다.
+본 프로젝트는 실제 커머스 기업 구조 기반으로 아래 5개 테이블로 구성됩니다.
 
-1. **users** — 사용자 프로필(가입일, 디바이스, 지역, 마케팅 소스, 구독 정보)  
-2. **products** — 상품 카테고리, 가격, 할인 요일  
-3. **orders** — 주문 정보 (seasonality, 결제상태 포함)  
-4. **order_items** — 주문 상세 정보 (denormalized category/price 포함)  
-5. **user_events** — Log 기반 행동 이벤트 (세션 기반 Funnel)
+1. **users** — 사용자 프로필  
+2. **products** — 상품 정보 + 가격 + category + discount rule  
+3. **orders** — 주문 정보 (seasonality, payment_status 포함)  
+4. **order_items** — 주문 상세 (denormalized category & price 포함)  
+5. **user_events** — Funnel 로그 데이터
 
 ### ERD 구조
 
@@ -74,61 +74,58 @@ Retention 개선, 전환율 최적화, 매출 성장 전략을 도출하는 실�
 
 # 4. 🛠 Synthetic Dataset Generation (Python)
 
-Python을 활용해 현실적인 고객 행동·구매 패턴·Funnel 흐름을 반영한 Synthetic Dataset을 생성합니다.
+Python을 활용해 현실성 높은 Synthetic Dataset을 생성했습니다.
 
 ### ✔ Users
-- 최근 36개월 분포 (최근 18개월 70%)  
-- device / region / marketing_source 기반 프로필  
-- Subscription (Free / Plus / Premium) + 가입 시점 로직  
-- anomaly 1% 포함
+- 최근 36개월 가입 분포 (최근 18개월 70%)  
+- device / region / marketing_source  
+- Subscription (Free/Plus/Premium) + realistic join date  
+- anomaly 의도적 삽입 (1%)
 
 ### ✔ Products
 - 7개 카테고리  
-- 카테고리별 normal/log-normal 가격 분포  
+- normal/log-normal 가격 분포  
 - price_tier (low/mid/high)  
-- discount_day_of_week  
+- discount_day_of_week (요일 할인 정책)
 
 ### ✔ Orders / Order Items
-- 시즌성(Seasonality) 반영  
-- 사용자 타입별 구매 빈도 차등  
-- denormalized category/price  
-- anomaly 포함  
+- Seasonality 반영  
+- 사용자 타입별 구매 빈도 분포  
+- order_items에 category, price denormalization  
+- anomaly 포함
 
 ### ✔ User Events (Funnel Log)
-- view → add_to_cart → checkout_start → payment_attempt → purchase  
+- view → add_to_cart → checkout → payment → purchase  
 - Medium volume (15~25 events/user)  
-- session_id 별 자연스러운 timestamp 흐름  
-- 정상 branch + 실제 서비스 branch 포함  
-- anomaly 2% 포함  
+- session 기반 timestamp  
+- realistic branching + anomaly 2%
 
-### 사용 라이브러리
-`pandas`, `numpy`, `faker`, `random`, `datetime`
-
-📁 코드 경로: `src/data_generation/`
+📁 경로: `src/data_generation/`
 
 ---
 
-# 5. 🧱 Data Mart (BigQuery)
+# 5. 🧱 BigQuery Data Mart
 
-분석 효율을 극대화하기 위해 SQL 기반 Data Mart를 구성합니다.
+분석 효율을 위해 BigQuery 기반 Data Mart를 구성했습니다.
 
-### Data Mart 구성
+### Data Mart 테이블
+
 #### **1) dm_user_purchase_summary**
 - LTV  
-- 구매횟수 / 첫구매일 / 재구매 여부  
-- Subscription별 지표 비교  
+- 구매 횟수 / 첫 구매일  
+- Subscription별 KPI  
 
 #### **2) dm_category_performance**
 - 카테고리 매출  
 - AOV  
-- 성장률 / 시즌성  
+- 성장률 & 시즌성  
 
 #### **3) dm_funnel_events**
 - 단계별 전환율  
-- Drop-off 분석  
-- session 기반 행동 데이터  
+- Drop-off 위치  
+- session 단위 정규화 이벤트
 
-### BigQuery 성능 최적화
+### BigQuery 쿼리 최적화
 - **Partition**: `orders.order_date`  
 - **Clustering**: `user_events(user_id, event_type)`  
 
@@ -136,65 +133,94 @@ Python을 활용해 현실적인 고객 행동·구매 패턴·Funnel 흐름을 
 
 ---
 
-# 6. 📊 SQL-Based Analysis
+# 6. ⚙️ Airflow Workflow Automation
 
-### 주요 분석 항목
-1. Cohort & Retention  
-2. LTV & 재구매 패턴  
-3. Subscription 효과 분석  
-4. 카테고리 성과 분석  
-5. Funnel Drop-off & Behavior 기반 분석  
+본 프로젝트는 데이터 생성과 Data Mart 업데이트 작업을 자동화하기 위해 **Apache Airflow**를 활용했습니다.
 
-📁 Notebook: `src/sql/`
+### 구성 DAG
+
+| DAG 이름 | 설명 |
+|---------|------|
+| **generate_synthetic_data_daily** | Python으로 Users/Products/Orders/Events 생성 후 BigQuery 적재 |
+| **refresh_data_mart** | Data Mart(SQL View/Materialized Table) 정기 업데이트 |
+| **funnel_preprocessing_dag** | user_events 테이블을 session 단위로 전처리한 후 dm_funnel_events로 반영 |
+
+### Workflow 구조
+
+### 사용된 Operators
+- PythonOperator  
+- BigQueryInsertJobOperator  
+- Task dependency (`>>`)  
+- Daily scheduling (`@daily`)
+
+📁 DAG 파일: `airflow/dags/`
 
 ---
 
-# 7. 🐍 Python EDA & Statistical Analysis
+# 7. 📊 SQL-Based Analysis
 
 ### 분석 항목
-- 분포 분석  
-- 사용자군 KPI 비교 (t-test, Mann-Whitney U)  
-- Bootstrap 기반 통계 검정  
+- Cohort & Retention  
+- LTV & 재구매 패턴  
+- Subscription 효과  
+- Category 성과 분석  
+- Funnel Drop-off 분석  
+- Behavior-based segmentation  
+
+📁 SQL Notebook: `src/sql/`
+
+---
+
+# 8. 🐍 Python EDA & Statistical Analysis
+
+### 분석 항목
+- 분포/상관관계 EDA  
+- Subscription 군 간 AOV 비교 (t-test, Mann-Whitney U)  
+- Bootstrap 기반 A/B Test  
 - Retention Heatmap  
-- Funnel Visualization  
-- Behavior Pattern Analysis  
+- Funnel 이벤트 상세 분석  
 
 📁 Notebook: `src/python/`
 
 ---
 
-# 8. 📈 Tableau Dashboard
+# 9. 📈 Tableau Dashboard
 
-### Dashboard 구성 (4 pages)
+### Dashboard 구성 (총 4 pages)
 1. KPI Overview  
 2. Category Performance  
-3. Cohort / Retention  
-4. Funnel & Drop-off (Log 기반)
+3. Cohort & Retention  
+4. Funnel & Drop-off  
 
-### 데이터 자동 업데이트
+### Tableau 자동 업데이트
 - BigQuery Live Connection  
-- Data Mart 갱신 시 Tableau 자동 반영  
+- Data Mart → Tableau 실시간 반영  
 
 📁 Tableau 파일: `tableau/`
 
 ---
 
-# 9. 🔍 Final Insights
+# 10. 🔍 Final Insights
 
-최종 분석을 통해 아래와 같은 핵심 인사이트를 도출합니다:
+분석 결과 핵심 인사이트는 다음과 같습니다:
 
-1. 높은 LTV 고객군의 행동적 특징  
+1. 높은 LTV 고객군의 행동적 특징 도출  
 2. Funnel 단계별 주요 이탈 요인 및 개선 전략  
-3. Discount Day가 신규 고객 전환에 미치는 영향  
-4. 성장/저효율 카테고리 식별  
-5. Retention 개선을 위한 초기 Activation Indicator 도출
+3. Discount Day의 신규 고객 전환 효과  
+4. 성장 vs 비효율 카테고리 식별  
+5. Retention 개선을 위한 Activation 지표 발굴  
 
 ---
 
 # 🧰 Tech Stack
+
 - **Python**: pandas, numpy, faker, matplotlib  
 - **SQL**: BigQuery  
 - **Airflow**: DAG Scheduling  
 - **Visualization**: Tableau  
 - **Infra**: GitHub  
+
+---
+
+
 
