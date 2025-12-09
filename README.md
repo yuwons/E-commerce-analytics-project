@@ -248,12 +248,13 @@ Funnel 기반 행동 로그 / Session 분석 / Drop-off 분석
   - session_id null
   - user_id mismatch
 
-📁 경로: `src/data_generation/`
-         ├── generate_users.py
-         ├── generate_products.py
-         ├── generate_orders.py
-         ├── generate_order_items.py
-         └── generate_events.py
+📁 경로: src/data_generation/
+├── generate_users.py
+├── generate_products.py
+├── generate_orders.py
+├── generate_order_items.py
+└── generate_events.py
+
 
 
 ---
