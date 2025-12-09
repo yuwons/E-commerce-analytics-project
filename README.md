@@ -63,22 +63,24 @@ Retention 개선, Funnel 최적화, 매출 성장 전략 도출
 
 이 구조는 고객 분석(LTV, Retention), 구매 분석(Category KPI), Funnel 분석(Log 기반)을 모두 수행할 수 있도록 설계되었습니다.
 
-### 3.1 Users Table
+## **3.1 Users Table**
 
-| column                 | description               |
-| ---------------------- | ------------------------- |
-| user_id                | PK                        |
-| signup_date            | 가입일                       |
-| device                 | iOS / Android / Web       |
-| region                 | Seoul / Gyeonggi / Others |
-| marketing_source       | Organic / Paid / Referral |
-| subscription_type      | Free / Plus / Premium     |
-| subscription_join_date | 유료가입 시점                   |
-| is_new_user            | 신규 유저 여부 (30일 기준)         |
+| column                 | description                                   |
+| ---------------------- | --------------------------------------------- |
+| `user_id` (PK)         | 사용자 ID                                      |
+| `signup_date`          | 가입일                                         |
+| `device`               | iOS / Android / Web                            |
+| `region`               | Seoul / Gyeonggi / Others                      |
+| `marketing_source`     | Organic / Paid / Referral                      |
+| `subscription_type`    | Free / Plus / Premium                          |
+| `subscription_join_date` | 유료가입 시점 (가입 후 10~180일)             |
+| `is_new_user_flag`     | 신규 유저 여부 (가입 후 45일 기준)             |
+| `anomaly_flag`         | 1% intentional anomaly                         |
 
-### 설계 포인트
-- 최근 유입 증가 패턴 반영
-- Subscription 분석 가능하도록 구조를 설계
+### **설계 포인트**
+- 최근 36개월 가입 패턴 반영  
+- 마케팅/디바이스 세그먼트 분석 가능  
+- Subscription 기반 LTV 분석 지원  
 
 ### 3.2 Products Table 
 
