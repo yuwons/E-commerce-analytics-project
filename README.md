@@ -170,10 +170,15 @@ Retention 개선, Funnel 최적화, 매출 성장 전략 도출
 Python을 활용해 현실성 높은 Synthetic Dataset을 생성했습니다.
 
 ### ✔ Users
+고객 세그먼트 분석 / Retention / LTV 분석 / Subscription 효과 분석
 - 최근 36개월 가입 분포 (최근 18개월 70%)  
-- device / region / marketing_source  
-- Subscription (Free/Plus/Premium) + realistic join date  
-- anomaly 의도적 삽입 (1%)
+- device (iOS 40%, Android 45%, Web 15%)
+- region (Seoul 38%, Gyeonggi 32%, Other 30%)
+- marketing_source (Oranic 60%, Paid 30%, Referral 10%)
+- subscription_type (Free 65%, Plus 25%, Platinum 10%)
+- subscription_join_date (Plus → signup + 30~180일, Premium → signup + 10~90일)
+- is_new_user_flag: 가입 후 45일 이내 True
+- anomaly 1% (의도적 데이터 품질 이슈)
 
 ### ✔ Products
 - 7개 카테고리  
