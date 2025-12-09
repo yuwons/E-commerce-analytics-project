@@ -255,8 +255,6 @@ Funnel 기반 행동 로그 / Session 분석 / Drop-off 분석
 ├── generate_order_items.py
 └── generate_events.py
 
-
-
 ---
 
 # 5. 🧱 BigQuery Data Mart
