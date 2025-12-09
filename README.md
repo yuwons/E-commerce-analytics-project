@@ -176,15 +176,22 @@ Python을 활용해 현실성 높은 Synthetic Dataset을 생성했습니다.
 - region (Seoul 38%, Gyeonggi 32%, Other 30%)
 - marketing_source (Oranic 60%, Paid 30%, Referral 10%)
 - subscription_type (Free 65%, Plus 25%, Platinum 10%)
-- subscription_join_date (Plus → signup + 30~180일, Premium → signup + 10~90일)
+- subscription_join_date
+  - Plus → signup + 30~180일
+  - Premium → signup + 10~90일
 - is_new_user_flag: 가입 후 45일 이내 True
 - anomaly 1% (의도적 데이터 품질 이슈)
 
 ### ✔ Products
-- 7개 카테고리  
-- normal/log-normal 가격 분포  
-- price_tier (low/mid/high)  
+카테고리 분석 / 가격대 기반 AOV·LTV 분석 / Discount Day 효과
+- 총 product_id: 300개
+- Category: 7개
+  - Furniture, Appliances, Cleaning, Kitchenware, Fabric, Organizers, Deco)
+- price: 카테고리별 Normal 또는 Log-normal 분포  
+- price_tier: Low 30%, Mid 50%, High 20%  
 - discount_day_of_week (요일 할인 정책)
+  - 월~목: low/mid 중심
+  - 금~일: high price 중심 (토요일이 최고가 카테고리)
 
 ### ✔ Orders / Order Items
 - Seasonality 반영  
