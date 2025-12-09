@@ -193,17 +193,60 @@ Python을 활용해 현실성 높은 Synthetic Dataset을 생성했습니다.
   - 월~목: low/mid 중심
   - 금~일: high price 중심 (토요일이 최고가 카테고리)
 
-### ✔ Orders / Order Items
-- Seasonality 반영  
-- 사용자 타입별 구매 빈도 분포  
-- order_items에 category, price denormalization  
-- anomaly 포함
+### ✔ Orders
+구매 행동 분석 / LTV / Cohort / Seasonality / Discount 효과 분석
+- 구매 횟수 분포
+  - 0회 20%
+  - 1~2회 35%
+  - 3~5회 25%
+  - 6~10회 12%
+  - 10회 이상 8%
+- signup_date가 오래된 사용자일수록 높은 구매 구간 선택
+- order_date: signup 이후 날짜에서 선택
+- seasonality 적용: Feb 0.8, Mar 0.9, Oct 1.1, Nov 1.2, Dec 1.5
+- 주말 구매량: 평일 대비 약 1.3배
+- is_discount_day: 구매 상품 중 discount day 해당 여부
+- anomaly_flag: 1%
+
+### ✔ Order_items
+카테고리 매출 분석 / AOV 분석 / 제품 성과 분석
+- item_count per order
+  - 1개 65%
+  - 2개 25%
+  - 3개 8%
+  - 4개 2%
+- product 선택 가중치
+  - Cleaning / Kitchenware / Organizers 중심 (~18%)
+  - Furniture 등 고가 카테고리 약 8%
+- Subscription type별 가중치 차등 반영
+  - Free → 저가 제품 선호
+  - Premium → 고가 비중 증가
+- qty: 1개 75%, 2개 20%, 3개 5%
+- category, price, price_tier denormalized 저장
+- line_amount = price × qty
+- is_discounted: order_date와 discount day 일치 시 True
 
 ### ✔ User Events (Funnel Log)
-- view → add_to_cart → checkout → payment → purchase  
-- Medium volume (15~25 events/user)  
-- session 기반 timestamp  
-- realistic branching + anomaly 2%
+Funnel 기반 행동 로그 / Session 분석 / Drop-off 분석
+- Funnel 단계: view → add_to_cart → checkout → payment_attempt → purchase 
+- Medium volume: 유저당 15~25 events 
+- session_id: UUID  
+- session당 이벤트 2~6개
+- timestamp 간격: 5초~20분
+- session 간 간격: 1시간~3일
+- add_to_cart 없이 checkout_start 가능 (정상 흐름으로 처리)
+- 단계별 전환율
+  - view → add_to_cart: 10~18%
+  - add_to_cart → checkout: 40~60%
+  - checkout → payment_attempt: 70~85%
+  - payment_attempt → purchase: 85~95%
+- referrer: home / category / search / product / cart / checkout
+- anomaly 2%
+  - checkout 없이 payment
+  - payment 없이 purchase
+  - timestamp 역전
+  - session_id null
+  - user_id mismatch
 
 📁 경로: `src/data_generation/`
 
