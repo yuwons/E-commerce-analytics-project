@@ -61,15 +61,15 @@ _End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python Behavi
 ## **2.6 Subscription 고객의 Activation 모델**
 (Activation → Subscription → 더 높은 가치 구조 분석)
 - Subscription 고객은 Activation 초기 단계에서 어떤 행동 차이를 보이는가?
-- Activation을 통제한 상황에서도 Subscription 자체가 LTV 증가를 만들까?
+- Activation을 통제한 후에도 Subscription이 LTV에 추가적 상승 효과를 주는가?
 - 구독형 고객의 Funnel·카테고리·재구매 패턴은 어떻게 다른가?
 
 ## **2.7 최종적으로 도출할 전략적 인사이트**
 모든 분석은 다음 4가지 비즈니스 질문을 해결하기 위한 근거로 사용된다:  
-**1. Activation을 높이는 핵심 행동 지표는 무엇인가?**  
-**2. Activation이 높은 유저가 왜 더 높은 LTV/Retention을 가진다는 결론이 나오는가?**  
-**3. 초기 행동 기반으로 어떤 Retention/LTV 개선 전략을 만들 수 있는가?**  
-**4. 카테고리/할인/구독 전략을 Activation 모델과 어떻게 연결할 수 있는가?**  
+- **Activation을 높이는 핵심 행동 지표는 무엇인가?**  
+- **Activation이 높은 유저가 왜 더 높은 LTV/Retention을 가진다는 결론이 나오는가?**  
+- **초기 행동 기반으로 어떤 Retention/LTV 개선 전략을 만들 수 있는가?**  
+- **카테고리/할인/구독 전략을 Activation 모델과 어떻게 연결할 수 있는가?**  
  
 ---
 
