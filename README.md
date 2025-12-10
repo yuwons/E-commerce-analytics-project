@@ -1,5 +1,5 @@
 # 📦 E-commerce Analytics Project  
-_End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python Behavioral Analysis · Funnel Analysis · Airflow Automation · Tableau Dashboard_
+_End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python Behavioral Analysis · Funnel Analysis · Airflow Automation · Tableau Dashboard
 
 본 프로젝트는 실제 커머스 환경을 기반으로 한 **End-to-End 분석 파이프라인**을 구축하는 것을 목표로 합니다.  
 Synthetic 데이터 생성 → ERD 설계 → BigQuery Data Mart → Airflow 자동화 → SQL 분석 → Python Behavioral Analysis → Tableau Dashboard까지  
@@ -10,7 +10,7 @@ Synthetic 데이터 생성 → ERD 설계 → BigQuery Data Mart → Airflow 자
 # 1. 📌 프로젝트 목표 (Project Objective)
 
 ## "초기 Activation 이 장기 가치를 어떻게 결정하는가 ?"
-본 프로젝트는 실제 E-commerce 환경을 기반으로
+본 프로젝트는 실제 E-commerce 환경을 기반으로,
 **유저의 초기 행동(Initial Activation)**이 **장기적 가치(LTV)**, **잔존율(Retention)**, 구매 패턴에 어떤 영향을 미치는지를 규명하는 것을 핵심 목표로 했습니다.
 
 이를 검증하기 위해 다음과 같은 **End-to-End 분석 파이프라인**을 구축하였습니다
@@ -21,49 +21,60 @@ Synthetic 데이터 생성 → ERD 설계 → BigQuery Data Mart → Airflow 자
 - SQL 분석 + Python Behavioral Analysis
 - Tableau Dashboard 시각화
 
-### **1) 고객 행동 분석 (Customer Behavior Analysis)**  
-- LTV, 재구매율, Time-to-First-Purchase  
-- Subscription(Free/Plus/Premium)별 행동 · 가치 분석  
-- 신규 vs 기존 고객의 초기 구매 패턴 비교
-
-### **2) 카테고리 매출 & 할인 효과 분석 (Category Performance)**  
-- 카테고리별 매출 기여도, AOV, 구매 빈도  
-- Discount Day(요일별 할인) 효과 분석  
-- 시즌성(Seasonality) 반영 패턴 분석
-
-### **3) Funnel 분석 (User Journey · Log-based)**  
-- view → add_to_cart → checkout → payment → purchase  
-- 단계별 이탈(drop-off) 탐지 및 원인 분석  
-- 기기/지역/구독 상태/채널별 전환율 비교
-
-🎯 **최종 목표:**  
-Retention 개선, Funnel 최적화, 매출 성장 전략 도출
+### **프로젝트의 중심 질문**  
+- 유저의 첫 7~30일간의 행동 패턴이 장기 Revenue를 예측하고 설명할 수 있는가?  
+- Activation이 높은 유저는 왜 더 높은 가치를 만들어내는가? 
 
 ---
 
-# 2. 🔍 Analytical Questions (핵심 분석 질문)
+# 2. 🔍 Core Analytical Questions (핵심 분석 질문)
 
 본 프로젝트는 아래 질문들에 답하기 위해 설계되었습니다.
 
-## **Customer Behavior & LTV**
-- 어떤 행동 변수들이 장기 LTV를 결정하는가?  
-- Subscription 가입 고객과 Free 고객의 재구매율 차이는 왜 발생하는가?  
-- Time-to-First-Purchase는 장기 잔존율에 어떤 영향을 미치는가?
+## **2.1 초기 Activation 정의 & Behavior 분석**
+(초기 행동은 어떻게 측정되며, 무엇이 Activation을 결정하는가?)
+- 유저의 첫 7~30일 동안 어떤 이벤트(views, add_to_cart, checkout)가 Activation을 설명하는가?  
+- Time-to-first-add_to_cart, Time-to-first-purchase는 LTV 차이를 만드는가? 
+- Session 패턴(빈도, 길이, 행동 다양성)은 Activation과 어떤 상관이 있는가?
+- 초기 Discount 노출 여부가 Activation을 높이는가?
 
-## **Funnel & Drop-off Analysis**
-- Funnel 단계별 가장 큰 이탈은 어디에서 발생하는가?  
-- add_to_cart 없이 바로 checkout/purchase 하는 고객의 특징은?  
-- 유입 채널/디바이스/Subscription에 따라 전환율이 어떻게 달라지는가?
+## **2.2 Funnel Drop-off 요인 → Activation과의 연결**
+(이탈 원인은 어떻게 Activation 레벨을 결정하는가?)
+- Funnel 단계별 이탈 지점은 Activation 수준과 어떤 상관관계를 가지는가?  
+- add_to_cart 없이 바로 checkout/purchase하는 유저는 어떤 행동적 특성을 갖는가?  
+- 디바이스/지역/유입경로/구독 상태별로 Activation 패턴이 어떻게 달라지는가?
 
-## **Category & Discount Effect**
-- 카테고리별 구매 패턴(빈도, AOV, 재구매율)은 어떻게 다른가?  
-- Discount Day는 신규 고객 전환율을 얼마나 높이는가?  
-- high-tier 제품을 구매하는 고객군의 행동적 특징은?
+## **2.3 Retention & Cohort Analysis**
+(Activation이 장기 잔존율을 얼마나 설명하는가?)
+- Activation 수준별 D1/D7/D30 Retention 차이는?  
+- 초기 Funnel 성공/실패가 Cohort별 이탈률을 변화시키는가?
+- 신규 유저의 초기 행동 패턴이 재방문 여부를 예측할 수 있는가?
 
-## **Retention & Cohort**
-- D1/D7/D30 Retention을 결정하는 초기 행동 지표는 무엇인가?  
-- 초기 Activation이 장기 잔존율을 어떻게 설명하는가?  
+## **2.4 LTV & Revenue Impact**
+(Activation이 Revenue 차이를 어떻게 만드는가?)
+- Activation 수준이 높은 유저는 LTV가 얼마나 더 높은가?
+- Time-to-first-purchase가 Revenue에 미치는 영향은?
+- Activation을 기준으로 Revenue Segmentation(High/Mid/Low LTV)이 가능한가?
 
+## **2.5 Category & Purchase Patterns**
+(Activation이 어떤 구매 패턴을 만들어내는가?)
+- Activation이 높은 유저는 어떤 카테고리를 구매하는가?
+- High-tier 제품 구매 비중 차이가 LTV 격차를 설명하는가?
+- 초기 할인 이벤트가 구매 행동 변화에 영향을 주는가?
+
+## **2.6 Subscription 고객의 Activation 모델**
+(Activation → Subscription → 더 높은 가치 구조 분석)
+- Subscription 고객은 Activation 초기 단계에서 어떤 행동 차이를 보이는가?
+- Activation을 통제한 상황에서도 Subscription 자체가 LTV 증가를 만들까?
+- 구독형 고객의 Funnel·카테고리·재구매 패턴은 어떻게 다른가?
+
+## **2.7 최종적으로 도출할 전략적 인사이트**
+모든 분석은 다음 4가지 비즈니스 질문을 해결하기 위한 근거로 사용된다:
+**1. Activation을 높이는 핵심 행동 지표는 무엇인가?**
+**2. Activation이 높은 유저가 왜 더 높은 LTV/Retention을 가진다는 결론이 나오는가?**
+**3. 초기 행동 기반으로 어떤 Retention/LTV 개선 전략을 만들 수 있는가?**
+**4. 카테고리/할인/구독 전략을 Activation 모델과 어떻게 연결할 수 있는가?**
+ 
 ---
 
 # 3. 🗂 데이터 모델 (ERD)
