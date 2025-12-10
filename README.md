@@ -9,8 +9,11 @@ Synthetic 데이터 생성 → ERD 설계 → BigQuery Data Mart → Airflow 자
 
 # 1. 📌 프로젝트 목표 (Project Objective)
 
-현실적인 커머스 환경을 가정하여 아래 분석 목표를 수행합니다:
+## "초기 Activation 이 장기 가치를 어떻게 결정하는가 ? "
+본 프로젝트는 실제 E-commerce 환경을 기반으로,
+**유저의 초기 행동(Initial Activation)**이 **장기적 가치(LTV)**, **잔존율(Retention)**, 구매 패턴에 어떤 영향을 미치는지를 규명하는 것을 핵심 목표로 했습니다.
 
+이를 검증하기 위해 다음과 같은 **End-to-End 분석 파이프라인**을 구축하였습니다
 ### **1) 고객 행동 분석 (Customer Behavior Analysis)**  
 - LTV, 재구매율, Time-to-First-Purchase  
 - Subscription(Free/Plus/Premium)별 행동 · 가치 분석  
