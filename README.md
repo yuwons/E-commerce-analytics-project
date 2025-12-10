@@ -1,10 +1,6 @@
 # 📦 E-commerce Analytics Project  
 _End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python Behavioral Analysis · Funnel Analysis · Airflow Automation · Tableau Dashboard
 
-본 프로젝트는 실제 커머스 환경을 기반으로 한 **End-to-End 분석 파이프라인**을 구축하는 것을 목표로 합니다.  
-Synthetic 데이터 생성 → ERD 설계 → BigQuery Data Mart → Airflow 자동화 → SQL 분석 → Python Behavioral Analysis → Tableau Dashboard까지  
-기업 데이터 분석 환경을 그대로 재현한 실무형 프로젝트입니다.
-
 ---
 
 # 1. 📌 프로젝트 목표 (Project Objective)
@@ -22,8 +18,8 @@ Synthetic 데이터 생성 → ERD 설계 → BigQuery Data Mart → Airflow 자
 - Tableau Dashboard 시각화
 
 ### **프로젝트의 중심 질문**  
-- 유저의 첫 7~30일간의 행동 패턴이 장기 Revenue를 예측하고 설명할 수 있는가?  
-- Activation이 높은 유저는 왜 더 높은 가치를 만들어내는가? 
+**- 유저의 첫 7~30일간의 행동 패턴이 장기 Revenue를 예측하고 설명할 수 있는가?**  
+**- Activation이 높은 유저는 왜 더 높은 가치를 만들어내는가?** 
 
 ---
 
