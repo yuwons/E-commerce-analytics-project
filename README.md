@@ -1,77 +1,69 @@
-# 📦 E-commerce Analytics Project  
-_End-to-End Data Modeling · Synthetic Dataset · SQL Data Mart · Python Behavioral Analysis · Funnel Analysis · Airflow Automation · Tableau Dashboard
-
----
-
 # 1. 📌 프로젝트 목표 (Project Objective)
 
-## "초기 Activation 이 장기 가치를 어떻게 결정하는가 ?"
-본 프로젝트는 실제 E-commerce 환경을 기반으로,
-**유저의 초기 행동(Initial Activation)**이 **장기적 가치(LTV)**, **잔존율(Retention)**, 구매 패턴에 어떤 영향을 미치는지를 규명하는 것을 핵심 목표로 했습니다.
+## "유저 행동 패턴은 왜 단기 전환율과 장기 LTV를 동시에 최적화하지 못하는가?"
 
-이를 검증하기 위해 다음과 같은 **End-to-End 분석 파이프라인**을 구축하였습니다
-- ERD 및 Schema 설계
-- Synthetic Dataset 생성
-- BigQuery 기반 Data Mart 구축
-- Airflow 자동화 Workflow
-- SQL 분석 + Python Behavioral Analysis
-- Tableau Dashboard 시각화
+본 프로젝트는 실제 E-commerce 환경을 기반으로,  
+**유저의 행동 패턴 차이가 단기 전환율(Short-term Conversion)과  
+장기 고객 가치(LTV) 사이의 trade-off를 어떻게 만들어내는지**를 설명하는 것을  
+핵심 목표로 한다.
 
-### **프로젝트의 중심 질문**  
-**- 유저의 첫 7~30일간의 행동 패턴이 장기 Revenue를 예측하고 설명할 수 있는가?**  
-**- Activation이 높은 유저는 왜 더 높은 가치를 만들어내는가?** 
+많은 서비스에서는 전환율을 높이는 전략이 곧 매출 성장으로 이어질 것이라 기대하지만,  
+실제 운영 환경에서는 **빠른 전환을 만드는 행동과  
+장기적으로 높은 가치를 만드는 행동이 반드시 일치하지 않는 경우**가 빈번하게 발생한다.
+
+본 프로젝트는 이러한 **구조적 긴장(trade-off)**이  
+어떤 유저 행동 패턴에서 발생하며,  
+그 결과가 **구매 구조, 잔존율(Retention), LTV 분포,  
+그리고 구독 전환(Subscription)**으로 어떻게 나타나는지를  
+데이터 기반으로 설명하는 것을 목표로 한다.
 
 ---
 
-# 2. 🔍 Core Analytical Questions (핵심 분석 질문)
+### 🔍 프로젝트의 중심 관점
 
-본 프로젝트는 아래 질문들에 답하기 위해 설계되었습니다.
+- 이 프로젝트는 “전환율을 최대화하는 방법”을 제시하지 않는다.
+- 대신,
+  - **단기 전환율이 높은 행동 패턴**
+  - **장기 LTV를 만들어내는 행동 패턴**
+  이 왜 서로 다른 결과를 만들어내는지를 구조적으로 분석한다.
 
-## **2.1 초기 Activation 정의 & Behavior 분석**
-(초기 행동은 어떻게 측정되며, 무엇이 Activation을 결정하는가?)
-- 유저의 첫 7~30일 동안 어떤 이벤트(views, add_to_cart, checkout)가 Activation을 설명하는가?  
-- Time-to-first-add_to_cart, Time-to-first-purchase는 LTV 차이를 만드는가? 
-- Session 패턴(빈도, 길이, 행동 다양성)은 Activation과 어떤 상관이 있는가?
-- 초기 Discount 노출 여부가 Activation을 높이는가?
+즉, 본 분석의 목적은 **단일 KPI 최적화가 아닌**,  
+**비즈니스 의사결정 과정에서 반드시 고려해야 할 trade-off를  
+데이터로 명확히 드러내는 것**이다.
 
-## **2.2 Funnel Drop-off 요인 → Activation과의 연결**
-(이탈 원인은 어떻게 Activation 레벨을 결정하는가?)
-- Funnel 단계별 이탈 지점은 Activation 수준과 어떤 상관관계를 가지는가?  
-- add_to_cart 없이 바로 checkout/purchase하는 유저는 어떤 행동적 특성을 갖는가?  
-- 디바이스/지역/유입경로/구독 상태별로 Activation 패턴이 어떻게 달라지는가?
-
-## **2.3 Retention & Cohort Analysis**
-(Activation이 장기 잔존율을 얼마나 설명하는가?)
-- Activation 수준별 D1/D7/D30 Retention 차이는?  
-- 초기 Funnel 성공/실패가 Cohort별 이탈률을 변화시키는가?
-- 신규 유저의 초기 행동 패턴이 재방문 여부를 예측할 수 있는가?
-
-## **2.4 LTV & Revenue Impact**
-(Activation이 Revenue 차이를 어떻게 만드는가?)
-- Activation 수준이 높은 유저는 LTV가 얼마나 더 높은가?
-- Time-to-first-purchase가 Revenue에 미치는 영향은?
-- Activation을 기준으로 Revenue Segmentation(High/Mid/Low LTV)이 가능한가?
-
-## **2.5 Category & Purchase Patterns**
-(Activation이 어떤 구매 패턴을 만들어내는가?)
-- Activation이 높은 유저는 어떤 카테고리를 구매하는가?
-- High-tier 제품 구매 비중 차이가 LTV 격차를 설명하는가?
-- 초기 할인 이벤트가 구매 행동 변화에 영향을 주는가?
-
-## **2.6 Subscription 고객의 Activation 모델**
-(Activation → Subscription → 더 높은 가치 구조 분석)
-- Subscription 고객은 Activation 초기 단계에서 어떤 행동 차이를 보이는가?
-- Activation을 통제한 후에도 Subscription이 LTV에 추가적 상승 효과를 주는가?
-- 구독형 고객의 Funnel·카테고리·재구매 패턴은 어떻게 다른가?
-
-## **2.7 최종적으로 도출할 전략적 인사이트**
-모든 분석은 다음 4가지 비즈니스 질문을 해결하기 위한 근거로 사용된다:  
-- **Activation을 높이는 핵심 행동 지표는 무엇인가?**  
-- **Activation이 높은 유저가 왜 더 높은 LTV/Retention을 가진다는 결론이 나오는가?**  
-- **초기 행동 기반으로 어떤 Retention/LTV 개선 전략을 만들 수 있는가?**  
-- **카테고리/할인/구독 전략을 Activation 모델과 어떻게 연결할 수 있는가?**  
- 
 ---
+
+### 🧠 프로젝트의 핵심 질문
+
+- **어떤 유저 행동 패턴은  
+  왜 빠른 구매 전환을 만들지만  
+  장기적으로는 낮은 LTV로 이어지는가?**
+
+- **반대로, 초기 전환율은 낮지만  
+  장기적으로 더 높은 가치를 만들어내는 행동은  
+  어떤 특성을 가지는가?**
+
+본 프로젝트는 위 질문에 답하기 위해  
+**End-to-End 분석 파이프라인**을 설계하고 구현한다.
+
+---
+
+### 🛠 분석 접근 방식 (High-level)
+
+이를 위해 다음과 같은 분석 단계를 거친다:
+
+- ERD 및 데이터 구조 설계  
+- 현실적인 E-commerce 세계관 기반 Synthetic Dataset 생성  
+- BigQuery 기반 Data Mart 구축  
+- SQL을 활용한 핵심 지표 산출 및 구조 분석  
+- Python을 활용한 가설 검증 및 통계적 실험  
+- Tableau를 통한 Trade-off 중심 스토리텔링  
+- Airflow를 통한 최소한의 분석 파이프라인 자동화  
+
+각 기술 스택은 **필요한 목적에 한해서만 사용**되며,  
+기술 자체를 과시하기보다는  
+**문제 정의 → 구조 설명 → 의사결정 관점 제시**에 집중한다.
+
 
 # 3. 🗂 데이터 모델 (ERD)
 
