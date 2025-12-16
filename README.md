@@ -37,7 +37,7 @@
 3) **Retention / Cohort:** 90일/180일 잔존 비교 (시간 효과 통제)
 4) **LTV Distribution:** 평균이 아닌 **분포/상위 집중도(tail)** 중심 비교
 5) **Subscription:** 결과 증거로 확인 (원인 축으로 쓰지 않음)
-6) **Behavior Consistency:** 방문/구매 리듬의 일관성이 trade-off를 설명하는가?
+6) **Behavior Consistency (핵심 축):** 방문/구매 리듬의 ‘일관성’이 short-term conversion과 long-term value의 trade-off를 어떻게 설명하는가?
 
 ## 3. 🗂 데이터 모델 (ERD)
 
