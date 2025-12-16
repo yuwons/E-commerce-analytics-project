@@ -172,86 +172,30 @@
 
 # 4. 🛠 Synthetic Dataset Generation (Python)
 
-Python을 활용해 현실성 높은 Synthetic Dataset을 생성했습니다.
+본 프로젝트는 E-commerce 환경을 재현하기 위해, Python 기반으로 **재현 가능한(Same seed)** synthetic dataset을 생성합니다.
 
-### ✔ Users
-고객 세그먼트 분석 / Retention / LTV 분석 / Subscription 효과 분석
-- 최근 36개월 가입 분포 (최근 18개월 70%)  
-- device (iOS 40%, Android 45%, Web 15%)
-- region (Seoul 38%, Gyeonggi 32%, Other 30%)
-- marketing_source (Oranic 60%, Paid 30%, Referral 10%)
-- subscription_type (Free 65%, Plus 25%, Platinum 10%)
-- subscription_join_date
-  - Plus → signup + 30~180일
-  - Premium → signup + 10~90일
-- is_new_user_flag: 가입 후 45일 이내 True
-- anomaly 1% (의도적 데이터 품질 이슈)
+### 4.1 Generation Principles (설계 원칙)
+- **Raw 로그 보존:** `sessions/events`는 원시 로그 형태로 유지하고,  
+  revisit/retention/funnel conversion/consistency 같은 파생 지표는 **BigQuery Data Mart(SQL)**에서 계산합니다.
+- **Funnel 5-step 고정:** `view → click → add_to_cart → checkout → purchase`
+- **정합성 규칙:** `order_id`는 purchase 이벤트에서만 생성되며,  
+  **purchase 이벤트 1건 = orders 1건**으로 매칭됩니다.
+- **Promo 반영:** `promo_calendar` 기간에 `sessions/events/orders`에 프로모션 속성이 일관되게 반영됩니다.
+- **Subscription 반영:** 유저별 멤버십 결과(`subscriptions`)를 생성해 장기 가치 비교 분석에 활용합니다.
 
-### ✔ Products
-카테고리 분석 / 가격대 기반 AOV·LTV 분석 / Discount Day 효과
-- 총 product_id: 300개
-- Category: 7개
-  - Furniture, Appliances, Cleaning, Kitchenware, Fabric, Organizers, Deco)
-- price: 카테고리별 Normal 또는 Log-normal 분포  
-- price_tier: Low 30%, Mid 50%, High 20%  
-- discount_day_of_week (요일 할인 정책)
-  - 월~목: low/mid 중심
-  - 금~일: high price 중심 (토요일이 최고가 카테고리)
+### 4.2 Dataset Scale (예시)
+(생성 시점/파라미터에 따라 달라질 수 있음)
 
-### ✔ Orders
-구매 행동 분석 / LTV / Cohort / Seasonality / Discount 효과 분석
-- 구매 횟수 분포
-  - 0회 20%
-  - 1~2회 35%
-  - 3~5회 25%
-  - 6~10회 12%
-  - 10회 이상 8%
-- signup_date가 오래된 사용자일수록 높은 구매 구간 선택
-- order_date: signup 이후 날짜에서 선택
-- seasonality 적용: Feb 0.8, Mar 0.9, Oct 1.1, Nov 1.2, Dec 1.5
-- 주말 구매량: 평일 대비 약 1.3배
-- is_discount_day: 구매 상품 중 discount day 해당 여부
-- anomaly_flag: 1%
+- users ≈ 30,000 / products = 300 / promo = 5  
+- sessions ≈ 0.75M / events ≈ 1.8M  
+- orders ≈ 15k / order_items ≈ 25k / subscriptions = 30,000
 
-### ✔ Order_items
-카테고리 매출 분석 / AOV 분석 / 제품 성과 분석
-- item_count per order
-  - 1개 65%
-  - 2개 25%
-  - 3개 8%
-  - 4개 2%
-- product 선택 가중치
-  - Cleaning / Kitchenware / Organizers 중심 (~18%)
-  - Furniture 등 고가 카테고리 약 8%
-- Subscription type별 가중치 차등 반영
-  - Free → 저가 제품 선호
-  - Premium → 고가 비중 증가
-- qty: 1개 75%, 2개 20%, 3개 5%
-- category, price, price_tier denormalized 저장
-- line_amount = price × qty
-- is_discounted: order_date와 discount day 일치 시 True
+### 4.3 Reproducibility (재현성)
+- random seed를 고정해 동일 환경에서 동일한 데이터 생성이 가능하도록 설계했습니다.
+- 생성 및 정합성 검증(sanity check) 이후 BigQuery 적재를 진행합니다.
 
-### ✔ User Events (Funnel Log)
-Funnel 기반 행동 로그 / Session 분석 / Drop-off 분석
-- Funnel 단계: view → add_to_cart → checkout → payment_attempt → purchase 
-- Medium volume: 유저당 15~25 events 
-- session_id: UUID  
-- session당 이벤트 2~6개
-- timestamp 간격: 5초~20분
-- session 간 간격: 1시간~3일
-- add_to_cart 없이 checkout_start 가능 (정상 흐름으로 처리)
-- 단계별 전환율
-  - view → add_to_cart: 10~18%
-  - add_to_cart → checkout: 40~60%
-  - checkout → payment_attempt: 70~85%
-  - payment_attempt → purchase: 85~95%
-- referrer: home / category / search / product / cart / checkout
-- anomaly 2%
-  - checkout 없이 payment
-  - payment 없이 purchase
-  - timestamp 역전
-  - session_id null
-  - user_id mismatch
+> Detailed generation rules (probabilities / decay / caps / schedules) are documented separately.  
+> - `docs/generation_rules.md` (예정)
 
 📁 경로: `src/data_generation/`
 ```text
