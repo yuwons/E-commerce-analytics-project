@@ -65,114 +65,136 @@
 **문제 정의 → 구조 설명 → 의사결정 관점 제시**에 집중한다.
 
 
-# 3. 🗂 데이터 모델 (ERD)
+## 3. 🗂 데이터 모델 (ERD)
 
-본 프로젝트의 데이터 구조는 실제 E-commerce 환경을 최대한 현실적으로 재현하기 위해
-5개의 핵심 테이블(users, products, orders, order_items, user_events) 로 구성되었습니다.
+본 프로젝트의 Raw 데이터는 총 **8개 테이블**로 구성됩니다.
 
-이 구조는 고객 분석(LTV, Retention), 구매 분석(Category KPI), Funnel 분석(Log 기반)을 모두 수행할 수 있도록 설계되었습니다.
+### ✅ Tables (8)
 
-## **3.1 Users Table**
+- **Dimension**
+  - `users` : 유저 프로필/세그먼트
+  - `products` : 상품 마스터
+  - `promo_calendar` : 회사 공통 프로모션 캘린더
 
-| column                 | description                                   |
-| ---------------------- | --------------------------------------------- |
-| `user_id` (PK)         | 사용자 ID                                      |
-| `signup_date`          | 가입일                                         |
-| `device`               | iOS / Android / Web                            |
-| `region`               | Seoul / Gyeonggi / Others                      |
-| `marketing_source`     | Organic / Paid / Referral                      |
-| `subscription_type`    | Free / Plus / Premium                          |
-| `subscription_join_date` | 유료가입 시점 (가입 후 10~180일)             |
-| `is_new_user_flag`     | 신규 유저 여부 (가입 후 45일 기준)             |
-| `anomaly_flag`         | 1% intentional anomaly                         |
+- **Raw Logs (행동 로그)**
+  - `sessions` : 방문/세션 단위 로그
+  - `events` : 세션 내 이벤트 로그 (funnel 5-step)
 
-### **설계 포인트**
-- 최근 36개월 가입 패턴 반영  
-- 마케팅/디바이스 세그먼트 분석 가능  
-- Subscription 기반 LTV 분석 지원  
----
+- **Transaction**
+  - `orders` : 주문 헤더 (purchase 이벤트에서 파생)
+  - `order_items` : 주문 상세
 
-## **3.2 Products Table**
+- **Business Outcome**
+  - `subscriptions` : 구독/멤버십 결과
 
-| column               | description                                |
-| -------------------- | ------------------------------------------ |
-| `product_id` (PK)    | 상품 ID                                      |
-| `category`           | 7개 카테고리                                 |
-| `price`              | 카테고리별 가격 분포 기반 생성                |
-| `price_tier`         | Low / Mid / High (하위 30 / 중간 50 / 상위 20) |
-| `brand`              | 브랜드명 (랜덤 생성)                          |
-| `discount_day_of_week` | 할인 요일 (0~6, 월~일)                       |
+### 🔒 Integrity Rules (Frozen Specs)
 
-### **설계 포인트**
-- Price Tier 기반 매출/전환율 분석 가능  
-- Discount Day 효과 분석 가능  
-- 브랜드/카테고리별 성과 분석 지원  
----
-
-## **3.3 Orders Table**
-
-| column             | description                                 |
-| ------------------ | ------------------------------------------- |
-| `order_id` (PK)    | 주문 ID                                      |
-| `user_id` (FK)     | 유저 ID                                      |
-| `order_date`       | 주문 날짜                                     |
-| `total_amount`     | 주문 총액 (order_items 집계 기반)             |
-| `payment_status`   | success / failed                              |
-| `is_discount_day`  | 주문이 할인 요일에 해당하는지 여부             |
-| `anomaly_flag`     | 1% 의도적 오류                                |
-
-### **설계 포인트**
-- Seasonality + 사용자 행동 기반 구매 빈도 생성  
-- 일부 payment anomaly 포함 → 전처리 실습용  
----
-
-## **3.4 Order_Items Table**
-
-| column            | description                              |
-| ----------------- | ---------------------------------------- |
-| `order_item_id` (PK) | 주문 상세 ID                           |
-| `order_id` (FK)   | 주문 ID                                   |
-| `product_id` (FK) | 상품 ID                                   |
-| `category`        | snapshot (분석 편의를 위해 중복 저장)        |
-| `price`           | snapshot                                  |
-| `price_tier`      | snapshot                                  |
-| `qty`             | 수량 (1~3)                                 |
-| `line_amount`     | price × qty                               |
-| `is_discounted`   | 할인 이벤트 적용 여부                       |
-
-### **설계 포인트**
-- Category / Price snapshot으로 Join 비용 절감  
-- Premium 유저는 고가 티어 구매 비중 ↑  
-- 주문당 item 수: 1~4개 분포 기반 생성  
----
-
-## **3.5 User_Events Table**
-
-| column              | description                                                          |
-| ------------------- | -------------------------------------------------------------------- |
-| `event_id` (PK)     | 이벤트 ID                                                             |
-| `user_id` (FK)      | 유저 ID                                                                |
-| `session_id`        | 세션 구분 (UUID 기반)                                                  |
-| `event_type`        | view_product / add_to_cart / checkout_start / payment_attempt / purchase |
-| `event_timestamp`   | 이벤트 발생 시점                                                       |
-| `product_id`        | 이벤트 대상 상품 ID (view/add 단계에서만 포함)                         |
-| `device`            | snapshot of user's device                                            |
-| `referrer`          | direct / search / ads / push                                         |
-| `is_discount_event` | 할인 이벤트 여부                                                       |
-| `anomaly_flag`      | 2% intentional anomaly 포함                                            |
-
-### **설계 포인트**
-- Medium Volume (15~25 events/user)  
-- session 기반 realistic timestamp 흐름  
-- view → purchase 전체 Funnel 분석 가능  
-- add_to_cart 없이 checkout 같은 실제 branch 포함  
-- anomaly 2%로 전처리 및 QA 실습 가능  
----
-### ERD 구조
-
-![ERD](docs/erd.png)
+- Funnel 이벤트는 **5단계 고정**: `view → click → add_to_cart → checkout → purchase`
+- `order_id`는 **purchase 이벤트에서만 존재**
+- **purchase 이벤트 1건 = orders 1건** (정합성 유지)
+- Raw 로그 보존 원칙: `sessions/events`는 Raw로 유지하고, revisit/retention/funnel conversion 등 **파생 지표는 BigQuery Data Mart(SQL)에서 계산**
 
 ---
+
+<details>
+  <summary><b>📌 (클릭) Detailed Schema (Columns)</b></summary>
+
+### users
+| column | description |
+|---|---|
+| user_id | PK |
+| signup_date | 가입일 |
+| user_type | 행동 타입(A/B/C/D) |
+| device | iOS/Android/Web |
+| region | 지역 |
+| marketing_source | Organic/Paid/Referral |
+| anomaly_flag | QA용 플래그 |
+
+### products
+| column | description |
+|---|---|
+| product_id | PK |
+| product_name | 상품명 |
+| category | 카테고리 |
+| brand | 브랜드 |
+| price | 가격 |
+| rating_avg | 평균 평점 |
+| is_new_arrival | 신상품 여부 |
+
+### promo_calendar
+| column | description |
+|---|---|
+| promo_id | PK |
+| promo_name | 프로모션명 |
+| start_date | 시작일 |
+| end_date | 종료일 |
+| uplift_level | uplift 강도 레벨 |
+| discount_rate | 할인율 |
+
+### sessions
+| column | description |
+|---|---|
+| session_id | PK |
+| user_id | FK → users.user_id |
+| session_start_ts | 세션 시작 시각 |
+| user_type | 행동 타입 스냅샷 |
+| device | 디바이스 스냅샷 |
+| is_promo | 프로모션 여부 |
+| discount_rate | 적용 할인율 |
+| promo_id | FK → promo_calendar.promo_id (해당 시) |
+
+### events
+| column | description |
+|---|---|
+| event_id | PK |
+| user_id | FK → users.user_id |
+| event_ts | 이벤트 시각 |
+| event_type | view/click/add_to_cart/checkout/purchase |
+| session_id | FK → sessions.session_id |
+| device | 디바이스 스냅샷 |
+| order_id | purchase 이벤트에서만 존재 |
+| product_id | FK → products.product_id |
+| is_promo | 프로모션 여부 |
+| discount_rate | 적용 할인율 |
+| promo_id | FK → promo_calendar.promo_id (해당 시) |
+
+### orders
+| column | description |
+|---|---|
+| order_id | PK (purchase 이벤트와 1:1) |
+| user_id | FK → users.user_id |
+| order_ts | 주문 시각 |
+| is_promo | 프로모션 여부 |
+| discount_rate | 적용 할인율 |
+| promo_id | FK → promo_calendar.promo_id (해당 시) |
+
+### order_items
+| column | description |
+|---|---|
+| order_item_id | PK |
+| order_id | FK → orders.order_id |
+| user_id | FK → users.user_id |
+| product_id | FK → products.product_id |
+| quantity | 수량 |
+| unit_price | 정가 |
+| is_promo | 프로모션 여부 |
+| discount_rate | 적용 할인율 |
+| final_unit_price | 할인 적용 단가 |
+| line_amount | final_unit_price * quantity |
+
+### subscriptions
+| column | description |
+|---|---|
+| subscription_id | PK (Free 포함 항상 존재: SUB_{user_id}) |
+| user_id | FK → users.user_id |
+| plan | Free/Plus/Premium |
+| start_date | 시작일 |
+| end_date | 종료일(없으면 null 가능) |
+| status | Active/Cancelled/Expired 등 |
+| monthly_fee | 월 요금 |
+
+</details>
+
 
 # 4. 🛠 Synthetic Dataset Generation (Python)
 
