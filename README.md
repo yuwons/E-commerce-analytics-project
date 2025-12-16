@@ -187,8 +187,15 @@
 (생성 시점/파라미터에 따라 달라질 수 있음)
 
 - users ≈ 30,000 / products = 300 / promo = 5  
-- sessions ≈ 0.75M / events ≈ 1.8M  
+- sessions ≈ 0.748,757 / events ≈ 1.8M  
 - orders ≈ 15k / order_items ≈ 25k / subscriptions = 30,000
+
+Funnel event counts:
+- view = 1,465,245
+- click = 290,912
+- add_to_cart = 74,228
+- checkout = 25,223
+- purchase = 15,721
 
 ### 4.3 Reproducibility (재현성)
 - random seed를 고정해 동일 환경에서 동일한 데이터 생성이 가능하도록 설계했습니다.
