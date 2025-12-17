@@ -215,34 +215,72 @@ src/data_generation/
 ```
 ---
 
-# 5. 🧱 BigQuery Data Mart
+# 🧱 BigQuery (Raw Loading → Optimised Tables → Data Marts)
 
-분석 효율을 위해 BigQuery 기반 Data Mart를 구성했습니다.
+이 프로젝트는 **Raw 로그(sessions/events/orders)를 원형 그대로 보존**하고,  
+리텐션/퍼널/전환/LTV/Consistency 등 **파생 지표는 BigQuery Data Mart(SQL)에서 계산**한다.
 
-### Data Mart 테이블
-
-#### **1) dm_user_purchase_summary**
-- LTV  
-- 구매 횟수 / 첫 구매일  
-- Subscription별 KPI  
-
-#### **2) dm_category_performance**
-- 카테고리 매출  
-- AOV  
-- 성장률 & 시즌성  
-
-#### **3) dm_funnel_events**
-- 단계별 전환율  
-- Drop-off 위치  
-- session 단위 정규화 이벤트
-
-### BigQuery 쿼리 최적화
-- **Partition**: `orders.order_date`  
-- **Clustering**: `user_events(user_id, event_type)`  
-
-📁 SQL 코드: `src/sql/`
+### Frozen Specs (절대 변경 금지)
+- Raw 로그 보존: `sessions/events`는 Raw 유지, 파생지표는 DM에서 계산
+- Funnel 이벤트 5단계 고정: `view → click → add_to_cart → checkout → purchase`
+- `order_id`는 `purchase` 이벤트에서만 존재
+- `purchase 이벤트 1건 = orders 1건` (정합성 유지)
+- Raw 테이블 수 8개 고정: `users, products, promo_calendar, sessions, events, orders, order_items, subscriptions`
 
 ---
+
+### 1) BigQuery Setup (요약)
+- Project: `eternal-argon-479503-e8`
+- Raw dataset: `ecommerce`
+- DM dataset: `ecommerce_dm`
+- Location: `US` (Raw/DM 동일 location로 통일)
+
+Raw 테이블(8개)은 Python으로 생성한 CSV를 BigQuery에 적재했고, 이후 쿼리 최적화 및 Data Mart를 구축했다.
+
+---
+
+### 2) Optimisation (Partitioning / Clustering)
+분석 쿼리는 대부분 **가입일 기준 14/30/180일 윈도우**로 기간 필터를 사용하고,  
+집계는 주로 **user_id / session_id** 단위로 발생한다.  
+따라서 `events/sessions/orders` 중심으로 **Partitioning(날짜)** + **Clustering(유저/세션/이벤트타입)** 을 적용해 스캔 바이트와 비용을 줄였다.
+
+- 상세 설계 및 증거(스크린샷/비교 쿼리): 📁 `docs/optimisation/`
+
+---
+
+### 3) Data Mart Map (전체 구조)
+Raw → DM 설계의 목적은 아래 핵심 질문을 SQL로 빠르게 검증하기 위함이다.
+
+> **H1/H2/H3:** 초기 전환(14/30일)과 Consistency(방문 리듬)가 180일 LTV/Retention을 어떻게 설명하는가?
+
+Data Mart는 **Grain(단위)** 기준으로 역할을 분리했다.
+
+- **User-level (모델/스토리 핵심)**
+  - `DM_user_window` : 14/30/180일 유저 KPI + 초기 퍼널 reach 요약
+  - `DM_consistency_180d` : 방문 리듬/불규칙성(Consistency) 피처
+  - `DM_ltv_180d` : 180일 매출(LTV) outcome
+
+- **Session-level (퍼널의 원자 데이터)**
+  - `DM_funnel_session` : 세션 단위 퍼널 재구성(정합성/디버깅 가능)
+
+- **Cohort-level (리포팅/커브)**
+  - `DM_funnel_kpi_window` : 코호트×윈도우(14/30) 퍼널 KPI 요약
+  - `DM_retention_cohort` : 코호트×day_index(0..180) retention curve
+
+---
+
+### 4) Data Mart 설계 노트 & Sanity Checks
+각 Data Mart는 아래 항목을 포함해 문서화했다.
+- Grain / 주요 쿼리 패턴(WHERE/GROUP BY)
+- Partition/Clustering 근거(해당 시)
+- Frozen Specs 반영 포인트
+- Sanity checks (범위/정합성/유일성 검증)
+
+- DM 설계 노트(1-page): 📁 `docs/dm/`
+- Sanity check SQL: 📁 `docs/sanity_check/`
+
+---
+
 
 # 6. ⚙️ Airflow Workflow Automation
 
