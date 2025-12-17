@@ -1,5 +1,5 @@
 
-# BigQuery Optimisation 빅쿼리 최적화 작업
+# BigQuery 최적화 작업 (Optimisation) 
 
 Evidence & notes for:
 - Partitioning strategy
