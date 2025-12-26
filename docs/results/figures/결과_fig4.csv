@@ -1,0 +1,17 @@
+window_days,metric_type,bottleneck_step,segment_cells,avg_bottleneck_conv_rate,median_bottleneck_conv_rate
+14,reach,view_to_click,10,0.247,0.0
+14,reach,click_to_cart,5,0.0,0.0
+14,reach,cart_to_checkout,5,0.0,0.0
+14,reach,checkout_to_purchase,5,0.0,0.0
+14,strict,view_to_click,10,0.247,0.0
+14,strict,cart_to_checkout,5,0.0,0.0
+14,strict,click_to_cart,5,0.0,0.0
+14,strict,checkout_to_purchase,5,0.0,0.0
+30,reach,click_to_cart,13,0.202,0.16
+30,reach,view_to_click,7,0.245,0.221
+30,reach,cart_to_checkout,5,0.079,0.069
+30,reach,checkout_to_purchase,5,0.07,0.065
+30,strict,click_to_cart,13,0.202,0.16
+30,strict,view_to_click,7,0.245,0.221
+30,strict,checkout_to_purchase,5,0.07,0.065
+30,strict,cart_to_checkout,5,0.079,0.069
