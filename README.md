@@ -1,20 +1,43 @@
-## Project Goal
+# 1. 📌 프로젝트 목표 (Project Objective)
 
-이 프로젝트의 목표는 **synthetic e-commerce 데이터셋**(users / sessions / events / orders 기반)을 직접 생성하고,  
-**BigQuery Data Mart + SQL 분석**으로 아래 질문에 답하는 것입니다.
+## 한 줄 요약
+**유저 행동 패턴의 차이가 ‘단기 전환(빠른 첫 구매)’과 ‘장기 가치(LTV/Retention)’ 사이의 trade-off를 어떻게 만들어내는가?**
 
-### Main Question
-- **초기 Activation(가입 후 14일)** 과 **행동 Consistency(가입 후 180일 방문 리듬)** 가  
-  **장기 성과(180일 LTV/구매/매출)** 및 **Point Retention(w30/w60/w90/last-week)** 을 어떻게 설명하는가?
+---
 
-### Key Hypotheses
-- **H1)** 초기 14일 전환(Activation)이 높아도 **방문 리듬이 불규칙(Consistency 낮음)** 하면 180일 LTV/Retention이 낮아질 수 있다.
-- **H2)** 초기 전환이 느려도 **방문 리듬이 안정적(Consistency 높음)** 이면 180일 LTV/Retention이 높아질 수 있다.
-- **H3)** Consistency는 행동량(volume: 세션수/이벤트수)과 별개로 장기 성과를 설명하는 **독립적인 신호**가 될 수 있다.
+## 배경
+많은 E-commerce에서 “전환율을 올리면 매출도 같이 오른다”는 가정이 자주 쓰이지만,  
+실제 운영에서는 **빠른 전환을 만드는 행동**과 **장기적으로 높은 가치를 만드는 행동**이 항상 일치하지 않는다.  
+본 프로젝트는 이 **구조적 trade-off**가 어떤 행동 패턴에서 발생하며, 그 결과가 지표로 어떻게 나타나는지를 **데이터로 설명**하는 것을 목표로 한다.
 
-### Scope Note (Updated)
-- 본 분석의 메인 스토리는 **Activation × Consistency × LTV/Retention**에 집중합니다.
-- **Subscription 기반 분석은 이번 버전 스코프에서 제외**합니다. (테이블이 존재하더라도 결론/스토리에는 포함하지 않음)
+> 이 프로젝트는 “전환율을 최대화하는 방법”을 제시하지 않는다.  
+> 대신 trade-off를 해석의 기준 축으로 두고, 행동 → 전환 → 잔존 → LTV → 구독(결과 증거) 흐름으로 구조를 설명한다.
+
+---
+
+## 핵심 KPI 정의 (Window 고정)
+- **Short-term Conversion (메인):** 가입 후 **14일 내 첫 구매**
+- **보조 KPI:** 가입 후 **30일 내 첫 구매**
+- **LTV window:** 가입 후 **180일 누적 매출**
+- **Subscription:** trade-off의 “원인”이 아니라 **결과(outcome evidence)**로만 사용
+
+---
+
+## 이 프로젝트가 답하려는 핵심 질문
+- 어떤 행동 패턴은 **14일 내 첫 구매(단기 전환)**를 빠르게 만들지만, 왜 **장기 잔존/180일 LTV**는 낮아지는가?
+- 반대로, 초기 전환은 느리더라도 **더 오래 남고(잔존), 더 큰 180일 LTV를 만드는 패턴**은 무엇인가?
+- 이 trade-off는 “행동의 양”이 아니라, **행동의 구조(조합/리듬/일관성)** 차이에서 발생하는가?
+
+---
+
+## 분석 접근 (High-level)
+본 프로젝트는 아래 흐름으로 trade-off를 설명한다.
+1) **User Behavior:** 행동 구조 기반 세그먼트 정의 (단일 activation KPI에 의존하지 않음)
+2) **Short-term Conversion:** 퍼널/전환 속도/구조 비교
+3) **Retention / Cohort:** 90일/180일 잔존 비교 (시간 효과 통제)
+4) **LTV Distribution:** 평균이 아닌 **분포/상위 집중도(tail)** 중심 비교
+5) **Subscription:** 결과 증거로 확인 (원인 축으로 쓰지 않음)
+6) **Behavior Consistency (핵심 축):** 방문/구매 리듬의 ‘일관성’이 short-term conversion과 long-term value의 trade-off를 어떻게 설명하는가?
 
 ## 3. 🗂 데이터 모델 (ERD)
 
