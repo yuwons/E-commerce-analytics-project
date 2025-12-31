@@ -1,4 +1,4 @@
-# 1. 📌 프로젝트 목표 (Project Objective)
+# 1. 프로젝트 목표 (Project Objective)
 
 ## 한 줄 요약
 **유저 행동 패턴의 차이가 ‘단기 전환(빠른 첫 구매)’과 ‘장기 가치(LTV/Retention)’ 사이의 trade-off를 어떻게 만들어내는가?**
@@ -43,7 +43,7 @@
 
 본 프로젝트의 Raw 데이터는 총 **8개 테이블**로 구성됩니다.
 
-### ✅ Tables (8)
+### Tables (8)
 
 - **Dimension**
   - `users` : 유저 프로필/세그먼트
@@ -61,7 +61,7 @@
 - **Business Outcome**
   - `subscriptions` : 구독/멤버십 결과
 
-### 🔒 Integrity Rules (Frozen Specs)
+### Integrity Rules (Frozen Specs)
 
 - Funnel 이벤트는 **5단계 고정**: `view → click → add_to_cart → checkout → purchase`
 - `order_id`는 **purchase 이벤트에서만 존재**
@@ -71,7 +71,7 @@
 ---
 
 <details>
-  <summary><b>📌 (클릭) Detailed Schema (Columns)</b></summary>
+  <summary><b> (클릭) Detailed Schema (Columns)</b></summary>
 
 ### users
 | column | description |
@@ -170,7 +170,7 @@
 </details>
 
 
-# 4. 🛠 Synthetic Dataset Generation (Python)
+# 4. Synthetic Dataset Generation (Python)
 
 본 프로젝트는 E-commerce 환경을 재현하기 위해, Python 기반으로 **재현 가능한(Same seed)** synthetic dataset을 생성합니다.
 
@@ -215,7 +215,7 @@ src/data_generation/
 ```
 ---
 
-# 🧱 BigQuery (Raw Loading → Optimised Tables → Data Marts)
+# BigQuery (Raw Loading → Optimised Tables → Data Marts)
 
 이 프로젝트는 **Raw 로그(sessions/events/orders)를 원형 그대로 보존**하고,  
 리텐션/퍼널/전환/LTV/Consistency 등 **파생 지표는 BigQuery Data Mart(SQL)에서 계산**한다.
@@ -306,7 +306,7 @@ Data Mart는 **Grain(단위)** 기준으로 역할을 분리했다.
 
 ---
 
-# 7. 📊 SQL-Based Analysis
+# 7. SQL-Based Analysis
 
 ### 분석 항목
 - Cohort & Retention  
@@ -333,7 +333,7 @@ Data Mart는 **Grain(단위)** 기준으로 역할을 분리했다.
 
 ---
 
-# 9. 📈 Tableau Dashboard
+# 9. Tableau Dashboard
 
 ### Dashboard 구성 (총 4 pages)
 1. KPI Overview  
@@ -349,7 +349,7 @@ Data Mart는 **Grain(단위)** 기준으로 역할을 분리했다.
 
 ---
 
-# 10. 🔍 Final Insights
+# 10. Final Insights
 
 분석 결과 핵심 인사이트는 다음과 같습니다:
 
@@ -361,7 +361,7 @@ Data Mart는 **Grain(단위)** 기준으로 역할을 분리했다.
 
 ---
 
-# 🧰 Tech Stack
+# Tech Stack
 
 - **Python**: pandas, numpy, faker, matplotlib  
 - **SQL**: BigQuery  
