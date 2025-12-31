@@ -39,7 +39,7 @@
 5) **Subscription:** 결과 증거로 확인 (원인 축으로 쓰지 않음)
 6) **Behavior Consistency (핵심 축):** 방문/구매 리듬의 ‘일관성’이 short-term conversion과 long-term value의 trade-off를 어떻게 설명하는가?
 
-## 3. 🗂 데이터 모델 (ERD)
+## 3. 데이터 모델 (ERD)
 
 본 프로젝트의 Raw 데이터는 총 **8개 테이블**로 구성됩니다.
 
@@ -282,7 +282,7 @@ Data Mart는 **Grain(단위)** 기준으로 역할을 분리했다.
 ---
 
 
-# 6. ⚙️ Airflow Workflow Automation
+# 6. Airflow Workflow Automation
 
 본 프로젝트는 데이터 생성과 Data Mart 업데이트 작업을 자동화하기 위해 **Apache Airflow**를 활용했습니다.
 
