@@ -85,7 +85,7 @@ Python으로 생성한 데이터를 BigQuery Raw dataset에 로딩합니다.
 Raw 테이블은 “가공 전 원본 보존”을 우선으로 유지합니다.
 
 ### 4.3 Optimised Tables (Partitioning / Clustering)
-대용량 테이블의 비용/속도 최적화를 위해, 주요 테이블은 partitioning/clustering이 적용된 사본 테이블을 사용합니다.
+대용량 테이블의 비용/속도 최적화를 위해, 주요 테이블은 partitioning/clustering이 적용된 사본 테이블을 사용했습니다.
 
 - 예시: `events → events_p`, `sessions → sessions_p`, `orders → orders_p`
 
