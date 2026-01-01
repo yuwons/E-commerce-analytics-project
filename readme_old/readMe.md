@@ -132,6 +132,7 @@ src/data_generation/
 ├── generate_order_items.py
 └── generate_events.py
 
+---
 
 # 4. BigQuery (Raw Loading → Optimised Tables → Data Marts)
 
