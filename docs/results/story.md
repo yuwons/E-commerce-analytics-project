@@ -4,8 +4,8 @@
 > 초기 14일의 Activation(퍼널 도달)만으로는 유저의 180일 성과를 “완전히” 설명하기 어렵고,  
 > 같은 Activation 안에서도 **방문 리듬(Consistency)**에 따라 **장기 구매/매출/리텐션이 꽤 다르게 나타난다.**  
 >  
-> 다만 v1.0은 predictor와 outcome을 같은 0~180일 창에서 본 한계가 있어,  
-> 다음 단계(v1.1)에서는 **관측창(0~60d) / 성과창(60~180d) 분리(Time-split)**로 더 안전하게 검증한다.
+> 다만 v1.0은 predictor와 outcome을 같은 0-180일 창에서 본 한계가 있어,  
+> 다음 단계(v1.1)에서는 **관측창(0-60d) / 성과창(60-180d) 분리(Time-split)**로 더 안전하게 검증한다.
 
 ---
 
@@ -21,7 +21,7 @@
 
 ### 0.2 What we do next (v1.1)
 - v1.0 결과를 "힌트"로 삼되, 해석을 더 안전하게 만들기 위해  
-  **Time-split(0~60d → 60~180d)** 기반 DM(`DM_timesplit_60_180_final`)로 재현/검증한다.
+  **Time-split(0-60d → 60-180d)** 기반 DM(`DM_timesplit_60_180_final`)로 재현/검증한다.
 - 추가로, device/region/marketing_source 등 **통제 변수를 포함한 모델링(예: 회귀/로지스틱)**으로  
   “Consistency의 독립적 설명력”도 확인한다.
 
