@@ -1,166 +1,126 @@
-# E-commerce Analytics Project (v1.0)
-**Activation × Consistency → Future LTV/Retention (Time-split)**
+# E-commerce Analytics Project (Synthetic Data → BigQuery → SQL Story)
 
-> **핵심 메시지:** 초기 14일 Activation만으로는 장기 성과를 충분히 설명하기 어렵고,  
-> **방문 리듬(Consistency)** 이 특히 저-Activation 유저의 미래 가치(LTV/Retention)를 강하게 가른다.
-
----
-
-## 0) Current Status (Done vs Planned)
--  **Done:** Synthetic data 생성 → BigQuery Raw 적재 → Data Marts(7개, Time-split 포함) 구축 → SQL QA 스냅샷
--  **Planned:** Python 분석(라벨 재현/믹스이펙트/병목 교차) → 시각화(Tableau) → 자동화(Airflow)
+**한 줄 요약:** Synthetic e-commerce 로그를 생성하고(BigQuery 로딩/최적화/DM 구축),  
+유저의 **초기 Activation(14일)**과 **방문 리듬(Consistency)**이 **장기 성과(LTV/Retention)**와 어떤 관계가 있는지 SQL 분석 결과(Story)로 정리한 프로젝트입니다.
 
 ---
 
-## 1) 프로젝트 목표 (Project Objective)
+## 1) Project Goal
 
-### 1.1 한 줄 요약
-유저 행동 패턴의 차이가 **단기 전환(14일 내 첫 구매)** 과 **장기 가치(60–180일 성과)** 사이의 trade-off를 어떻게 만드는가?
+이 프로젝트는 **초기 14일 Activation(단기 전환)**만으로는 유저의 **장기 성과(LTV/Retention)**를 충분히 설명하기 어려울 수 있다는 가정에서 출발합니다.  
+같은 Activation 수준이라도, 유저가 **얼마나 규칙적으로 다시 방문하는지(Consistency)**가 이후 성과를 추가로 분리하는지 확인하는 것이 목표입니다.
 
-### 1.2 배경 (Why this matters)
-많은 e-commerce 분석은 “초기 전환이 높으면 장기 매출도 높다”에서 출발하지만,
-실제로는 **초반에 빠르게 구매하고 이탈하는 유저**와 **초반은 느리지만 꾸준히 돌아와 장기 가치가 커지는 유저**가 공존한다.  
-이 프로젝트는 그 차이가 행동량(volume)만이 아니라 **행동의 구조(리듬/일관성 = Consistency)** 에서 올 수 있다는 관점에서 시작했다.
+- v1.0에서는 0–180일 윈도우에서 Activation/Consistency/LTV/Retention 간의 관계를 먼저 확인했고, 결과를 `docs/results/story.md`로 정리했습니다.
+- v1.1에서는 해석을 더 안전하게 만들기 위해 **Time-split(관측창 vs 성과창)** 구조(`DM_timesplit_60_180_final`)를 추가해, “초기 행동 → 이후 성과” 형태로 재검증할 수 있도록 확장했습니다.
 
-### 1.3 KPI / Window 고정
-- **Short-term conversion (메인):** signup 후 **14일 내 첫 구매**
-- (보조) **30일 내 첫 구매**
-- **Observation window (features):** signup 후 **day 0–59 (총 60일)**  
-- **Performance window (outcomes):** signup 후 **day 60–179 (총 120일)**
-
-> 표기 원칙: 본 프로젝트의 윈도우는 “포함/미포함”을 명확히 하기 위해 반개구간(day index)로 표기한다.
-
-### 1.4 가설 Hypotheses (H1–H3)
-- **H1:** 초기 14일 전환이 높아도 방문 리듬이 불규칙(inter-visit CV↑)이면 이후(60–180) 성과가 낮다.
-- **H2:** 초기 전환이 느려도 방문 리듬이 안정적(active days/weeks↑, CV↓)이면 이후(60–180) 성과가 높다.
-- **H3:** Consistency는 행동량(세션/이벤트 수)과 독립적인 설명력을 가진다(통제 포함).
-
-### 1.5 방법론 업그레이드 (Leakage/Tautology 방지 → Time-split)
-초기 접근(naive)에서는 **동일 기간(0–180) 내 행동(Consistency)** 으로 **동일 기간(0–180) 성과(LTV/Retention)** 를 설명하는 구조가 가능하지만,  
-이는 “오래 남아 자주 온 사람이 더 산다”라는 **자기증명(tautology) / 누수(leakage)** 로 해석될 위험이 있다.
-
-따라서 v1.0에서는 **관측창(0–60)과 성과창(60–180)을 분리(Time-split)** 하여,
-주장을 “장기 꾸준함 → 장기 매출”이 아니라  
-“**초기 60일 리듬이 안정적인 유저는 이후 120일 성과가 더 높다**”로 강화한다.
+### Hypotheses (H1–H3)
+- **H1:** 초기 14일 Activation이 높아도, 방문 리듬이 불규칙하면 장기 성과가 낮게 나타날 수 있습니다.  
+- **H2:** 초기 전환이 느리더라도, 방문 리듬이 안정적이면 장기 성과가 높게 나타날 수 있습니다.  
+- **H3:** Consistency는 단순 활동량(세션/이벤트 수)과는 별개로 장기 성과를 설명하는 신호가 될 수 있습니다.
 
 ---
 
-## 2) 데이터 모델 (ERD)
+## 2) Data Model (ERD)
 
-### 2.1 Tables (v1.0 분석 스코프)
-Synthetic dataset으로 “분석 가능한 문제”를 만들기 위해 현실적인 e-commerce 스키마를 구성했다.
+이 프로젝트는 “오늘의집 스타일” 이커머스 도메인을 가정한 **synthetic dataset**으로 구성되어 있습니다.
 
-- **Dimension**
-  - `users`
-  - `products`
-- **Raw logs**
-  - `sessions` (session-level)
-  - `events` (event-level, funnel 5-step)
-- **Transaction**
-  - `orders` (purchase 이벤트에서 파생)
-  - `order_items`
+- ERD 이미지: `docs/erd.png`
 
-> `user_type(A/B/C/D)` 같은 라벨은 Raw/DM에 존재할 수 있으나, v1.0 분석에서는 직접 사용하지 않는다(누수 방지).  
->  **Planned:** Python에서 행동 기반으로 A/B/C/D를 재현하고, raw `user_type`은 검증용으로만 비교한다.
+핵심 테이블:
+- `users` : 유저 속성 및 가입 정보
+- `products` : 상품 마스터
+- `sessions` : 세션 단위 로그
+- `events` : 이벤트 로그
+- `orders` : 주문 헤더
+- `order_items` : 주문 아이템
 
-### 2.2 Integrity Rules (Frozen Specs)
-- Funnel 이벤트는 **5단계 고정**: `view → click → add_to_cart → checkout → purchase`
-- `order_id`는 **purchase 이벤트에서만 존재**
-- **purchase 이벤트 1건 = orders 1건**
-- Raw 로그(`sessions/events`)는 원형을 유지하고, 파생 지표는 **BigQuery Data Mart(SQL)** 에서 계산
-
-### 2.3 ERD
-> TODO: ERD 이미지 파일명 확정 후 링크 연결  
-- `docs/results/figures/` 안에 ERD 이미지를 두고 README에서 참조
+### Frozen Specs (분석 일관성 유지)
+- Funnel step은 5단계로 고정: **view → click → add_to_cart → checkout → purchase**
+- `order_id`는 purchase 이벤트에서만 생성
+- **purchase 1건 = orders 1건** 정합성 유지  
+- Raw 로그(sessions/events)는 원형 보존, 파생 지표는 DM에서 계산
 
 ---
 
 ## 3) Synthetic Dataset Generation (Python)
 
-이 프로젝트는 Python으로 **재현 가능한(same seed)** synthetic dataset을 생성한다.
+실제 서비스 데이터가 아닌, 분석 목적에 맞게 설계한 규칙 기반 **synthetic dataset**을 Python으로 생성합니다.
 
-### 3.1 Generation Principles
-- Raw 로그 보존 + DM에서 파생지표 계산
-- Funnel 5-step 고정 + order_id 정합성 유지
+- 데이터 생성 코드: `src/data_generation/`
 
-### 3.2 Dataset Scale (current build, approx.)
-- users ≈ **30,000**
-- sessions ≈ **0.7–0.8M**
-- events ≈ **~1.8M**
-- orders ≈ **~15K**
-- products = **300**
+생성 후 최소 sanity check로 아래를 확인합니다.
+- row count 확인
+- PK uniqueness 확인
+- 주요 테이블 정합성(가능한 범위 내)
 
-### 3.3 Reproducibility (생성 재현성)
-- random seed 고정
-- 생성 후 PK/Join 정합성 + row count sanity check 수행 후 BigQuery 적재
-
-📁 `src/data_generation/`
-```text
-src/data_generation/
-├── generate_users.py
-├── generate_products.py
-├── generate_orders.py
-├── generate_order_items.py
-└── generate_events.py
-```
+---
 
 ## 4) BigQuery (Raw Loading → Optimised Tables → Data Marts)
 
-이 프로젝트는 **Raw 로그를 원형 그대로 보존**하고, **리텐션/퍼널/전환/LTV/Consistency** 등 파생 지표는 **BigQuery Data Mart(SQL)** 에서 계산한다.
+이 프로젝트는 Raw 로그를 원형 그대로 보존하고, 파생 지표는 BigQuery Data Mart에서 계산합니다.
 
-### 4.1 BigQuery Setup (요약)
+### 4.1 BigQuery Setup (Summary)
+- Project: `eternal-argon-479503-e8`
+- Raw dataset: `ecommerce`
+- DM dataset: `ecommerce_dm`
+- Location: `US`
 
-- **Project**: `eternal-argon-479503-e8`  
-- **Raw dataset**: `ecommerce`  
-- **DM dataset**: `ecommerce_dm`  
-- **Location**: `US`
+### 4.2 Raw Loading
+Python으로 생성한 데이터를 BigQuery Raw dataset에 로딩합니다.  
+Raw 테이블은 “가공 전 원본 보존”을 우선으로 유지합니다.
 
-Raw 테이블은 Python으로 생성한 CSV를 BigQuery에 적재했고, 이후 쿼리 최적화 및 Data Mart를 구축했다.
+### 4.3 Optimised Tables (Partitioning / Clustering)
+대용량 테이블의 비용/속도 최적화를 위해, 주요 테이블은 partitioning/clustering이 적용된 사본 테이블을 사용합니다.
 
-### 4.2 Optimisation (Partitioning / Clustering)
+- 예시: `events → events_p`, `sessions → sessions_p`, `orders → orders_p`
 
-분석 쿼리는 대부분 **가입일 기준 14/30/60/180일 윈도우**로 기간 필터를 사용하고, 집계는 주로 **user_id / session_id** 단위로 발생한다.
+> 최적화 관련 SQL은 repo의 `docs/optimisation/` 폴더에 정리되어 있습니다.  
+> (설계 노트/상세 근거 문서는 추후 보강 예정)
 
-따라서 `events/sessions/orders` 중심으로 **Partitioning(날짜) + Clustering(유저/세션/이벤트타입)** 을 적용해 스캔 바이트와 비용을 줄였다.
+### 4.4 Data Marts (SQL)
+Activation / Funnel / Consistency / LTV / Retention 지표를 Data Mart로 정의하고 SQL로 계산합니다.
 
-- 상세 증거(스크린샷/비교 쿼리): `docs/optimisation/` *(선택/추가 예정)*
+- Data Mart 생성 SQL: `docs/dm/`
+- Sanity check SQL: `docs/sanity_check/`
 
-### 4.3 Data Mart Map (핵심 7개)
+대표 DM:
+- `DM_user_window`
+- `DM_consistency_180d`
+- `DM_ltv_180d`
+- `DM_retention_cohort`
+- `DM_funnel_session`
+- `DM_funnel_kpi_window`
+- `DM_timesplit_60_180_final` (Time-split 확장, v1.1)
 
-Data Mart는 **Grain(단위)** 기준으로 역할을 분리했다.
+---
 
-**User-level**
-- `DM_user_window` : 유저 특성 + 14/30 퍼널 reach + 180일 요약 KPI  
-- `DM_consistency_180d` : 0~180d 방문 리듬(Consistency) 피처  
-- `DM_ltv_180d` : 180일 LTV(outcome)  
-- `DM_timesplit_60_180_final` : Time-split 핵심 테이블  
-  - **Observation (0–60)**: Activation + Consistency features  
-  - **Performance (60–180)**: 구매/매출/리텐션 outcomes  
+## 5) SQL Analysis (Story)
 
-**Session-level (퍼널 원자 데이터)**
-- `DM_funnel_session` : 세션 단위 strict/reach 플래그 및 이벤트 피벗  
+SQL 결과는 실무자가 빠르게 훑어볼 수 있도록 **Story 문서**로 요약했습니다.  
+Story(v1.0)는 0–180일 윈도우 기반으로 핵심 패턴을 정리한 결과이며, 이후에는 Time-split(v1.1) 기반으로 동일 질문을 더 엄격하게 재검증할 수 있도록 확장할 예정입니다.
 
-**Cohort / Reporting**
-- `DM_funnel_kpi_window` : 코호트×윈도우(14/30) 퍼널 KPI 요약  
-- `DM_retention_cohort` : `cohort_month × day_index(0..180)` retention curve  
+- Story 문서: `docs/results/story.md`
+- 결과 스크린샷: `docs/results/figures/`
+  - 한 화면에 결과가 다 안 담기는 경우가 있어 `*_a.png`, `*_b.png`로 분리해 저장했습니다.
 
-### 4.4 Time-split DM을 추가한 이유
+### 5.1 Query Organization
+스토리 재현에 필요한 쿼리와, 전체 분석 과정 쿼리를 분리해 관리합니다.
 
-초기(naive) 스냅샷에서는 Activation×Consistency와 장기 성과가 매우 강하게 분리되는 패턴이 관찰 되었습니다.
-다만 predictor/outcome이 동일 기간(0–180)에 묶이면 “오래 남아 자주 온 유저가 더 구매한다”는 tautology/leakage로 해석될 위험이 있는것을 발견했고,
-그래서 v1.0에서는 관측창(day 0–59)과 성과창(day 60–179)을 분리한 DM_timesplit_60_180_final을 구축해,
-후속 분석이 더 엄격한 형태로 진행될 수 있도록 데이터 구조를 업그레이드를 결정하였습니다 (Time-split 기반 추가 분석은 Planned)
+- `src/sql/analysis/00_story_core/`  
+  → `docs/results/story.md`에 직접 연결되는 **핵심 쿼리 세트**
+- `src/sql/analysis/01_supporting/`  
+  → 전체 분석 흐름(Activation~Retention + 실험 쿼리) 보관  
+  - `01_activation/`
+  - `02_consistency/`
+  - `03_funnel_dropoff/`
+  - `04_segment_deepdive/`
+  - `05_retention/`
+  - `side_experiments/`
 
-### 4.5 DM 코드 & sanity_check 
-- Datamart SQL: `docs/datamart/`  
-- Sanity check SQL: `docs/datamart/sanity_check/`
+---
 
+## 6) Notes / Next
 
-### 목표 변경 기록 (Decision Log)
-초기에는 Subscription/Promotion 등 추가 주제도 고려했으나, v1.0에서는 메시지 분산과 복잡도 대비 효용을 이유로 제외했다.  
-또한 동일 기간(0–180) 내 행동으로 동일 기간 성과를 설명하는 방식은 tautology/leakage 위험이 있어,  
-관측창(day 0–59)과 성과창(day 60–179)을 분리한 Time-split 구조로 목표를 재정의했다.  
-따라서 v1.0의 최종 목표는 **Activation × Consistency가 이후(60–180) 성과를 어떻게 분리하는가**에 집중한다.
-
-
-
+- 현재 공개된 결과는 v1.0 Story(0–180일 윈도우 기반)이며, 핵심 결과는 `docs/results/story.md`에 정리했습니다.
+- 해석의 설득력을 높이기 위해 Time-split Data Mart(`DM_timesplit_60_180_final`)를 추가했으며,  
+  다음 단계에서는 관측창(0–60일) 지표가 성과창(60–180일) outcome과도 연결되는지 확인할 계획입니다.
