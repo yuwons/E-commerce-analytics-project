@@ -1,143 +1,145 @@
-# [Story] Activation × Consistency → Future LTV/Retention (v1.0 → v1.1)
+# Story — Activation × Consistency → LTV / Retention (v1.0)
 
-> **핵심 메시지**  
-> **초기 14일 Activation만으로는 장기 성과를 충분히 설명하기 어렵고**,  
-> **“방문 리듬(Consistency)”이 특히 저Activation 유저의 미래 가치(LTV/Retention)를 강하게 가른다.**  
-> 단, v1.0 결과는 같은 180일 창에서 Predictor/Outcome을 동시에 사용한 한계(tautology)가 존재하여,  
-> v1.1에서 **Time-split(관측창/성과창 분리)**로 분석 프레임을 고도화한다.
+> **한줄 요약:** 초기 14일 Activation만으로는 장기 성과를 다 설명하기 어렵고, **Consistency(재방문 리듬)** 가 180일 LTV/Retention을 강하게 분리한다.
 
 ---
 
-## 0) Executive Summary
+## 1) Context
 
-### 0.1 What we saw (v1.0)
-- Activation stage(A0~A5)로 유저를 나누고, 각 stage 내부에서 Consistency(C1~C5)로 다시 나누면  
-  **C1 → C5로 갈수록 180일 구매율/매출이 급격히 상승**한다.  
-  특히 **A0/A1(저Activation)** 구간에서 lift가 매우 크다.  
-  - 예: A0에서 purchase_rate_180d가 **1.5% → 35.9%**, avg_revenue_180d가 **3.5k → 110.7k**로 크게 증가
-- 다만 “avg_revenue_180d lift(20~31x)”는 일부 **Mix effect(구매자 비중 증가)**가 크게 기여한다.  
-  구매자만 놓고 보면 매출 차이는 훨씬 줄어들며(대략 1.3~1.6x 수준),  
-  **핵심은 ‘한 번이라도 구매할 확률(purchase_rate)’이 Consistency에 의해 크게 갈린다는 점**이다.
+이 프로젝트는 **유저 행동 패턴이 단기 전환(Short-term Conversion)과 장기 성과(LTV/Retention)의 trade-off를 어떻게 만드는지**를 확인하기 위한 분석이다.  
+분석은 **Synthetic dataset** 기반이며, BigQuery Data Mart(SQL)에서 파생 지표를 계산했다.
 
-### 0.2 Why we changed the plan (v1.1)
-- v1.0은 **Consistency를 0~180일로 계산하고, Outcome도 0~180일 LTV/Retention을 사용**했다.  
-  이 구조는 “오래 남아서 자주 온 사람이 돈을 많이 쓴다”는 **자기증명(tautology)** 리스크가 있다.
-- 따라서 v1.1은 **Time-split**으로 전환한다.
-  - **관측창(Observation): 0~60일** → Activation/Consistency를 “Predictor”로 정의
-  - **성과창(Performance): 61~180일** → LTV/Retention을 “Outcome”으로 정의  
-  → 결론을 “초기 60일 행동 패턴이 이후 120일 가치를 예측한다”로 바꾸어 분석 가치를 올린다.
+> NOTE  
+> - 초기 설계에는 subscription/promotion도 포함했지만, 이번 분석 스코프에서는 **유저 행동(Session/Event) 중심**으로 집중했다.  
+> - 결과 및 시각화는 본 문서의 figure(스크린샷)로 요약하고, 재현 가능한 SQL은 repo에 포함했다.
 
 ---
 
-## 1) Metric Definition
+## 2) Key Metrics (정의)
 
-### 1.1 Activation Stage (0~14d)
-가입 후 14일 내 도달한 최종 이벤트 기준.
-- A0_no_activity, A1_view, A2_click, A3_add_to_cart, A4_checkout, A5_purchase
+- **Activation (0~14d)**  
+  가입 후 14일 동안 유저가 도달한 **최고 funnel 단계**로 Stage를 정의  
+  `A0_no_activity → A1_view → A2_click → A3_add_to_cart → A4_checkout → A5_purchase`
 
-### 1.2 Consistency (v1.0: 0~180d)
-세션 기반 “재방문 리듬”을 수치화.
-- active_days_180d: 180일 내 세션이 있었던 일수
-- intervisit_cv_180d: 방문 간격(day gap)의 변동계수(CV = std / mean)
-- consistency_score_v1 = z(active_days_180d) - z(intervisit_cv_180d)  
-  → 높을수록 “자주 & 규칙적”인 방문 리듬
-- consistency_segment(C1~C5): consistency_score를 5분위로 구간화
+- **Consistency (0~180d, v1.0)**  
+  세션 기반 “재방문 리듬”을 점수화  
+  예: `z(active_days) - z(intervisit_cv)` 형태의 score로 정의 후, **퀀타일로 C1~C5** 세그먼트화  
+  (C1 = 낮은 Consistency, C5 = 높은 Consistency)
 
-> **중요 메모(결과 해석)**  
-> v1.0에서 “Consistency↑ → 매출↑”가 강하게 나오더라도,  
-> Predictor/Outcome이 같은 기간(0~180d)에 묶여있어서 과대평가 가능성이 존재한다.
+- **LTV (0~180d)**  
+  가입 후 180일 내 매출 합(orders/order_items 기반)
 
-### 1.3 Outcomes (v1.0: 0~180d)
-- purchase_rate_180d: 180일 내 1회 이상 구매 비율
-- avg_revenue_180d: 180일 총매출 평균(구매자+비구매자 포함)
-- avg_revenue_buyer_only: 구매자만의 180일 총매출 평균
-- retention_last_week_180d: 180일 마지막 7일 내 세션 존재 여부(또는 정의된 last-week active)
+- **Retention (Point, 180d)**  
+  180일 윈도우 마지막 7일에 재방문(세션) 여부로 point retention 정의
 
 ---
 
-## 2) Core Findings (v1.0)
+## 3) Finding #1 — Activation만으로는 장기 성과를 설명하기 부족
 
-## 2.1 “Activation이 낮아도, Consistency가 높으면 장기 성과가 폭발한다”
-Activation stage 내부에서 C1→C5로 갈수록 구매율/매출이 상승한다.
-- 특히 A0/A1에서 lift가 가장 크다.
-  - A0: purchase_rate_180d **1.5% → 35.9%**, avg_revenue_180d **3.5k → 110.7k**
-  - A1: avg_revenue_180d도 큰 폭으로 상승(저Activation이라도 리듬이 있으면 성과가 커짐)
+Activation stage가 높을수록 LTV/Retention이 좋아지는 건 자연스럽다.  
+그런데 같은 Activation stage 안에서도 **Consistency(C1~C5)** 에 따라 장기 성과가 크게 갈렸다.
 
-> 해석: **초기 14일에 ‘구매’까지 못 간 유저라도**,  
-> 이후 180일 동안 “꾸준히 돌아오는 리듬”을 보이면 장기 구매/매출로 연결될 가능성이 커진다.
+- 특히 **낮은 Activation (A0~A2)** 구간에서  
+  “초기 전환은 약했지만, 리듬 있게 돌아오는 유저(C5)”가 장기 성과에서 더 강하게 나타났다.
 
----
-
-## 2.2 “20~31배 매출 격차”의 대부분은 ‘구매자 비중(Mix effect)’이다
-avg_revenue_180d는 **비구매자(매출=0)**를 포함한 평균이라,
-purchase_rate가 크게 갈리면 평균 매출 격차가 매우 커진다.
-
-그래서 구매자만 분리해서 보면:
-- avg_revenue_buyer_only의 차이는 **상대적으로 작아지고(대략 1.3~1.6x)**,
-- 진짜 핵심은 **구매 확률(purchase_rate_180d)이 C1→C5에서 크게 벌어진다는 점**이다.
-
-> 결론적으로 v1.0의 “큰 매출 lift”는  
-> (1) **구매자 비중 증가** + (2) **구매자당 매출 증가**가 합쳐진 결과이며,  
-> 그중 (1)의 기여가 매우 크다.
+**Figure 01 — Activation × Consistency × (LTV / Retention point)**  
+![Figure01a](figures/01_figure_a.png)
+![Figure01b](figures/01_figure_b.png)
 
 ---
 
-## 3) Funnel Bottleneck Findings (v1.0)
+## 4) Finding #2 — Consistency의 Lift는 저(低) Activation 구간에서 더 크다
 
-### 3.1 14일 병목: View → Click
-- 14일 윈도우에서는 **view_to_click**이 가장 큰 병목으로 나타난다.
-- 중앙값 기준 0에 가까운 segment가 많아 “초기 탐색→클릭” 전환이 막히는 유저군이 큼.
+C5(상위 Consistency) vs C1(하위 Consistency)을 비교했을 때,  
+Activation stage별로 **장기 성과 lift 패턴**이 달랐다.
 
-### 3.2 30일 병목: Click → Add-to-cart
-- 30일 윈도우로 확장하면 **click_to_cart**가 가장 큰 병목으로 이동한다.
-- 즉 “클릭은 하는데 장바구니로 안 넘어가는 문제”가 더 뚜렷해진다.
+- 고(高) Activation(A4~A5)에서도 Consistency 차이는 존재하지만,
+- **저(低) Activation(A0~A2)에서 lift가 더 의미있게 관찰**된다  
+  → “초기 전환만 보고 유저 가치를 과소평가할 수 있다”는 시사점
 
-> 해석(현상 → 액션 가설):  
-> - 14d view→click: 첫 방문 UI/추천/썸네일/카피 등 “클릭 유도” 품질 문제 가능  
-> - 30d click→cart: 상세 페이지 신뢰/가격/리뷰/배송/혜택 등 “설득 요소” 부족 가능
+**Figure 02 — Headline lift (C5 vs C1) by Activation**  
+![Figure02](figures/02_figure.png)
 
 ---
 
-## 4) v1.0의 한계와 v1.1 고도화 계획
+## 5) Finding #3 — (간소화 뷰) Activation × Consistency × LTV
 
-### 4.1 Limitation: Tautology Risk
-- v1.0은 Consistency(0~180d)와 Outcome(LTV/Retention 0~180d)이 같은 창에 있어  
-  “오래 남고 자주 온 사람이 돈을 많이 쓴다”라는 **당연한 결론**이 될 위험이 있다.
+핵심 패턴만 보이도록 간소화한 뷰에서도 동일한 흐름이 유지됐다.  
+즉, **Activation은 “초기 강도”**, Consistency는 **“장기 리듬”**으로 역할이 분리되어 보인다.
 
-### 4.2 Fix: Time-split (Predictive Analysis Framework)
-v1.1은 아래처럼 시간축을 분리한다.
-- **Observation window (0~60d)**  
-  - Activation_obs_14d(또는 30d)  
-  - Consistency_obs_60d (active_days / intervisit_cv / weekly regularity 등)
-- **Performance window (61~180d)**  
-  - revenue_61_180d, orders_61_180d, purchase_flag_61_180d  
-  - retention_61_180d (ex: last-week active in days 174~180 등)
-
-> v1.1 메시지 전환 예시  
-> X) “180일 내내 꾸준한 유저가 돈을 많이 쓴다”  
-> O) “가입 초기 60일 동안 방문 리듬이 안정적인 유저는, 이후 120일 동안 더 높은 LTV/Retention을 만든다”
-
-### 4.3 Python 확장: “유저군 × 병목 step” 교차 분석
-SQL로 전체 병목을 본 뒤, Python에서 유저 세그먼트(A/B/C/D 등)를 **행동 기반으로 재현**해
-- 유저군별로 병목이 “어디서” “왜” 다른지 해석 깊이를 올린다.
-- 면접 스토리: “SQL로 1차 인사이트 → 한계 발견 → Python에서 세그먼트 교차로 2차 심화” 흐름이 가능.
-
-> 참고: raw users 테이블에 있는 `user_type`은 **모델/분석에 직접 노출하지 않고**,  
-> Python에서 행동 기준으로 라벨링을 재현한 뒤 **내부 검증용으로만 비교**하는 방향이 더 자연스럽다.
+**Figure 03 — Activation × Consistency × LTV (slim)**  
+![Figure03a](figures/03_figure_a.png)
+![Figure03b](figures/03_figure_b.png)
 
 ---
 
-## Appendix) Used Data Marts (v1.0)
-- `ecommerce_dm.DM_user_window`
-- `ecommerce_dm.DM_consistency_180d`
-- `ecommerce_dm.DM_ltv_180d`
-- `ecommerce_dm.DM_retention_cohort`
-- `ecommerce_dm.DM_funnel_kpi_window`
-- `ecommerce_dm.DM_funnel_session`
+## 6) Finding #4 — Funnel 병목: 14일 vs 30일의 bottleneck이 다르다
 
-## Appendix) Planned Mart (v1.1)
-- `ecommerce_dm.DM_timesplit_60_180_final`
-  - predictors: obs_0_60d
-  - outcomes: perf_61_180d
+유저가 funnel을 진행하는 과정에서, “어디서 막히는지”를 확인했다.  
+(Reach/Frequency 기반)
+
+- **14일 윈도우**에서는 `view → click` 구간이 상대적으로 큰 병목으로 관찰됨  
+- **30일 윈도우**에서는 `click → add_to_cart` 구간의 마찰이 더 두드러짐
+
+**Figure 04 — Bottleneck (Frequency / Reach) (w14 vs w30)**  
+![Figure04a](figures/04_figure_a.png)
+![Figure04b](figures/04_figure_b.png)
 
 ---
+
+## 7) Finding #5 — “Worst segments” Top10 (병목이 큰 세그먼트)
+
+특정 세그먼트는 상단 단계 reach는 있으나 다음 단계로 잘 이어지지 않는 패턴을 보였다.  
+(= “왔는데 못 넘어가는” 유저군)
+
+이 결과는 **개선 실험 우선순위를 정하는 근거**로 사용할 수 있다.
+
+**Figure 05 — Worst segments Top10 (strict, w14/w30)**  
+![Figure05a](figures/05_figure_a.png)
+![Figure05b](figures/05_figure_b.png)
+
+---
+
+## 8) So What? (Product-thinking)
+
+이 분석에서 얻을 수 있는 액션 힌트는 아래처럼 정리할 수 있다.
+
+- **A0~A2(저 Activation) × C5(고 Consistency)**  
+  - “초기 전환이 약해도 잠재력이 있는 유저”  
+  - 단기 구매 유도보다 **리텐션/재방문 유지(리마인드, 탐색 경험 개선)** 가 더 합리적일 수 있음
+- **Funnel 병목 대응**
+  - 14일: `view → click` 마찰 완화(썸네일/리스트/추천/상세 진입 유도)
+  - 30일: `click → add_to_cart` 마찰 완화(가격/혜택/배송/리뷰/장바구니 UX)
+
+---
+
+## 9) Reproducibility (SQL)
+
+본 Story에서 사용한 핵심 쿼리는 아래에 있다.
+
+- **Story core (used in this doc)**  
+  `src/sql/analysis/00_story_core/`
+  - `01_final_activation_x_consistency_ltv180d_retention_point.sql`
+  - `01_activation_x_consistency_x_ltv_slim.sql`
+  - `02_headline_lift_c5_vs_c1_by_activation.sql`
+  - `02_bottleneck_frequency_reach_strict_w14_w30.sql`
+  - `03_bottleneck_worst_segments_top10_strict_w14_w30.sql`
+
+- **Supporting queries (full analysis set)**  
+  `src/sql/analysis/01_supporting/`
+
+---
+
+## 10) Next Step (v1.1) — Time-split으로 “너무 뻔한 결과” 리스크 줄이기
+
+v1.0에서는 Consistency/LTV/Retention이 같은 180일 윈도우에서 계산되기 때문에,  
+결과가 “너무 잘 나오거나 뻔해 보이는” 인상을 줄 수 있다(해석상 leakage 우려).
+
+이를 보완하기 위해 **Time-split Data Mart**를 추가로 설계했다.
+
+- `DM_timesplit_60_180_final`
+  - Observation: **0~60d** (Consistency 계산)
+  - Outcome: **60~180d** (LTV/Retention 계산)
+
+> 현재 repo에는 DM 생성 SQL까지 포함되어 있으며,  
+> time-split 기반 추가 분석은 후속 작업(v1.1)으로 확장 가능하다.
