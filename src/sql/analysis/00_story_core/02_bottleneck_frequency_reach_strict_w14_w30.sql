@@ -2,7 +2,7 @@
 -- Output: window_days × metric_type(strict/reach) × bottleneck_step 별 빈도/평균 전환율
 
 DECLARE MIN_DENOM INT64 DEFAULT 50;     -- step 분모 세션 최소치(너무 작으면 노이즈)
-DECLARE MIN_SESSIONS INT64 DEFAULT 100; -- 세그먼트 전체 세션 최소치(선택, 필요 없으면 0)
+DECLARE MIN_SESSIONS INT64 DEFAULT 100; -- 세그먼트 전체 세션 최소치
 
 WITH
 activation AS 
@@ -227,3 +227,4 @@ WHERE rn = 1
 GROUP BY 1,2,3
 
 ORDER BY window_days, metric_type, segment_cells DESC;
+
