@@ -15,6 +15,7 @@ Raw 테이블(`users`, `sessions`, `events`, `orders`, `order_items` 등)을 그
 | `DM_consistency_180d` | 1 row per `user_id` | 180일 방문 리듬/불규칙성(Consistency) 지표 생성 | `active_days_180d`, `intervisit_mean/std/cv`, `weekly_active_ratio` |
 | `DM_ltv_180d` | 1 row per `user_id` | 180일 LTV/매출 지표 요약 (장기 성과) | `revenue_180d`, `orders_180d`, `AOV/ARPU` |
 | `DM_retention_cohort` | 1 row per `cohort_month` x `day_n` (0~180) | 코호트 Retention curve 생성 (0~180일) | `retained_users`, `retention_rate` |
+| `DM_timesplit_60_180_final` | 1 row per `user_id` | Time-split 핵심 DM: 0–60일(관측) 행동 피처로 60–180일(성과) outcome을 연결 | `activation_stage_14d`, `consistency_*_obs_60d`, `orders/revenue_60_180`, `retention_last_week_180d` |
 
 ---
 
@@ -40,5 +41,6 @@ SQL 분석은 이 DM들을 조합해서 빠르고 명확하게 수행하도록 �
 ## Notes
 
 - 모든 날짜 윈도우는 기본적으로 `signup_date` 기준 14/30/180일을 사용한다.
+- Time-split 분석을 위해 `DM_timesplit_60_180_final`에서는 관측창(day 0–59)과 성과창(day 60–179)을 분리한다.
 - 퍼널 단계는 `view → click → add_to_cart → checkout → purchase` 순서로 정의한다.
 - “Consistency”는 행동량(volume)과 분리된 설명력을 갖도록 별도 DM으로 구성했다.
