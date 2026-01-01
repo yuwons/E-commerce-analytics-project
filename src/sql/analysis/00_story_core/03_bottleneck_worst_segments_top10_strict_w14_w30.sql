@@ -6,7 +6,7 @@ DECLARE MIN_DENOM INT64 DEFAULT 50;
 DECLARE MIN_SESSIONS INT64 DEFAULT 100;
 
 WITH
--- (중복 방지) 위 frequency 쿼리의 ranked CTE까지 동일하게 만든 뒤 재사용
+-- (중복 방지) frequency 쿼리의 ranked CTE까지 동일하게 재사용
 activation AS (
   SELECT
     user_id,
@@ -170,3 +170,4 @@ SELECT *
 FROM worst
 WHERE worst_rank <= 10
 ORDER BY window_days, worst_rank;
+
