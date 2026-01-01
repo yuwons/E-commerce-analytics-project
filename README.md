@@ -33,13 +33,13 @@
 - `orders` : 주문 헤더
 - `order_items` : 주문 아이템
 
+- Raw Data 테이블 보관 : `data/`
+
 ### Frozen Specs (분석 일관성 유지)
 - Funnel step은 5단계로 고정: **view → click → add_to_cart → checkout → purchase**
 - `order_id`는 purchase 이벤트에서만 생성
 - **purchase 1건 = orders 1건** 정합성 유지  
 - Raw 로그(sessions/events)는 원형 보존, 파생 지표는 DM에서 계산
-
-- Raw Data 테이블 : `data/`
   
 ---
 
