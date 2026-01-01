@@ -99,7 +99,7 @@ Activation / Funnel / Consistency / LTV / Retention 지표를 Data Mart로 정�
 - Data Mart 생성 SQL: `docs/dm/`
 - Sanity check SQL: `docs/sanity_check/`
 
-대표 DM:
+DATA MART BUILT:
 - `DM_user_window`
 - `DM_consistency_180d`
 - `DM_ltv_180d`
