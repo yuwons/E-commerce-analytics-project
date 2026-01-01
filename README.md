@@ -45,9 +45,23 @@
 
 ## 3) Synthetic Dataset Generation (Python)
 
-실제 서비스 데이터가 아닌, 분석 목적에 맞게 설계한 규칙 기반 **synthetic dataset**을 Python으로 생성합니다.
+실제 서비스 데이터가 아닌, 분석 목적에 맞게 설계한 규칙 기반 **synthetic dataset**을 Python으로 생성하였습니다.
 
 - 데이터 생성 코드: `src/data_generation/`
+
+### 3.1 Dataset Scale (예시)
+(생성 시점/파라미터에 따라 달라질 수 있음)
+
+- users ≈ 30,000 / products = 300  
+- sessions ≈ 0.748,757 / events ≈ 1.8M  
+- orders ≈ 15k / order_items ≈ 25k
+
+Funnel event counts:
+- view = 1,465,245
+- click = 290,912
+- add_to_cart = 74,228
+- checkout = 25,223
+- purchase = 15,721
 
 생성 후 최소 sanity check로 아래를 확인합니다.
 - row count 확인
