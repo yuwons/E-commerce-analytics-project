@@ -12,7 +12,7 @@
 ## 0) Executive Summary
 
 ### 0.1 What we saw (v1.0)
-- 유저를 **Activation stage(A0~A5)**로 나눈 뒤, 각 stage 내부에서 **Consistency(C1~C5)**로 다시 나누면  
+- 유저를 **Activation stage(A0-A5)**로 나눈 뒤, 각 stage 내부에서 **Consistency(C1-C5)**로 다시 나누면  
   **C1 → C5로 갈수록 180일 구매율/매출이 뚜렷하게 상승**하는 패턴이 반복적으로 관찰된다.
 - 특히 **낮은 Activation(A0~A2)** 구간에서 **Consistency에 따른 성과 격차(lift)가 더 크게** 나타나는 경향이 있었다.
 - 퍼널 관점에서는 **구간별 병목이 “어디서 자주 발생하는지(빈도)”**와  
@@ -20,8 +20,8 @@
   개선 포인트를 더 구체적으로 잡을 수 있다.
 
 ### 0.2 What we do next (v1.1)
-- v1.0 결과를 “힌트”로 삼되, 해석을 더 안전하게 만들기 위해  
-  **Time-split(0~60d → 60~180d)** 기반 DM(`DM_timesplit_60_180_final`)로 재현/검증한다.
+- v1.0 결과를 "힌트"로 삼되, 해석을 더 안전하게 만들기 위해  
+  **Time-split(0~60d -> 60~180d)** 기반 DM(`DM_timesplit_60_180_final`)로 재현/검증한다.
 - 추가로, device/region/marketing_source 등 **통제 변수를 포함한 모델링(예: 회귀/로지스틱)**으로  
   “Consistency의 독립적 설명력”도 확인한다.
 
@@ -41,7 +41,7 @@
 
 ### 1.2 Consistency (0~180일, v1.0)
 - 세션 기반 지표(예: active_days, intervisit_cv 등)로 Consistency score를 만들고,
-- score를 **퀸타일로 C1(하위) ~ C5(상위)**로 구간화
+- score를 **퀸타일로 C1(하위) - C5(상위)**로 구간화
 
 > 사용 DM: `DM_consistency_180d`
 
