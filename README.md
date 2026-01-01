@@ -1,375 +1,123 @@
-# 1. 프로젝트 목표 (Project Objective)
+# E-commerce Analytics Project (Synthetic Data → BigQuery → SQL Story)
 
-## 한 줄 요약
-**유저 행동 패턴의 차이가 ‘단기 전환(빠른 첫 구매)’과 ‘장기 가치(LTV/Retention)’ 사이의 trade-off를 어떻게 만들어내는가?**
-
----
-
-## 배경
-많은 E-commerce에서 “전환율을 올리면 매출도 같이 오른다”는 가정이 자주 쓰이지만,  
-실제 운영에서는 **빠른 전환을 만드는 행동**과 **장기적으로 높은 가치를 만드는 행동**이 항상 일치하지 않는다.  
-본 프로젝트는 이 **구조적 trade-off**가 어떤 행동 패턴에서 발생하며, 그 결과가 지표로 어떻게 나타나는지를 **데이터로 설명**하는 것을 목표로 한다.
-
-> 이 프로젝트는 “전환율을 최대화하는 방법”을 제시하지 않는다.  
-> 대신 trade-off를 해석의 기준 축으로 두고, 행동 → 전환 → 잔존 → LTV → 구독(결과 증거) 흐름으로 구조를 설명한다.
+**한 줄 요약:** 유저의 **초기 Activation(첫 14일)**과 **방문 리듬(Consistency)**이 이후 **180일 LTV/Retention**과 어떤 관계가 있는지, BigQuery Data Mart와 SQL 분석으로 확인한 프로젝트입니다.
 
 ---
 
-## 핵심 KPI 정의 (Window 고정)
-- **Short-term Conversion (메인):** 가입 후 **14일 내 첫 구매**
-- **보조 KPI:** 가입 후 **30일 내 첫 구매**
-- **LTV window:** 가입 후 **180일 누적 매출**
-- **Subscription:** trade-off의 “원인”이 아니라 **결과(outcome evidence)**로만 사용
+## 1) Project Goal
+
+이 프로젝트는 “초기 전환”만 보고 유저 가치를 판단할 때 생길 수 있는 리스크를 줄이기 위해,
+유저 행동을 **Activation(초기 퍼널 도달)**과 **Consistency(방문 리듬/규칙성)** 관점으로 나누고,
+그 조합이 **장기 성과(180일 LTV/Retention)**와 어떻게 연결되는지 분석합니다.
+
+### Hypotheses (H1–H3)
+- **H1:** 초기 14일 전환이 높아도, 방문 리듬이 불규칙하면 180일 성과(LTV/Retention)가 낮을 수 있다.  
+- **H2:** 초기 전환이 느리더라도, 방문 리듬이 일정하면 180일 성과가 높을 수 있다.  
+- **H3:** Consistency는 단순 활동량(세션/이벤트 수)과 별개로 장기 성과를 설명하는 신호가 될 수 있다.
 
 ---
 
-## 이 프로젝트가 답하려는 핵심 질문
-- 어떤 행동 패턴은 **14일 내 첫 구매(단기 전환)**를 빠르게 만들지만, 왜 **장기 잔존/180일 LTV**는 낮아지는가?
-- 반대로, 초기 전환은 느리더라도 **더 오래 남고(잔존), 더 큰 180일 LTV를 만드는 패턴**은 무엇인가?
-- 이 trade-off는 “행동의 양”이 아니라, **행동의 구조(조합/리듬/일관성)** 차이에서 발생하는가?
+## 2) Data Model (ERD)
+
+이 프로젝트는 “오늘의집 스타일” 이커머스 도메인을 가정한 **synthetic dataset**으로 구성되어 있습니다.
+
+- ERD 이미지: `docs/erd.png`
+
+핵심 테이블:
+- `users` : 유저 속성 및 가입 정보
+- `products` : 상품 마스터
+- `promo_calendar` : 프로모션 캘린더
+- `sessions` : 세션 단위 로그
+- `events` : 이벤트 로그 (view → click → add_to_cart → checkout → purchase)
+- `orders` : 주문 헤더 (purchase 이벤트 기준)
+- `order_items` : 주문 아이템
+
+> Funnel step은 5단계로 고정: **view → click → add_to_cart → checkout → purchase**  
+> `order_id`는 purchase 이벤트에서만 생성되며, **purchase 1건 = orders 1건**을 가정합니다.
 
 ---
 
-## 분석 접근 (High-level)
-본 프로젝트는 아래 흐름으로 trade-off를 설명한다.
-1) **User Behavior:** 행동 구조 기반 세그먼트 정의 (단일 activation KPI에 의존하지 않음)
-2) **Short-term Conversion:** 퍼널/전환 속도/구조 비교
-3) **Retention / Cohort:** 90일/180일 잔존 비교 (시간 효과 통제)
-4) **LTV Distribution:** 평균이 아닌 **분포/상위 집중도(tail)** 중심 비교
-5) **Subscription:** 결과 증거로 확인 (원인 축으로 쓰지 않음)
-6) **Behavior Consistency (핵심 축):** 방문/구매 리듬의 ‘일관성’이 short-term conversion과 long-term value의 trade-off를 어떻게 설명하는가?
+## 3) Synthetic Dataset Generation (Python)
 
-## 3. 데이터 모델 (ERD)
+이 프로젝트의 데이터는 실제 서비스 데이터를 사용하지 않고, 분석 목적에 맞게 설계한 규칙 기반 **synthetic dataset**을 Python으로 생성합니다.
 
-본 프로젝트의 Raw 데이터는 총 **8개 테이블**로 구성됩니다.
+- 생성 코드: `src/data_generation/`
+- 생성 데이터(예): `data/generated/` (환경에 따라 경로 다를 수 있음)
 
-### Tables (8)
-
-- **Dimension**
-  - `users` : 유저 프로필/세그먼트
-  - `products` : 상품 마스터
-  - `promo_calendar` : 회사 공통 프로모션 캘린더
-
-- **Raw Logs (행동 로그)**
-  - `sessions` : 방문/세션 단위 로그
-  - `events` : 세션 내 이벤트 로그 (funnel 5-step)
-
-- **Transaction**
-  - `orders` : 주문 헤더 (purchase 이벤트에서 파생)
-  - `order_items` : 주문 상세
-
-- **Business Outcome**
-  - `subscriptions` : 구독/멤버십 결과
-
-### Integrity Rules (Frozen Specs)
-
-- Funnel 이벤트는 **5단계 고정**: `view → click → add_to_cart → checkout → purchase`
-- `order_id`는 **purchase 이벤트에서만 존재**
-- **purchase 이벤트 1건 = orders 1건** (정합성 유지)
-- Raw 로그 보존 원칙: `sessions/events`는 Raw로 유지하고, revisit/retention/funnel conversion 등 **파생 지표는 BigQuery Data Mart(SQL)에서 계산**
+생성 후 최소 sanity check를 통해:
+- row count 확인
+- PK uniqueness 확인
+- 주요 테이블 간 FK 관계 점검(가능한 범위 내)
 
 ---
 
-<details>
-  <summary><b> (클릭) Detailed Schema (Columns)</b></summary>
+## 4) BigQuery (Raw Loading → Optimised Tables → Data Marts)
 
-### users
-| column | description |
-|---|---|
-| user_id | PK |
-| signup_date | 가입일 |
-| user_type | 행동 타입(A/B/C/D) |
-| device | iOS/Android/Web |
-| region | 지역 |
-| marketing_source | Organic/Paid/Referral |
-| anomaly_flag | QA용 플래그 |
+이 프로젝트는 Raw 로그를 원형 그대로 보존하고, 파생 지표는 BigQuery Data Mart에서 계산합니다.
 
-### products
-| column | description |
-|---|---|
-| product_id | PK |
-| product_name | 상품명 |
-| category | 카테고리 |
-| brand | 브랜드 |
-| price | 가격 |
-| rating_avg | 평균 평점 |
-| is_new_arrival | 신상품 여부 |
-
-### promo_calendar
-| column | description |
-|---|---|
-| promo_id | PK |
-| promo_name | 프로모션명 |
-| start_date | 시작일 |
-| end_date | 종료일 |
-| uplift_level | uplift 강도 레벨 |
-| discount_rate | 할인율 |
-
-### sessions
-| column | description |
-|---|---|
-| session_id | PK |
-| user_id | FK → users.user_id |
-| session_start_ts | 세션 시작 시각 |
-| user_type | 행동 타입 스냅샷 |
-| device | 디바이스 스냅샷 |
-| is_promo | 프로모션 여부 |
-| discount_rate | 적용 할인율 |
-| promo_id | FK → promo_calendar.promo_id (해당 시) |
-
-### events
-| column | description |
-|---|---|
-| event_id | PK |
-| user_id | FK → users.user_id |
-| event_ts | 이벤트 시각 |
-| event_type | view/click/add_to_cart/checkout/purchase |
-| session_id | FK → sessions.session_id |
-| device | 디바이스 스냅샷 |
-| order_id | purchase 이벤트에서만 존재 |
-| product_id | FK → products.product_id |
-| is_promo | 프로모션 여부 |
-| discount_rate | 적용 할인율 |
-| promo_id | FK → promo_calendar.promo_id (해당 시) |
-
-### orders
-| column | description |
-|---|---|
-| order_id | PK (purchase 이벤트와 1:1) |
-| user_id | FK → users.user_id |
-| order_ts | 주문 시각 |
-| is_promo | 프로모션 여부 |
-| discount_rate | 적용 할인율 |
-| promo_id | FK → promo_calendar.promo_id (해당 시) |
-
-### order_items
-| column | description |
-|---|---|
-| order_item_id | PK |
-| order_id | FK → orders.order_id |
-| user_id | FK → users.user_id |
-| product_id | FK → products.product_id |
-| quantity | 수량 |
-| unit_price | 정가 |
-| is_promo | 프로모션 여부 |
-| discount_rate | 적용 할인율 |
-| final_unit_price | 할인 적용 단가 |
-| line_amount | final_unit_price * quantity |
-
-### subscriptions
-| column | description |
-|---|---|
-| subscription_id | PK (Free 포함 항상 존재: SUB_{user_id}) |
-| user_id | FK → users.user_id |
-| plan | Free/Plus/Premium |
-| start_date | 시작일 |
-| end_date | 종료일(없으면 null 가능) |
-| status | Active/Cancelled/Expired 등 |
-| monthly_fee | 월 요금 |
-
-</details>
-
-
-# 4. Synthetic Dataset Generation (Python)
-
-본 프로젝트는 E-commerce 환경을 재현하기 위해, Python 기반으로 **재현 가능한(Same seed)** synthetic dataset을 생성합니다.
-
-### 4.1 Generation Principles (설계 원칙)
-- **Raw 로그 보존:** `sessions/events`는 원시 로그 형태로 유지하고,  
-  revisit/retention/funnel conversion/consistency 같은 파생 지표는 **BigQuery Data Mart(SQL)**에서 계산합니다.
-- **Funnel 5-step 고정:** `view → click → add_to_cart → checkout → purchase`
-- **정합성 규칙:** `order_id`는 purchase 이벤트에서만 생성되며,  
-  **purchase 이벤트 1건 = orders 1건**으로 매칭됩니다.
-- **Promo 반영:** `promo_calendar` 기간에 `sessions/events/orders`에 프로모션 속성이 일관되게 반영됩니다.
-- **Subscription 반영:** 유저별 멤버십 결과(`subscriptions`)를 생성해 장기 가치 비교 분석에 활용합니다.
-
-### 4.2 Dataset Scale (예시)
-(생성 시점/파라미터에 따라 달라질 수 있음)
-
-- users ≈ 30,000 / products = 300 / promo = 5  
-- sessions ≈ 0.748,757 / events ≈ 1.8M  
-- orders ≈ 15k / order_items ≈ 25k / subscriptions = 30,000
-
-Funnel event counts:
-- view = 1,465,245
-- click = 290,912
-- add_to_cart = 74,228
-- checkout = 25,223
-- purchase = 15,721
-
-### 4.3 Reproducibility (재현성)
-- random seed를 고정해 동일 환경에서 동일한 데이터 생성이 가능하도록 설계했습니다.
-- 생성 및 정합성 검증(sanity check) 이후 BigQuery 적재를 진행합니다.
-
-> Detailed generation rules (probabilities / decay / caps / schedules) are documented separately.  
-> - `docs/generation_rules.md` (예정)
-
-📁 경로: `src/data_generation/`
-```text
-src/data_generation/
-├── generate_users.py
-├── generate_products.py
-├── generate_orders.py
-├── generate_order_items.py
-└── generate_events.py
-```
----
-
-# BigQuery (Raw Loading → Optimised Tables → Data Marts)
-
-이 프로젝트는 **Raw 로그(sessions/events/orders)를 원형 그대로 보존**하고,  
-리텐션/퍼널/전환/LTV/Consistency 등 **파생 지표는 BigQuery Data Mart(SQL)에서 계산**한다.
-
-### Frozen Specs (절대 변경 금지)
-- Raw 로그 보존: `sessions/events`는 Raw 유지, 파생지표는 DM에서 계산
-- Funnel 이벤트 5단계 고정: `view → click → add_to_cart → checkout → purchase`
-- `order_id`는 `purchase` 이벤트에서만 존재
-- `purchase 이벤트 1건 = orders 1건` (정합성 유지)
-- Raw 테이블 수 8개 고정: `users, products, promo_calendar, sessions, events, orders, order_items, subscriptions`
-
----
-
-### 1) BigQuery Setup (요약)
+### 4.1 BigQuery Setup (Summary)
 - Project: `eternal-argon-479503-e8`
 - Raw dataset: `ecommerce`
 - DM dataset: `ecommerce_dm`
-- Location: `US` (Raw/DM 동일 location로 통일)
+- Location: `US`
 
-Raw 테이블(8개)은 Python으로 생성한 CSV를 BigQuery에 적재했고, 이후 쿼리 최적화 및 Data Mart를 구축했다.
+### 4.2 Raw Loading
+Python으로 생성한 CSV를 BigQuery Raw dataset에 로딩합니다.  
+Raw 테이블은 “가공 전 원본 보존”을 우선으로 유지합니다.
 
----
+### 4.3 Optimised Tables (Partitioning/Clustering)
+분석 비용/속도 최적화를 위해, 주요 대용량 테이블은 Partitioning/Clustering을 적용한 사본 테이블을 사용합니다.
 
-### 2) Optimisation (Partitioning / Clustering)
-분석 쿼리는 대부분 **가입일 기준 14/30/180일 윈도우**로 기간 필터를 사용하고,  
-집계는 주로 **user_id / session_id** 단위로 발생한다.  
-따라서 `events/sessions/orders` 중심으로 **Partitioning(날짜)** + **Clustering(유저/세션/이벤트타입)** 을 적용해 스캔 바이트와 비용을 줄였다.
+- 예시: `events → events_p`, `sessions → sessions_p`, `orders → orders_p`
 
-- 상세 설계 및 증거(스크린샷/비교 쿼리): 📁 `docs/optimisation/`
+### 4.4 Data Marts (SQL)
+분석에 필요한 지표(Activation/Retention/LTV/Consistency/Funnel)를 Data Mart로 정의하고, SQL로 계산합니다.
 
----
+- Data Mart 생성 SQL: `docs/dm/`
+- Sanity check SQL: `docs/sanity_check/`
 
-### 3) Data Mart Map (전체 구조)
-Raw → DM 설계의 목적은 아래 핵심 질문을 SQL로 빠르게 검증하기 위함이다.
-
-> **H1/H2/H3:** 초기 전환(14/30일)과 Consistency(방문 리듬)가 180일 LTV/Retention을 어떻게 설명하는가?
-
-Data Mart는 **Grain(단위)** 기준으로 역할을 분리했다.
-
-- **User-level (모델/스토리 핵심)**
-  - `DM_user_window` : 14/30/180일 유저 KPI + 초기 퍼널 reach 요약
-  - `DM_consistency_180d` : 방문 리듬/불규칙성(Consistency) 피처
-  - `DM_ltv_180d` : 180일 매출(LTV) outcome
-
-- **Session-level (퍼널의 원자 데이터)**
-  - `DM_funnel_session` : 세션 단위 퍼널 재구성(정합성/디버깅 가능)
-
-- **Cohort-level (리포팅/커브)**
-  - `DM_funnel_kpi_window` : 코호트×윈도우(14/30) 퍼널 KPI 요약
-  - `DM_retention_cohort` : 코호트×day_index(0..180) retention curve
+대표 DM 목록:
+- `DM_user_window` (유저 윈도우/피처 베이스)
+- `DM_consistency_180d`
+- `DM_ltv_180d`
+- `DM_retention_cohort`
+- `DM_funnel_session`
+- `DM_funnel_kpi_window`
+- `DM_timesplit_60_180_final` (v1.1용 Time-split 확장)
 
 ---
 
-### 4) Data Mart 설계 노트 & Sanity Checks
-각 Data Mart는 아래 항목을 포함해 문서화했다.
-- Grain / 주요 쿼리 패턴(WHERE/GROUP BY)
-- Partition/Clustering 근거(해당 시)
-- Frozen Specs 반영 포인트
-- Sanity checks (범위/정합성/유일성 검증)
+## 5) SQL Analysis (Story)
 
-- DM 설계 노트(1-page): 📁 `docs/dm/`
-- Sanity check SQL: 📁 `docs/sanity_check/`
+이 프로젝트의 SQL 분석 결과는 **Story 문서**로 정리되어 있습니다.
+실무 관점에서 빠르게 이해할 수 있도록, 핵심 결과/스크린샷 중심으로 구성했습니다.
 
----
+### 5.1 Results (Story)
+- Story 문서: `docs/results/story.md`
+- 결과 스크린샷: `docs/results/figures/`
+  - 화면에 결과가 다 안 담기는 경우가 있어 `*_a.png`, `*_b.png`처럼 분리해 저장했습니다.
 
+### 5.2 Query Organization
+스토리 재현에 필요한 쿼리와, 전체 분석 과정 쿼리를 분리해 관리합니다.
 
-# 6. Airflow Workflow Automation
+- `src/sql/analysis/00_story_core/`  
+  → `docs/results/story.md`에 직접 연결되는 **핵심 쿼리 세트**
 
-본 프로젝트는 데이터 생성과 Data Mart 업데이트 작업을 자동화하기 위해 **Apache Airflow**를 활용했습니다.
+- `src/sql/analysis/01_supporting/`  
+  → 전체 분석 흐름(Activation ~ Retention + 실험 쿼리) 보관  
+  - `01_activation/`
+  - `02_consistency/`
+  - `03_funnel_dropoff/`
+  - `04_segment_deepdive/`
+  - `05_retention/`
+  - `side_experiments/`
 
-### 구성 DAG
-
-| DAG 이름 | 설명 |
-|---------|------|
-| **generate_synthetic_data_daily** | Python으로 Users/Products/Orders/Events 생성 후 BigQuery 적재 |
-| **refresh_data_mart** | Data Mart(SQL View/Materialized Table) 정기 업데이트 |
-| **funnel_preprocessing_dag** | user_events 테이블을 session 단위로 전처리한 후 dm_funnel_events로 반영 |
-
-### Workflow 구조
-
-### 사용된 Operators
-- PythonOperator  
-- BigQueryInsertJobOperator  
-- Task dependency (`>>`)  
-- Daily scheduling (`@daily`)
-
-📁 DAG 파일: `airflow/dags/`
+> 보통은 `story.md`를 먼저 보고, 관심 가는 결과가 있으면 `00_story_core`에서 쿼리를 확인하고,  
+> 더 깊게 들어가면 `01_supporting`에서 전체 분석 흐름/실험까지 확인할 수 있습니다.
 
 ---
 
-# 7. SQL-Based Analysis
-
-### 분석 항목
-- Cohort & Retention  
-- LTV & 재구매 패턴  
-- Subscription 효과  
-- Category 성과 분석  
-- Funnel Drop-off 분석  
-- Behavior-based segmentation  
-
-📁 SQL Notebook: `src/sql/`
-
----
-
-# 8. 🐍 Python EDA & Statistical Analysis
-
-### 분석 항목
-- 분포/상관관계 EDA  
-- Subscription 군 간 AOV 비교 (t-test, Mann-Whitney U)  
-- Bootstrap 기반 A/B Test  
-- Retention Heatmap  
-- Funnel 이벤트 상세 분석  
-
-📁 Notebook: `src/python/`
-
----
-
-# 9. Tableau Dashboard
-
-### Dashboard 구성 (총 4 pages)
-1. KPI Overview  
-2. Category Performance  
-3. Cohort & Retention  
-4. Funnel & Drop-off  
-
-### Tableau 자동 업데이트
-- BigQuery Live Connection  
-- Data Mart → Tableau 실시간 반영  
-
-📁 Tableau 파일: `tableau/`
-
----
-
-# 10. Final Insights
-
-분석 결과 핵심 인사이트는 다음과 같습니다:
-
-1. 높은 LTV 고객군의 행동적 특징 도출  
-2. Funnel 단계별 주요 이탈 요인 및 개선 전략  
-3. Discount Day의 신규 고객 전환 효과  
-4. 성장 vs 비효율 카테고리 식별  
-5. Retention 개선을 위한 Activation 지표 발굴  
-
----
-
-# Tech Stack
-
-- **Python**: pandas, numpy, faker, matplotlib  
-- **SQL**: BigQuery  
-- **Airflow**: DAG Scheduling  
-- **Visualization**: Tableau  
-- **Infra**: GitHub  
-
----
-
-
-
+## 6) Notes / Next
+- 현재 Story는 v1.0 결과를 중심으로 정리되어 있습니다.
+- 다음 단계(v1.1)는 Time-split(예: 0–60d 피처 / 60–180d 성과) 기반으로 더 안전하게 검증하는 방향으로 확장 예정입니다.
+  - 관련 DM: `DM_timesplit_60_180_final`
