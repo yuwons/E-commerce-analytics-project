@@ -1,9 +1,9 @@
 /* =========================================================
-[FINAL] Activation(14d) × Consistency → LTV(180d) + Point Retention
+[FINAL] Activation(14d) * Consistency → LTV(180d) + Point Retention
 - 프로젝트 목표 연결:
-  1) 초기 전환(Activation) 수준이 장기 성과를 '완전히' 설명하지 못함
-  2) Consistency(방문 리듬/불규칙성)가 장기 LTV/Retention을 강하게 분리
-  3) 즉, “Short-term Activation vs Long-term outcome trade-off”를
+  초기 전환(Activation) 수준이 장기 성과를 완전히 설명하지 못함
+  Consistency(방문 리듬/불규칙성)가 장기 LTV/Retention을 강하게 분리
+  즉 Short-term Activation vs Long-term outcome trade-off를
      Consistency로 구조적으로 설명
 
 - Promo/discount deep dive 제외 이유:
@@ -157,4 +157,5 @@ WHERE consistency_segment != 'C0_no_consistency_data'  -- v1 메인 스토리는
 GROUP BY 1,2
 
 ORDER BY activation_stage_14d, consistency_segment;
+
 
