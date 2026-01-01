@@ -54,7 +54,7 @@ Raw 테이블은 그대로 두고, 아래 3개 대형 테이블을 **날짜 파�
 
 ---
 
-## Safe swap strategy (rename)
+## (rename) strategy
 
 기존 테이블을 보관하면서, 최적화 테이블을 **rename으로 안전하게 교체 하였습니다.**  
 (그래서 이후 쿼리는 기존 테이블명 events/sessions/orders 그대로 사용 가능)
