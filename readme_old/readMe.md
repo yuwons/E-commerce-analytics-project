@@ -157,3 +157,11 @@ v1.0에서 결과가 “너무 강하게/뻔하게” 나오는 이유 중 하�
 - Datamart SQL: `docs/datamart/`  
 - Sanity check SQL: `docs/datamart/sanity_check/`
 
+
+### 목표 변경 기록 (Decision Log)
+초기에는 Subscription/Promotion 등 추가 주제도 고려했으나, v1.0에서는 메시지 분산과 복잡도 대비 효용을 이유로 제외했다.  
+또한 동일 기간(0–180) 내 행동으로 동일 기간 성과를 설명하는 방식은 tautology/leakage 위험이 있어,  
+관측창(day 0–59)과 성과창(day 60–179)을 분리한 Time-split 구조로 목표를 재정의했다.  
+따라서 v1.0의 최종 목표는 **Activation × Consistency가 이후(60–180) 성과를 어떻게 분리하는가**에 집중한다.
+
+
