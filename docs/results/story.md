@@ -21,7 +21,7 @@
 
 ### 0.2 What we do next (v1.1)
 - v1.0 결과를 "힌트"로 삼되, 해석을 더 안전하게 만들기 위해  
-  **Time-split(0~60d -> 60~180d)** 기반 DM(`DM_timesplit_60_180_final`)로 재현/검증한다.
+  **Time-split(0~60d → 60~180d)** 기반 DM(`DM_timesplit_60_180_final`)로 재현/검증한다.
 - 추가로, device/region/marketing_source 등 **통제 변수를 포함한 모델링(예: 회귀/로지스틱)**으로  
   “Consistency의 독립적 설명력”도 확인한다.
 
@@ -134,7 +134,7 @@ Activation stage별로 성과 격차(lift)가 동일하게 나타나진 않았�
 
 ---
 
-## 6) Next Step — Time-split으로 “관측(0~60d) → 성과(60~180d)”를 분리해 다시 본다 (v1.1)
+## 6) Next Step — Time-split으로 “관측(0-60d) → 성과(60-180d)”를 분리해 다시 본다 (v1.1)
 
 v1.0에서 보인 패턴(Activation만으로 부족, Consistency가 성과와 같이 움직임)을  
 좀 더 안전하게 확인하기 위해, v1.1에서는 시간축을 분리한다.
