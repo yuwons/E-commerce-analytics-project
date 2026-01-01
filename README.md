@@ -39,6 +39,8 @@
 - **purchase 1건 = orders 1건** 정합성 유지  
 - Raw 로그(sessions/events)는 원형 보존, 파생 지표는 DM에서 계산
 
+- Raw Data 테이블 : `data/`
+  
 ---
 
 ## 3) Synthetic Dataset Generation (Python)
