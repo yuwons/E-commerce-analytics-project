@@ -1,12 +1,10 @@
 /* =========================================================
 [HEADLINE] C5 vs C1 Lift by Activation (6 rows)
-- 목적: "Activation만으로는 부족하고, Consistency가 장기 성과를 크게 분리"를
-        한 표로 빠르게 보여주기
 - 비교: 각 activation_stage_14d 내에서 C5_high_consistency vs C1_low_consistency
 - 지표:
-  1) retention_last_week_173_179 (point retention proxy)
-  2) avg_revenue_180d (overall, 0 포함)
-  3) purchase_rate_180d (보조)
+  retention_last_week_173_179 (point retention proxy)
+  avg_revenue_180d (overall, 0 포함)
+  purchase_rate_180d (보조)
 ========================================================= */
 
 WITH
@@ -149,3 +147,4 @@ ORDER BY
     WHEN 'A5_purchase' THEN 5
     ELSE 99
   END;
+
