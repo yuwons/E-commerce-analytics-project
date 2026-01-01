@@ -7,7 +7,7 @@
      Consistency로 구조적으로 설명
 
 - Promo/discount deep dive 제외 이유:
-  데이터 희소(orders is_promo ~0.3%, discount도 극소) → 노이즈 위험 큼
+  데이터 희소(orders is_promo ~0.3%, discount도 극소) - 노이즈 위험 큼
 ========================================================= */
 
 WITH
@@ -157,3 +157,4 @@ WHERE consistency_segment != 'C0_no_consistency_data'  -- v1 메인 스토리는
 GROUP BY 1,2
 
 ORDER BY activation_stage_14d, consistency_segment;
+
