@@ -36,7 +36,7 @@
 ## 2) 데이터 모델 (ERD)
 
 ### 2.1 Tables (v1.0 분석 스코프)
-Synthetic dataset으로 “분석 가능한 문제”를 만들기 위해 현실적인 e-commerce 스키마를 구성했다. :contentReference[oaicite:9]{index=9}
+Synthetic dataset으로 “분석 가능한 문제”를 만들기 위해 현실적인 e-commerce 스키마를 구성했다.
 
 - **Dimension**
   - `users`
@@ -69,18 +69,15 @@ Synthetic dataset으로 “분석 가능한 문제”를 만들기 위해 현실
 
 ### 3.1 Generation Principles
 - Raw 로그 보존 + DM에서 파생지표 계산
-- Funnel 5-step 고정 + order_id 정합성 유지 :contentReference[oaicite:14]{index=14}
+- Funnel 5-step 고정 + order_id 정합성 유지 
 
 ### 3.2 Dataset Scale (current build, approx.)
 - users ≈ **30,000**
 - sessions ≈ **0.7–0.8M**
 - events ≈ **~1.8M**
 - orders ≈ **~15K**
-- products = **300** :contentReference[oaicite:15]{index=15}
+- products = **300**
 
-### 3.3 Reproducibility
-- random seed 고정
-- 생성 후 PK/Join 정합성 + row count sanity check 수행 후 BigQuery 적재 :contentReference[oaicite:16]{index=16}
 
 📁 `src/data_generation/`
 ```text
