@@ -1,23 +1,67 @@
 # BigQuery Optimisation (Partitioning & Clustering)
 
-이 프로젝트는 BigQuery 비용/성능 최적화를 위해 **파티셔닝(Partitioning)** 과 **클러스터링(Clustering)** 을 적용했다.  
-특히 분석 질문이 **signup_date 기준 14/30/180일 윈도우** 형태이므로, 시간 필터와 유저 단위 집계가 자주 발생한다.
+이 프로젝트는 BigQuery 비용/성능 최적화를 위해 **Partitioning(파티셔닝)** 과 **Clustering(클러스터링)** 을 적용했다.  
+분석 쿼리 패턴이 `signup_date` 기준 **14/30/60/180일 윈도우** + **user/session 단위 집계**가 반복되기 때문이다.
 
-## What we optimised
+---
 
-- **Partitioning**
-  - 목적: 날짜 필터 쿼리에서 스캔 바이트 감소 (Partition pruning 유도)
-  - 대상 예: `events` → `DATE(event_ts)` 기준
+## What we optimised (Final)
 
-- **Clustering**
-  - 목적: user/session/event_type 조건이 자주 들어가는 쿼리에서 스캔/정렬 비용 절감
-  - 대상 예: `events` → `CLUSTER BY user_id, session_id, event_type, product_id`
+Raw 테이블은 그대로 두고, 아래 3개 대형 테이블을 **날짜 파티션 + 핵심 키 클러스터**로 최적화했다.
 
-## Evidence (screenshots)
-- Partitioning 효과 비교: `partition_effect.png` (before vs after)
-- Clustering 효과 비교: `clustering_effect.png` (before vs after)
+---
 
-## Related docs
-- DM 설계 인덱스: `../dm/README.md`
-- Sanity checks: `../sanity_check/README.md`
+### 1) events → events_p
+- **Partition:** `DATE(event_ts)`
+- **Cluster:** `user_id, session_id, event_type`
+- 이유
+  - events가 가장 크고 스캔 비용이 커서 **시간 필터 + user/session/event_type 조합**이 핵심
+  - `product_id`는 특정 분석에서만 쓰여 **기본 clustering에서 제외**
 
+**Before (no partitioning/clustering)**  
+![](screenshots/event_before.png)
+
+**After (partitioning/clustering applied)**  
+![](screenshots/event_after.png)
+
+---
+
+### 2) sessions → sessions_p
+- **Partition:** `DATE(session_start_ts)`
+- **Cluster:** `user_id, session_id`
+- 이유: 세션 기반 분석/조인이 `user_id/session_id` 중심
+
+**Before (no partitioning/clustering)**  
+![](screenshots/session_before.png)
+
+**After (partitioning/clustering applied)**  
+![](screenshots/session_after.png)
+
+---
+
+### 3) orders → orders_p
+- **Partition:** `DATE(order_ts)`
+- **Cluster:** `user_id`
+- 이유
+  - 주문은 대부분 **유저 단위 집계(LTV/재구매/구매여부)** 중심
+  - `order_id`는 unique라 clustering 효율이 낮아 제외
+
+**Before (no partitioning/clustering)**  
+![](screenshots/order_before.png)
+
+**After (partitioning/clustering applied)**  
+![](screenshots/order_after.png)
+
+---
+
+## Safe swap strategy (rename)
+
+기존 테이블을 보관하면서, 최적화 테이블을 **rename으로 안전하게 교체**했다.  
+(그래서 이후 쿼리는 기존 테이블명 `events/sessions/orders` 그대로 사용 가능)
+
+---
+
+## Notes
+
+- Clustering 키는 “많이 넣기”보다 **반복되는 핵심 쿼리 패턴에 맞춰 최소화**하는 게 효율적이라 최종 키를 단순화했다.
+- Partitioning/Clustering은 **저장 구조 최적화**이므로, 분석 결과(전환율/LTV/retention 값)는 변하지 않는다.
