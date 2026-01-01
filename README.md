@@ -82,7 +82,7 @@ Funnel event counts:
 - Location: `US`
 
 ### 4.2 Raw Loading
-Python으로 생성한 데이터를 BigQuery Raw dataset에 로딩합니다.  
+Python으로 생성한 데이터 (csv) 를 BigQuery Raw dataset에 로딩합니다.  
 Raw 테이블은 “가공 전 원본 보존”을 우선으로 유지합니다.
 
 ### 4.3 Optimised Tables (Partitioning / Clustering)
