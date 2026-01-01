@@ -144,14 +144,18 @@ Data Mart는 **Grain(단위)** 기준으로 역할을 분리했다.
 - `DM_funnel_kpi_window` : 코호트×윈도우(14/30) 퍼널 KPI 요약  
 - `DM_retention_cohort` : `cohort_month × day_index(0..180)` retention curve  
 
-### 4.4 Time-split DM을 왜 추가했나 (짧고 날카롭게)
+### 4.4 Time-split DM을 추가한 이유
 
 v1.0에서 결과가 “너무 강하게/뻔하게” 나오는 이유 중 하나는, **Consistency와 Outcome을 같은 0–180일 창에서 동시에 쓰는 구조가 ‘당연한 결론(tautology)’** 을 만들 수 있기 때문이다. *(story (4))*
 
 그래서 `DM_timesplit_60_180_final`에서는 **시간축을 분리**해, 메시지를  
 “180일 내내 꾸준하면 돈을 많이 쓴다”가 아니라  
-“**초기 60일 리듬이 안정적인 유저는 이후 120일(60–180) 성과가 높다**”로 바꿀 수 있게 만들었다. *(story (4))*
 
+“**초기 60일 리듬이 안정적인 유저는 이후 120일(60–180) 성과가 높다**”로 바꿀 수 있게 만들었다. 
+초기(naive) 스냅샷에서는 Activation×Consistency와 장기 성과가 매우 강하게 분리되는 패턴이 관찰될 수 있다.
+다만 predictor/outcome이 동일 기간(0–180)에 묶이면 “오래 남아 자주 온 유저가 더 구매한다”는 tautology/leakage로 해석될 위험이 있다.
+그래서 v1.0에서는 관측창(day 0–59)과 성과창(day 60–179)을 분리한 DM_timesplit_60_180_final을 구축해,
+후속 분석이 더 엄격한 형태로 진행될 수 있도록 데이터 구조를 업그레이드했다. (Time-split 기반 추가 분석은 Planned)
 ### 4.5 DM 코드 & sanity_check (설명은 최소)
 
 - Datamart SQL: `docs/datamart/`  
