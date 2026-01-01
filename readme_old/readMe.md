@@ -87,3 +87,56 @@ src/data_generation/
 ├── generate_orders.py
 ├── generate_order_items.py
 └── generate_events.py
+
+## 4) BigQuery (Raw Loading → Optimised Tables → Data Marts)
+
+이 프로젝트는 **Raw 로그를 원형 그대로 보존**하고, **리텐션/퍼널/전환/LTV/Consistency** 등 파생 지표는 **BigQuery Data Mart(SQL)** 에서 계산한다.
+
+### 4.1 BigQuery Setup (요약)
+
+- **Project**: `eternal-argon-479503-e8`  
+- **Raw dataset**: `ecommerce`  
+- **DM dataset**: `ecommerce_dm`  
+- **Location**: `US`
+
+Raw 테이블은 Python으로 생성한 CSV를 BigQuery에 적재했고, 이후 쿼리 최적화 및 Data Mart를 구축했다.
+
+### 4.2 Optimisation (Partitioning / Clustering)
+
+분석 쿼리는 대부분 **가입일 기준 14/30/60/180일 윈도우**로 기간 필터를 사용하고, 집계는 주로 **user_id / session_id** 단위로 발생한다.
+
+따라서 `events/sessions/orders` 중심으로 **Partitioning(날짜) + Clustering(유저/세션/이벤트타입)** 을 적용해 스캔 바이트와 비용을 줄였다.
+
+- 상세 증거(스크린샷/비교 쿼리): `docs/optimisation/` *(선택/추가 예정)*
+
+### 4.3 Data Mart Map (핵심 7개)
+
+Data Mart는 **Grain(단위)** 기준으로 역할을 분리했다.
+
+**User-level**
+- `DM_user_window` : 유저 특성 + 14/30 퍼널 reach + 180일 요약 KPI  
+- `DM_consistency_180d` : 0~180d 방문 리듬(Consistency) 피처  
+- `DM_ltv_180d` : 180일 LTV(outcome)  
+- `DM_timesplit_60_180_final` : Time-split 핵심 테이블  
+  - **Observation (0–60)**: Activation + Consistency features  
+  - **Performance (60–180)**: 구매/매출/리텐션 outcomes  
+
+**Session-level (퍼널 원자 데이터)**
+- `DM_funnel_session` : 세션 단위 strict/reach 플래그 및 이벤트 피벗  
+
+**Cohort / Reporting**
+- `DM_funnel_kpi_window` : 코호트×윈도우(14/30) 퍼널 KPI 요약  
+- `DM_retention_cohort` : `cohort_month × day_index(0..180)` retention curve  
+
+### 4.4 Time-split DM을 왜 추가했나 (짧고 날카롭게)
+
+v1.0에서 결과가 “너무 강하게/뻔하게” 나오는 이유 중 하나는, **Consistency와 Outcome을 같은 0–180일 창에서 동시에 쓰는 구조가 ‘당연한 결론(tautology)’** 을 만들 수 있기 때문이다. *(story (4))*
+
+그래서 `DM_timesplit_60_180_final`에서는 **시간축을 분리**해, 메시지를  
+“180일 내내 꾸준하면 돈을 많이 쓴다”가 아니라  
+“**초기 60일 리듬이 안정적인 유저는 이후 120일(60–180) 성과가 높다**”로 바꿀 수 있게 만들었다. *(story (4))*
+
+### 4.5 DM 코드 & sanity_check (설명은 최소)
+
+- Datamart SQL: `docs/datamart/`  
+- Sanity check SQL: `docs/datamart/sanity_check/`
