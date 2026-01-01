@@ -76,7 +76,7 @@ Raw 테이블은 “가공 전 원본 보존”을 우선으로 유지합니다.
 - 예시: `events → events_p`, `sessions → sessions_p`, `orders → orders_p`
 
 > 최적화 관련 SQL은 repo의 `docs/optimisation/` 폴더에 정리되어 있습니다.  
-> (설계 노트/상세 근거 문서는 추후 보강 예정)
+> (설계 노트/상세 근거 문서는 정리후 업로드 예정)
 
 ### 4.4 Data Marts (SQL)
 Activation / Funnel / Consistency / LTV / Retention 지표를 Data Mart로 정의하고 SQL로 계산합니다.
