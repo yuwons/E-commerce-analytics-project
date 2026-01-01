@@ -22,9 +22,8 @@
 
 ## 2) Data Model (ERD)
 
-이 프로젝트는 “오늘의집 스타일” 이커머스 도메인을 가정한 **synthetic dataset**으로 구성되어 있습니다.
+이 프로젝트는 이커머스 도메인을 가정한 **synthetic dataset**으로 구성되어 있습니다.
 
-- ERD 이미지: `docs/erd.png`
 
 핵심 테이블:
 - `users` : 유저 속성 및 가입 정보
