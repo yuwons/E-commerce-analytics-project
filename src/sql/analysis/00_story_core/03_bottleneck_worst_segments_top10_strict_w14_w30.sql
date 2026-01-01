@@ -1,5 +1,5 @@
 -- src/sql/analysis/03_funnel/03_funnel_bottleneck__worst_segments_top10.sql
--- Output: (window_days=14/30) × (strict 기준) 가장 자주 병목인 step에 대해
+-- Output: (window_days=14/30)  (strict 기준) 가장 자주 병목인 step 
 --         전환율 최악 세그먼트 TOP 10
 
 DECLARE MIN_DENOM INT64 DEFAULT 50;
@@ -170,4 +170,5 @@ SELECT *
 FROM worst
 WHERE worst_rank <= 10
 ORDER BY window_days, worst_rank;
+
 
