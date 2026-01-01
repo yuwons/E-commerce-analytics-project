@@ -1,7 +1,7 @@
 # Data Marts (DM)
 
-이 폴더는 BigQuery에서 생성한 **분석용 Data Mart 테이블**들의 인덱스 페이지다.  
-Raw 테이블(`users`, `sessions`, `events`, `orders`, `order_items` 등)을 그대로 분석하지 않고, **프로젝트 목표(Short-term Conversion vs Long-term LTV/Retention trade-off)**에 맞춰 재사용 가능한 형태로 요약/정리했다.
+이 폴더는 BigQuery에서 생성한 **분석용 Data Mart 테이블**들의 인덱스 페이지 입니다.  
+Raw 테이블(`users`, `sessions`, `events`, `orders`, `order_items` 등)을 그대로 분석하지 않고, **프로젝트 목표(Short-term Conversion vs Long-term LTV/Retention trade-off)**에 맞춰 재사용 가능한 형태로 요약/정리 했습니다.
 
 ---
 
@@ -21,13 +21,13 @@ Raw 테이블(`users`, `sessions`, `events`, `orders`, `order_items` 등)을 그
 
 ## Why multiple DMs?
 
-한 번에 “만능 DM 하나”로 만들면:
+한 번에 만능 DM 하나 로 만들면:
 - 쿼리가 무겁고 유지보수가 어려워지고
-- 서로 다른 grain(`user`, `session`, `cohort-day`)을 한 테이블에 섞게 되어
+- 서로 다른 grain(user, session, cohort-day)을 한 테이블에 섞게 되어
 - 분석/검증/확장이 오히려 어려워진다.
 
 그래서 본 프로젝트는 **목적/그레인 별로 DM을 분리**하고,
-SQL 분석은 이 DM들을 조합해서 빠르고 명확하게 수행하도록 설계했다.
+SQL 분석은 이 DM들을 조합해서 빠르고 명확하게 수행하도록 설계했습니다.
 
 ---
 
