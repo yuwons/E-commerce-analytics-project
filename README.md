@@ -1,4 +1,4 @@
-# E-commerce Analytics Project (Synthetic Data → BigQuery → SQL Story)
+<img width="1114" height="1384" alt="image" src="https://github.com/user-attachments/assets/f9f15fb9-f357-4c76-a5e8-8d8064e23bd6" /># E-commerce Analytics Project (Synthetic Data → BigQuery → SQL Story)
 
 **한 줄 요약:** Synthetic e-commerce 로그를 생성하고(BigQuery 로딩/최적화/DM 구축),  
 유저의 **초기 Activation(14일)**과 **방문 리듬(Consistency)**이 **장기 성과(LTV/Retention)**와 어떤 관계가 있는지 SQL 분석 결과(Story)로 정리한 프로젝트입니다.
@@ -98,13 +98,13 @@ Raw 테이블은 Python으로 생성한 CSV를 BigQuery에 로드하여 구성�
 - `docs/optimisation/design_note/` (설계노트 - PDF)
 - `docs/optimisation/sql/` (생성코드 - SQL)
 
-> Note: 대형 Raw 테이블 조회 시 날짜 필터 누락(full scan) 방지를 위해 `REQUIRE_PARTITION_FILTER` 적용을 권장한다.
+> Note: 대형 Raw 테이블 조회 시 날짜 필터 누락(full scan) 방지를 위해 `REQUIRE_PARTITION_FILTER = TRUE`
 
 ### 4.4 Data Marts (SQL)
 Activation / Funnel / Consistency / LTV / Retention 지표를 Data Mart로 정의하고 SQL로 계산한다.
 
 관련 문서 :
-- `docs/dm/dm_design_notes/` (DM 설계노트 - PDF)
+- `docs/dm/design_notes/` (DM 설계노트 - PDF)
 - `docs/dm/sql/` (DM 생성코드 - SQL)
 - 
 DATA MART BUILT:
