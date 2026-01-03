@@ -73,31 +73,37 @@ Funnel event counts:
 
 ## 4) BigQuery (Raw Loading → Optimised Tables → Data Marts)
 
-이 프로젝트는 Raw 로그를 원형 그대로 보존하고, 파생 지표는 BigQuery Data Mart에서 계산합니다.
+이 프로젝트는 Raw 로그를 원형 그대로 보존하고,
+Retention / Funnel / Conversion / LTV / Consistency 등 파생 지표는 BigQuery Data Mart(SQL)에서 계산한다.
 
-### 4.1 BigQuery Setup (Summary)
+### 4.1 BigQuery Setup (요약)
 - Project: `eternal-argon-479503-e8`
 - Raw dataset: `ecommerce`
 - DM dataset: `ecommerce_dm`
 - Location: `US`
 
-### 4.2 Raw Loading
-Python으로 생성한 데이터 (csv) 를 BigQuery Raw dataset에 로딩합니다.  
-Raw 테이블은 “가공 전 원본 보존”을 우선으로 유지합니다.
+### 4.2 Raw Tables (보존)
+Raw 테이블은 Python으로 생성한 CSV를 BigQuery에 로드하여 구성한다.
+- `users`
+- `sessions`
+- `events`
+- `orders`
+- `order_items`
 
 ### 4.3 Optimised Tables (Partitioning / Clustering)
-대용량 테이블의 비용/속도 최적화를 위해, 주요 테이블은 partitioning/clustering이 적용된 사본 테이블을 사용했습니다.
+대용량 테이블의 비용/속도 최적화를 위해, Raw 기반으로 partitioning/clustering을 적용한 사본 테이블을 운영한다.
+- 예시: `events → events_p`, `sessions → sessions_p`, `orders → orders_p` *(프로젝트 적용 범위에 따라 운영)*
 
-- 예시: `events → events_p`, `sessions → sessions_p`, `orders → orders_p`
+설계 문서(PDF):
+- `docs/optimisation/Bigquery Partitioning_Clustering 설계.pdf`
 
-> 최적화 관련 SQL은 repo의 `docs/optimisation/` 폴더에 정리되어 있습니다.  
-> (설계 노트/상세 근거 문서는 정리후 업로드 예정)
+> Note: 대형 Raw 테이블 조회 시 날짜 필터 누락(full scan) 방지를 위해 `REQUIRE_PARTITION_FILTER` 적용을 권장한다.
 
 ### 4.4 Data Marts (SQL)
-Activation / Funnel / Consistency / LTV / Retention 지표를 Data Mart로 정의하고 SQL로 계산합니다.
+Activation / Funnel / Consistency / LTV / Retention 지표를 Data Mart로 정의하고 SQL로 계산한다.
 
-- Data Mart 생성 SQL: `docs/dm/`
-- Sanity check SQL: `docs/sanity_check/`
+설계 문서(PDF):
+- `docs/dm/design_notes/` (각 DM 1-page 설계노트)
 
 DATA MART BUILT:
 - `DM_user_window`
@@ -105,8 +111,12 @@ DATA MART BUILT:
 - `DM_ltv_180d`
 - `DM_retention_cohort`
 - `DM_funnel_session`
-- `DM_funnel_kpi_window`
-- `DM_timesplit_60_180_final` (Time-split 확장, v1.1)
+- `DM_timesplit_60_180_final` (v1.1: 0–60 관측 / 60–180 성과 분리)
+
+OPTIONAL (대시보드/KPI 요약용):
+- `DM_funnel_kpi_window` (cohort_month × window_days(14/30) 전환율 요약; 핵심 분석에서는 미사용)
+
+> Scope note: promo/discount 관련 지표는 synthetic 생성 품질 이슈로 v1 분석 스코프에서 제외(필요 시 optional로 재활성화 가능).
 
 ---
 
