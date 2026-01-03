@@ -104,8 +104,8 @@ Raw 테이블은 Python으로 생성한 CSV를 BigQuery에 로드하여 구성�
 Activation / Funnel / Consistency / LTV / Retention 지표를 Data Mart로 정의하고 SQL로 계산한다.
 
 관련 문서 :
-- `docs/dm/dm_design_notes/` (각 DM 설계노트 - PDF)
-- `docs/dm/sql/` (각 DM 생성코드 - SQL)
+- `docs/dm/dm_design_notes/` (DM 설계노트 - PDF)
+- `docs/dm/sql/` (DM 생성코드 - SQL)
 - 
 DATA MART BUILT:
 - `DM_user_window`
