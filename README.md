@@ -91,20 +91,22 @@ Raw 테이블은 Python으로 생성한 CSV를 BigQuery에 로드하여 구성�
 - `order_items`
 
 ### 4.3 Optimised Tables (Partitioning / Clustering)
-대용량 테이블의 비용/속도 최적화를 위해, Raw 기반으로 partitioning/clustering을 적용한 사본 테이블을 운영한다.
+대용량 테이블의 비용/속도 최적화를 위해, Raw 테이블에서 partitioning/clustering을 적용한 사본 테이블을 운영한다.
 - 예시: `events → events_p`, `sessions → sessions_p`, `orders → orders_p` *(프로젝트 적용 범위에 따라 운영)*
 
-설계 문서(PDF):
-- `docs/optimisation/Bigquery Partitioning_Clustering 설계.pdf`
+관련 문서:
+- `docs/optimisation/design_note/` (설계노트 - PDF)
+- `docs/optimisation/sql/` (생성코드 - SQL)
 
 > Note: 대형 Raw 테이블 조회 시 날짜 필터 누락(full scan) 방지를 위해 `REQUIRE_PARTITION_FILTER` 적용을 권장한다.
 
 ### 4.4 Data Marts (SQL)
 Activation / Funnel / Consistency / LTV / Retention 지표를 Data Mart로 정의하고 SQL로 계산한다.
 
-설계 문서(PDF):
-- `docs/dm/design_notes/` (각 DM 1-page 설계노트)
-
+관련 문서 :
+- `docs/dm/dm_design_notes/` (각 DM 설계노트 - PDF)
+- `docs/dm/sql/` (각 DM 생성코드 - SQL)
+- 
 DATA MART BUILT:
 - `DM_user_window`
 - `DM_consistency_180d`
