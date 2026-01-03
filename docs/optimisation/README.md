@@ -83,21 +83,14 @@ Raw 테이블은 보존하고, 아래 3개 대형 테이블에 대해 **날짜 P
 
 ---
 
-## Guardrails (쿼리 작성 규칙)
+## Guardrails (Intent)
 
-### 1) Partition pruning 깨지는 대표 케이스
-- Partition 컬럼에 함수/변형을 추가하고, WHERE에서 원본을 필터하는 경우
-- 문자열/타임존 변환으로 partition key와 다른 표현을 쓰는 경우
-- 파티션 컬럼과 무관한 조건만 두고 스캔하는 경우(날짜 필터 누락)
+- 목적: 날짜 필터 누락(full scan) 방지 + partition/clustering 효율 유지
+- 기본 규칙:
+  - 날짜 조건은 partition key 기준으로 작성(가능하면 range: `>= start AND < end`)
+  - 대형 테이블은 날짜 필터를 전제로 사용(윈도우 분석 특성상 필수)
+  - 필요 시 `REQUIRE_PARTITION_FILTER = TRUE` 적용 고려(실수 방지)
 
-### 2) Require partition filter (실수 방지)
-- 대형 테이블에 대해 `REQUIRE_PARTITION_FILTER = TRUE` 적용 고려  
-  - 목적: 날짜 필터 누락(full scan) 방지
-
-### 3) 실무 규칙(최소)
-- 날짜 조건은 partition key에 직접 적용(동일 컬럼 기준)
-- 범위 필터는 `>= start_date AND < end_date`
-- 조인 키는 `user_id`, `session_id` 우선(클러스터 키 정합)
 
 ---
 
