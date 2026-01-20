@@ -1,6 +1,7 @@
 
-**한 줄 요약:** Synthetic e-commerce 로그를 생성하고(BigQuery 로딩/최적화/DM 구축),  
-유저의 **초기 Activation(14일)**과 **방문 리듬(Consistency)**이 **장기 성과(LTV/Retention)**와 어떤 관계가 있는지 SQL 분석 결과(Story)로 정리한 프로젝트입니다.
+**한 줄 요약:** Python으로 synthetic e-commerce 로그를 생성하고(BigQuery 로딩/최적화/DM 구축),  
+SQL로 Activation×Consistency가 이후 LTV/Retention과 연결되는 패턴을 검증(v1.0→v1.1 Time-split)한 뒤, Python EDA/통계 + Tableau 대시보드까지 이어가는 end-to-end 분석 프로젝트입니다.
+
 
 ---
 
