@@ -146,7 +146,7 @@ v1.0 결과는 “Activation만으로는 부족하고 Consistency가 성과와 �
 
 ## 6.1) Result 01 — Persona snapshot (Activation × Consistency)
 
-(figure: `figures_v1.1/persona_result.png`)
+![Persona snapshot (Activation × Consistency)](./figures_v1.1/persona_result.png)
 
 **Interpretation (short)**  
 Persona 간 성과가 뚜렷하게 갈린다.  
@@ -161,7 +161,7 @@ Persona 간 성과가 뚜렷하게 갈린다.
 
 ## 6.2) Result 02 — Consistency (0–60d) → Outcomes (60–180d)
 
-(figure: `figures_v1.1/Consistency_outcome.png`)
+![Time-split: Consistency (0–60d) → Outcomes (60–180d)](./figures_v1.1/Consistency_outcome.png)
 
 **Interpretation (short)**  
 0–60d Consistency가 높아질수록(C1→C5) 60–180d 성과가 **단조 증가**한다.  
@@ -176,7 +176,7 @@ Persona 간 성과가 뚜렷하게 갈린다.
 
 ## 6.3) Result 03 — Activation × Consistency → Outcomes (time-split)
 
-(figure: `figures_v1.1/Activation_x_consistency_outcome.png`)
+![Time-split: Activation (0–14d) × Consistency (0–60d) → Outcomes (60–180d)](./figures_v1.1/Activation_x_consistency_outcome.png)
 
 **Interpretation (short)**  
 Activation 구간이 같아도, Consistency(C1→C5)에 따라 60–180d 성과가 크게 달라진다.  
