@@ -122,9 +122,7 @@ Activation stage별로 성과 격차(lift)가 동일하게 나타나진 않았�
 그래서 v1.0에서는 조건을 엄격하게 둔 뒤(w14/w30 strict),  
 **가장 성과가 낮은 세그먼트 Top10**을 뽑아 “어떤 조합이 특히 약한지”를 확인했다.
 
-이 방식의 장점은,
-- “어디를 고쳐야 효과가 큰지”를 더 빠르게 좁힐 수 있고,
-- 실무적으로는 캠페인/UX/추천/리마인드 같은 액션을 **세그먼트 단위로 설계**하기 쉬워진다는 점이다.
+이 방식의 적용함으로써 장점으로 필요시 액션을 **세그먼트 단위로 설계**하기 쉬워질수있다.
 
 ### Figure 05 — Worst segments Top10 (strict w14/w30)
 - Query: `src/sql/analysis/00_story_core/03_bottleneck_worst_segments_top10_strict_w14_w30.sql`
@@ -146,9 +144,11 @@ v1.0 결과는 “Activation만으로는 부족하고 Consistency가 성과와 �
 
 ## 6.1) Result 01 — Persona snapshot (Activation × Consistency)
 
+- Query: `src/sql/analysis/story_core_v1.1/Persona_Analysis.sql`
+
 ![Persona snapshot (Activation × Consistency)](./figures_v1.1/persona_result.png)
 
-**Interpretation (short)**  
+**Interpretation **  
 Persona 간 성과가 뚜렷하게 갈린다.  
 특히 **D_Loyal**은 60–180d 매출/구매율/리텐션이 모두 가장 높고, **B_Observer**는 전반적으로 낮다.
 
@@ -161,9 +161,11 @@ Persona 간 성과가 뚜렷하게 갈린다.
 
 ## 6.2) Result 02 — Consistency (0–60d) → Outcomes (60–180d)
 
+- Query: `src/sql/analysis/story_core_v1.1/04_timesplit__consistency_0_60_segment__outcomes_60_180.sql`
+
 ![Time-split: Consistency (0–60d) → Outcomes (60–180d)](./figures_v1.1/Consistency_outcome.png)
 
-**Interpretation (short)**  
+**Interpretation **  
 0–60d Consistency가 높아질수록(C1→C5) 60–180d 성과가 **단조 증가**한다.  
 매출/구매율/리텐션이 모두 같은 방향으로 움직여, “Consistency가 미래 성과를 가른다”를 time-split으로 재확인한다.
 
@@ -176,9 +178,11 @@ Persona 간 성과가 뚜렷하게 갈린다.
 
 ## 6.3) Result 03 — Activation × Consistency → Outcomes (time-split)
 
+- Query: `src/sql/analysis/story_core_v1.1/05_activation14d_x_consistency0_60d_summary.sql`
+  
 ![Time-split: Activation (0–14d) × Consistency (0–60d) → Outcomes (60–180d)](./figures_v1.1/Activation_x_consistency_outcome.png)
 
-**Interpretation (short)**  
+**Interpretation **  
 Activation 구간이 같아도, Consistency(C1→C5)에 따라 60–180d 성과가 크게 달라진다.  
 즉, Activation만으로는 설명이 끝나지 않고 Consistency가 추가 설명력을 갖는다.
 
