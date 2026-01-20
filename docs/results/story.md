@@ -18,6 +18,16 @@
 - 퍼널 관점에서는 **구간별 병목이 “어디서 자주 발생하는지(빈도)”**와  
   **“어떤 세그먼트가 특히 약한지(최약 세그먼트)”**를 분리해 보면,  
   개선 포인트를 더 구체적으로 잡을 수 있다.
+
+### 0.2 What we saw (v1.1)
+
+- v1.0의 한계(동일 0–180d 창에서 predictor/outcome이 함께 움직일 수 있음)를 줄이기 위해, **관측창(0–60d)** 과 **성과창(60–180d)** 을 분리(Time-split)해 재검증했다.  
+- Time-split 후에도 **초기 리듬(Consistency)** 이 이후 성과(60–180d 구매율/매출/리텐션)와 **단조롭게 연결되는 패턴이 유지**됐다.  
+- 특히 **Activation 수준이 같아도**(Activation bucket 고정), Consistency가 높은 그룹이 **구매율/매출/리텐션이 더 높아** Consistency의 **추가 설명력**이 확인됐다.  
+- 이를 바탕으로 Activation×Consistency 조합으로 만든 **Persona(예: Loyal/Steady/Burst/Observer)** 가 60–180d 성과를 뚜렷하게 구분해, **세그먼트 기반 액션 설계**에 바로 연결할 수 있다.  
+
+> Note (limitation): synthetic 데이터 특성상 절대 수치보다 **방향성/해석 프레임**에 초점을 둔다.
+
 ---
 
 ## 1) Definitions (v1.0 기준)
