@@ -1,5 +1,5 @@
 
-**한 줄 요약:** Synthetic e-commerce 행동/주문 로그를 **설계하고 생성 파이프라인을 구축**(BigQuery 로딩/최적화/DM 구축)한 뒤,  
+**한 줄 요약:** Synthetic e-commerce 행동/주문 로그를 설계하고 생성 파이프라인을 구축(BigQuery 로딩/최적화/DM 구축)한 뒤,  
 SQL로 *Activation × Consistency*가 이후 LTV/Retention과 연결되는 패턴을 **v1.0 → v1.1(Time-split)**로 검증하고, Python EDA/간단 통계 + Tableau 대시보드로 마무리하는 end-to-end 분석 프로젝트입니다.
 
 **이 프로젝트에서 보여주는 것**
