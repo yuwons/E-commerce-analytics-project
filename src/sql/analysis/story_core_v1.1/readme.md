@@ -1,12 +1,7 @@
-# story_core_v1.1 (Time-split)
+# story_core_v1.1 (Time-split final queries)
 
-Core queries used in the **v1.1 Time-split** section of `docs/results/story.md`.
+Queries used in Story v1.1 (0–60d observed → 60–180d outcomes)
 
-- `Persona_Analysis.sql`
-  - Optional persona mapping (Activation 14d × Consistency 0–60) for narrative-friendly segments
-
-- `04_timesplit__consistency_0_60_segment__outcomes_60_180.sql`
-  - v1.1 Key #1: **Consistency (0–60 observed)** → **Outcomes (60–180 future)**
-
-- `05_activation14d_x_consistency0_60d_summary.sql`
-  - v1.1 Key #2: **Activation (14d bucket)** × **Consistency (0–60)** → **Outcomes (60–180)** (Story-friendly summary)
+- Persona_Analysis.sql: optional persona summary (Activation × Consistency → future outcomes)
+- 04_timesplit__consistency_0_60_segment__outcomes_60_180.sql: core result #1 (C1–C5 → future performance)
+- 05_activation14d_x_consistency0_60d_summary.sql: core result #2 (Activation bucket × Consistency → future performance)
