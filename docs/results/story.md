@@ -198,4 +198,6 @@ Activation 구간이 같아도, Consistency(C1→C5)에 따라 60–180d 성과�
 - `ecommerce_dm.DM_funnel_kpi_window`
 - `ecommerce_dm.DM_funnel_session`
 
+## Appendix) Used Data Marts (v1.1)
+- `ecommerce_dm.DM_timesplit_60_180_final`
 ---
