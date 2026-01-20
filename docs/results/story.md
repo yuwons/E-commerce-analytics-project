@@ -1,11 +1,6 @@
 # [Story] Activation × Consistency → Future LTV/Retention (v1.0 → v1.1)
 
-> **핵심 메시지**  
-> 초기 14일의 Activation(퍼널 도달)만으로는 유저의 180일 성과를 완전히 설명하기 어렵고,  
-> 같은 Activation 안에서도 **방문 리듬(Consistency)**에 따라 **장기 구매/매출/리텐션이 꽤 다르게 나타난다.**  
-
-> 다만 v1.0은 predictor와 outcome을 같은 0-180일 창에서 본 한계가 있어,  
-> (v1.1)에서는 **관측창(0-60d) / 성과창(60-180d) 분리(Time-split)**로 더 안전하게 검증을 완료 했다.
+**TL;DR:** 초기 Activation만으로는 180일 성과를 설명하기 어렵고, **Consistency**가 추가로 성과를 갈라낸다. 이를 **Time-split(0–60d → 60–180d)** 로 재검증했다.
 
 ---
 
