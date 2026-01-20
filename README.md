@@ -133,7 +133,6 @@ SQL 결과는 실무자가 빠르게 훑어볼 수 있도록 **Story 문서**로
 
 v1.0에서는 0–180일 윈도우에서 핵심 패턴을 먼저 확인했고,  
 v1.1에서는 **Time-split(관측 0–60d / 성과 60–180d)** 구조로 동일 질문을 더 엄격하게 재검증해 완료했습니다.  
-(Story 문서 내 v1.1 섹션/그림 참조) :contentReference[oaicite:1]{index=1}
 
 ### 5.1 Query Organization
 스토리 재현에 필요한 쿼리와, 전체 분석 과정 쿼리를 분리해 관리합니다.
@@ -155,6 +154,6 @@ v1.1에서는 **Time-split(관측 0–60d / 성과 60–180d)** 구조로 동일
 
 ## 6) Notes / Next
 
-- v1.0(0–180d window) + v1.1(Time-split)까지 Story 정리를 완료했습니다. :contentReference[oaicite:2]{index=2}
+- v1.0(0–180d window) + v1.1(Time-split)까지 Story 정리를 완료했습니다. 
 - 다음 단계는 **Python 파트(EDA/시각화/간단 통계 검정)**로 넘어가,
   Story 결과를 그래프/검정으로 보강하고 재현성을 높일 예정입니다.
