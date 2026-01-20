@@ -144,8 +144,6 @@ v1.0 결과는 “Activation만으로는 부족하고 Consistency가 성과와 �
 
 ---
 
----
-
 ## 6.1) Result 01 — Persona snapshot (Activation × Consistency)
 
 (figure: `figures_v1.1/persona_result.png`)
