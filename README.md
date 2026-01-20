@@ -12,50 +12,7 @@ SQL로 *Activation × Consistency*가 이후 LTV/Retention과 연결되는 패�
 ## 1) Project Goal
 
 이 프로젝트는 **초기 14일 Activation(단기 전환)**만으로는 유저의 **장기 성과(LTV/Retention)**를 충분히 설명하기 어려울 수 있다는 가정에서 출발합니다.  
-같은 Activation 수준이라도, 유저가 **얼마나 규칙적으로 다시 방문하는지(Consistency)**가 이후 성과를 추가로 분리하는지 확인하는 것이 목표입니다.
-
-- v1.0에서는 0–180일 윈도우에서 Activation/Consistency/LTV/Retention 간의 관계를 먼저 확인했고, 결과를 `docs/results/story.md`로 정리했습니다.
-- v1.1에서는 해석을 더 안전하게 만들기 위해 **Time-split(관측창 vs 성과창)** 구조(`DM_timesplit_60_180_final`)를 추가해, “초기 행동 → 이후 성과” 형태로 재검증할 수 있도록 확장했습니다.
-
-### Hypotheses (H1–H3)
-- **H1:** 초기 14일 Activation이 높아도, 방문 리듬이 불규칙하면 장기 성과가 낮게 나타날 수 있습니다.  
-- **H2:** 초기 전환이 느리더라도, 방문 리듬이 안정적이면 장기 성과가 높게 나타날 수 있습니다.  
-- **H3:** Consistency는 단순 활동량(세션/이벤트 수)과는 별개로 장기 성과를 설명하는 신호가 될 수 있습니다.
-
----
-
-## 2) Data Model (ERD)
-
-이 프로젝트는 이커머스 도메인을 가정한 **synthetic dataset**으로 구성되어 있습니다.
-
-![ERD](data/erd.png)
-
-핵심 테이블:
-- `users` : 유저 속성 및 가입 정보
-- `products` : 상품 마스터
-- `sessions` : 세션 단위 로그
-- `events` : 이벤트 로그
-- `orders` : 주문 헤더
-- `order_items` : 주문 아이템
-
-- Raw Data 테이블 보관 : `data/`
-
-### Frozen Specs (분석 일관성 유지)
-- Funnel step은 5단계로 고정: **view → click → add_to_cart → checkout → purchase**
-- `order_id`는 purchase 이벤트에서만 생성
-- **purchase 1건 = orders 1건** 정합성 유지  
-- Raw 로그(sessions/events)는 원형 보존, 파생 지표는 DM에서 계산
-  
----
-
-## 3) Synthetic Dataset Generation (Python)
-
-실제 서비스 데이터가 아닌, 분석 목적에 맞게 설계한 규칙 기반 **synthetic dataset**을 Python으로 생성하였습니다.
-
-- 데이터 생성 코드: `src/data_generation/`
-
-### 3.1 Dataset Scale (예시)
-(생성 시점/파라미터에 따라 달라질 수 있음)
+같은 Activation 수준이라도, 유저가 **얼마나 규칙적으로 다시 방다)
 
 - users ≈ 30,000 / products = 300  
 - sessions ≈ 0.748,757 / events ≈ 1.8M  
