@@ -1,6 +1,6 @@
 # [Story] Activation × Consistency → Future LTV/Retention (v1.0 → v1.1)
 
-**TL;DR:** 초기 Activation만으로는 180일 성과를 설명하기 어렵고, **Consistency**가 추가로 성과를 갈라낸다. 이를 **Time-split(0–60d → 60–180d)** 로 재검증했다.
+초기 Activation만으로는 180일 성과를 설명하기 어렵고, **Consistency**가 추가로 성과를 갈라낸다. 이를 **Time-split(0–60d → 60–180d)** 로 재검증했다.
 
 ---
 
