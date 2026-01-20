@@ -73,9 +73,8 @@ SELECT user_persona,
        -- Long-term outcomes (60-180)
        ROUND(AVG(COALESCE(revenue_60_180, 0)),4) AS avg_revenue_60_180,
        ROUND(AVG(CAST(has_purchase_60_180 AS INT64)),4) AS purchase_rate_60_180,
-
-       -- Optional: retention (keep for now; you can hide in Story if too much)
-       ROUND(AVG(CAST(retention_last_week_180d AS INT64)),4) AS retention_last_week_180d_rate,
+       
+       -- ROUND(AVG(CAST(retention_last_week_180d AS INT64)),4) AS retention_last_week_180d_rate,
 
        --ROUND(ANY_VALUE(cv_p50),4) AS intervisit_cv_obs_60d_median_cut
 
@@ -84,3 +83,4 @@ FROM persona
 GROUP BY user_persona
 
 ORDER BY user_distribution DESC;
+
