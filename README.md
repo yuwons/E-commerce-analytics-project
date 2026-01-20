@@ -1,7 +1,11 @@
 
-**한 줄 요약:** Python으로 synthetic e-commerce 로그를 생성하고(BigQuery 로딩/최적화/DM 구축),  
-SQL로 Activation×Consistency가 이후 LTV/Retention과 연결되는 패턴을 검증(v1.0→v1.1 Time-split)한 뒤, Python EDA/통계 + Tableau 대시보드까지 이어가는 end-to-end 분석 프로젝트입니다.
+**한 줄 요약:** Synthetic e-commerce 행동/주문 로그를 **설계하고 생성 파이프라인을 구축**(BigQuery 로딩/최적화/DM 구축)한 뒤,  
+SQL로 *Activation × Consistency*가 이후 LTV/Retention과 연결되는 패턴을 **v1.0 → v1.1(Time-split)**로 검증하고, Python EDA/간단 통계 + Tableau 대시보드로 마무리하는 end-to-end 분석 프로젝트입니다.
 
+**이 프로젝트에서 보여주는 것**
+- (Data modeling) raw log → optimized tables → data marts로 이어지는 BigQuery 중심의 분석용 데이터 모델링
+- (Analytics) Activation/Consistency 기반의 LTV·Retention·Funnel 분석 + time-split(0–60 관측 / 60–180 성과) 검증
+- (Delivery) Python 시각화/검정으로 결과를 재확인하고, Tableau로 KPI/세그먼트 대시보드를 구성
 
 ---
 
