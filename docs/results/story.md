@@ -148,7 +148,6 @@ v1.0 결과는 “Activation만으로는 부족하고 Consistency가 성과와 �
 
 ![Persona snapshot (Activation × Consistency)](./figures_v1.1/persona_result.png)
 
-**Interpretation **  
 Persona 간 성과가 뚜렷하게 갈린다.  
 특히 **D_Loyal**은 60–180d 매출/구매율/리텐션이 모두 가장 높고, **B_Observer**는 전반적으로 낮다.
 
@@ -165,7 +164,6 @@ Persona 간 성과가 뚜렷하게 갈린다.
 
 ![Time-split: Consistency (0–60d) → Outcomes (60–180d)](./figures_v1.1/Consistency_outcome.png)
 
-**Interpretation **  
 0–60d Consistency가 높아질수록(C1→C5) 60–180d 성과가 **단조 증가**한다.  
 매출/구매율/리텐션이 모두 같은 방향으로 움직여, “Consistency가 미래 성과를 가른다”를 time-split으로 재확인한다.
 
@@ -182,7 +180,6 @@ Persona 간 성과가 뚜렷하게 갈린다.
   
 ![Time-split: Activation (0–14d) × Consistency (0–60d) → Outcomes (60–180d)](./figures_v1.1/Activation_x_consistency_outcome.png)
 
-**Interpretation **  
 Activation 구간이 같아도, Consistency(C1→C5)에 따라 60–180d 성과가 크게 달라진다.  
 즉, Activation만으로는 설명이 끝나지 않고 Consistency가 추가 설명력을 갖는다.
 
