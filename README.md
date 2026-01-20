@@ -1,4 +1,3 @@
-<img width="1114" height="1384" alt="image" src="https://github.com/user-attachments/assets/f9f15fb9-f357-4c76-a5e8-8d8064e23bd6" /># E-commerce Analytics Project (Synthetic Data → BigQuery → SQL Story)
 
 **한 줄 요약:** Synthetic e-commerce 로그를 생성하고(BigQuery 로딩/최적화/DM 구축),  
 유저의 **초기 Activation(14일)**과 **방문 리듬(Consistency)**이 **장기 성과(LTV/Retention)**와 어떤 관계가 있는지 SQL 분석 결과(Story)로 정리한 프로젝트입니다.
