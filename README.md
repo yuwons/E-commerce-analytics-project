@@ -124,18 +124,24 @@ OPTIONAL (대시보드/KPI 요약용):
 
 ## 5) SQL Analysis (Story)
 
-SQL 결과는 실무자가 빠르게 훑어볼 수 있도록 **Story 문서**로 요약했습니다.  
-Story(v1.0)는 0–180일 윈도우 기반으로 핵심 패턴을 정리한 결과이며, 이후에는 Time-split(v1.1) 기반으로 동일 질문을 더 엄격하게 재검증할 수 있도록 확장할 예정입니다.
+SQL 결과는 실무자가 빠르게 훑어볼 수 있도록 **Story 문서**로 요약했습니다.
 
-- Story 문서: `docs/results/story.md`
-- 결과 스크린샷: `docs/results/figures/`
-  - 한 화면에 결과가 다 안 담기는 경우가 있어 `*_a.png`, `*_b.png`로 분리해 저장했습니다.
+- **Story 문서:** `docs/results/story.md`
+- **결과 스크린샷:**
+  - v1.0: `docs/results/figures/`
+  - v1.1 (time-split): `docs/results/figures_v1.1/`
+
+v1.0에서는 0–180일 윈도우에서 핵심 패턴을 먼저 확인했고,  
+v1.1에서는 **Time-split(관측 0–60d / 성과 60–180d)** 구조로 동일 질문을 더 엄격하게 재검증해 완료했습니다.  
+(Story 문서 내 v1.1 섹션/그림 참조) :contentReference[oaicite:1]{index=1}
 
 ### 5.1 Query Organization
 스토리 재현에 필요한 쿼리와, 전체 분석 과정 쿼리를 분리해 관리합니다.
 
 - `src/sql/analysis/00_story_core/`  
-  → `docs/results/story.md`에 직접 연결되는 **핵심 쿼리 세트**
+  → `docs/results/story.md`의 **v1.0 핵심 쿼리 세트**
+- `src/sql/analysis/story_core_v1.1/`  
+  → `docs/results/story.md`의 **v1.1(Time-split) 핵심 쿼리 세트**
 - `src/sql/analysis/01_supporting/`  
   → 전체 분석 흐름(Activation~Retention + 실험 쿼리) 보관  
   - `01_activation/`
@@ -149,6 +155,6 @@ Story(v1.0)는 0–180일 윈도우 기반으로 핵심 패턴을 정리한 결�
 
 ## 6) Notes / Next
 
-- 현재 공개된 결과는 v1.0 Story(0–180일 윈도우 기반)이며, 핵심 결과는 `docs/results/story.md`에 정리했습니다.
-- 해석의 설득력을 높이기 위해 Time-split Data Mart(`DM_timesplit_60_180_final`)를 추가했으며,  
-  다음 단계에서는 관측창(0–60일) 지표가 성과창(60–180일) outcome과도 연결되는지 확인할 계획입니다.
+- v1.0(0–180d window) + v1.1(Time-split)까지 Story 정리를 완료했습니다. :contentReference[oaicite:2]{index=2}
+- 다음 단계는 **Python 파트(EDA/시각화/간단 통계 검정)**로 넘어가,
+  Story 결과를 그래프/검정으로 보강하고 재현성을 높일 예정입니다.
