@@ -119,14 +119,13 @@ Activation stage별로 성과 격차(lift)가 동일하게 나타나진 않았�
 
 ### Figure 05 — Worst segments (Top 10)
 
-- **14d:** 최악 Top5가 전부 `view_to_click × A1_view`이며, Consistency(C1~C5)와 무관하게 **conv_rate = 0%** (모수 약 2.6k~3.2k).  
-  → 초기 실패의 핵심은 **“view 이후 click으로 못 넘어감”**.
+- 14d: 최악 Top5가 전부 `view_to_click × A1_view`이며, Consistency(C1-C5)와 무관하게 conv_rate = 0% (모수 약 2.6k~3.2k).
+  → 초기 실패의 핵심은 “view 이후 click으로 못 넘어감”.
 
-- **30d:** 최악 세그먼트는 대부분 `click_to_cart × A2_click`이고, 특히 **low consistency(C1/C2)**에서 전환이 최저(**~4–5%**, 모수 5k~6k). 반면 **C5_high**는 **~16%**까지 회복.  
-  → 30일 관점 병목은 **“click → cart”**이며, **저일관성 clicker**가 최우선 타깃.
+- 30d: 최악 세그먼트는 대부분 `click_to_cart × A2_click`이고, 특히 low consistency(C1/C2)에서 전환이 최저(~4-5%, 모수 5k~6k). 반면 C5_high는 ~16%까지 회복.
+  → 30일 관점 병목은 “click → cart”이며, 저일관성 clicker가 최우선 타깃.
 
-- **Action:** (1) 14d `view→click` 전사 UX 개선 + (2) 30d `click→cart` 저일관성 세그먼트 대상 타깃 실험/개입으로 우선순위 분리.
-
+- Action 제안: (1) 14d `view→click` 전사 UX 개선 + (2) 30d `click→cart` 저일관성 세그먼트 대상 타깃 실험/개입으로 우선순위 분리.
 
 ### Figure 05 — Worst segments Top10 (strict w14/w30)
 - Query: `src/sql/analysis/00_story_core/03_bottleneck_worst_segments_top10_strict_w14_w30.sql`
