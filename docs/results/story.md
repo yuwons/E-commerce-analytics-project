@@ -20,6 +20,97 @@
 - 특히 **Activation 수준이 같아도**(Activation bucket 고정), Consistency가 높은 그룹이 **구매율/매출/리텐션이 더 높아** Consistency의 **추가 설명력**이 확인됐다.  
 - 이를 바탕으로 Activation×Consistency 조합으로 만든 **Persona(예: Loyal/Steady/Burst/Observer)** 시:** (1) 14d `view→click` 전사 UX 개선 + (2) 30d `click→cart` 저일관성 세그먼트 대상 타깃 실험/개입으로 우선순위 분리.
 
+---
+
+## 1) Definitions (v1.0 기준)
+
+### 1.1 Activation stage (첫 14일)
+- A0: no activity  
+- A1: view  
+- A2: click  
+- A3: add_to_cart  
+- A4: checkout  
+- A5: purchase
+
+> 사용 DM: `DM_user_window` (has_view_14d ~ has_purchase_14d)
+
+### 1.2 Consistency (0~180일, v1.0)
+- 세션 기반 지표(예: active_days, intervisit_cv 등)로 Consistency score를 만들고,
+- score를 **퀸타일로 C1(하위) - C5(상위)**로 구간화
+
+> 사용 DM: `DM_consistency_180d`
+
+### 1.3 Long-term outcomes (0~180일, v1.0)
+- 구매/매출: `DM_ltv_180d`
+- 리텐션: `DM_retention_cohort` (day 180 정의 포함)
+
+---
+
+## 2) Finding #1 — Activation만으로는 부족하고, 같은 Activation 안에서도 Consistency 차이가 크게 보인다 (v1.0)
+
+Activation stage가 높을수록 평균적으로 성과가 좋아지는 건 자연스러운 흐름이지만,  
+**같은 Activation stage 내부에서도 Consistency(C1~C5)에 따라 180일 성과가 꽤 다르게 나타났다.**
+
+- “초기 퍼널 도달”은 분명 중요한 신호지만,
+- 그 이후 **얼마나 규칙적으로 다시 방문/활동했는지(Consistency)**가 함께 보일 때  
+  유저의 180일 성과를 더 입체적으로 설명할 수 있었다.
+
+### Figure 01 — Activation × Consistency × (LTV / Retention)
+- Query: `src/sql/analysis/00_story_core/01_final_activation_x_consistency_ltv180d_retention_point.sql`
+
+![](./figures/01_figure_a.png)
+![](./figures/01_figure_b.png)
+
+### Figure 03 — Activation × Consistency × LTV (slim)
+- Query: `src/sql/analysis/00_story_core/01_activation_x_consistency_x_ltv_slim.sql`
+
+![](./figures/03_figure_a.png)
+![](./figures/03_figure_b.png)
+
+> **주의(해석 한계, v1.0):**  
+> Consistency 지표와 180일 성과가 같은 기간(0~180d) 안에서 같이 계산되기 때문에,  
+> “예측”이라기보다 “동기간 상관 패턴”이 강하게 섞여 있을 수 있다.  
+> 그래서 다음 단계(v1.1)에서 Time-split으로 분리 검증한다.
+
+---
+
+## 3) Finding #2 — Consistency의 격차는 낮은 Activation 구간에서 더 크게 보이는 편이다 (v1.0)
+
+C5(상위 Consistency)와 C1(하위 Consistency)을 비교했을 때,  
+Activation stage별로 성과 격차(lift)가 동일하게 나타나진 않았다.
+
+정리하면:
+
+- 높은 Activation(A4~A5)에서도 Consistency 차이는 보이지만,
+- **낮은 Activation(A0~A2)에서 C1 ↔ C5 격차가 더 크게 관찰되는 경향**이 있었다.
+
+이 말은 “초기 전환이 낮아 보이는 유저” 안에서도  
+**방문 리듬이 안정적인 그룹이 이후 성과에서 더 나은 흐름을 보일 수 있다**는 정도로 해석할 수 있다.  
+(단, v1.0에서는 동기간 지표 한계가 있으니, v1.1에서 분리 검증 예정)
+
+### Figure 02 — Headline lift (C5 vs C1) by Activation
+- Query: `src/sql/analysis/00_story_core/02_headline_lift_c5_vs_c1_by_activation.sql`
+
+![](./figures/02_figure.png)
+
+---
+
+## 4) Finding #3 — 퍼널 병목은 “어디서 자주 막히는지”와 “어느 세그먼트가 특히 약한지”를 나눠보면 더 명확하다 (v1.0)
+
+퍼널 분석을 할 때, 단순히 “전환율이 낮다”에서 끝내면 액션으로 이어지기 어렵다.  
+그래서 v1.0에서는 두 가지 관점으로 나눠 봤다.
+
+- **(A) 빈도 관점:** 병목이 “자주 발생하는 구간”은 어디인가?  
+- **(B) 세그먼트 관점:** “특히 약한 세그먼트”는 어떤 조합인가?
+
+### Figure 04 — Bottleneck frequency (reach-based, strict w14/w30)
+- Query: `src/sql/analysis/00_story_core/02_bottleneck_frequency_reach_strict_w14_w30.sql`
+
+![](./figures/04_figure_a.png)
+![](./figures/04_figure_b.png)
+
+---
+
 ### Figure 05 — Worst segments Top10 (strict w14/w30)
 - Query: `src/sql/analysis/00_story_core/03_bottleneck_worst_segments_top10_strict_w14_w30.sql`
 
