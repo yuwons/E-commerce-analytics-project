@@ -120,7 +120,7 @@ Activation stage별로 성과 격차(lift)가 동일하게 나타나진 않았�
 전체 평균만 보면 병목이 희석될 수 있어, w14/w30 **strict** 기준으로 성과가 가장 낮은 세그먼트 조합 Top10을 뽑아 *어느 조합에서 퍼널이 가장 심하게 깨지는지*를 확인했다.  
 이렇게 하면 개선/실험을 **세그먼트 단위 액션**으로 바로 설계할 수 있다.
 
-- **14d:** 최악 Top5가 전부 `view_to_click × A1_view`이며, Consistency(C1~C5)와 무관하게 **conv_rate = 0%** (모수 약 2.6k~3.2k).  
+- **14d:** 최악 Top5가 전부 `view_to_click × A1_view`이며, Consistency(C1-C5)와 무관하게 **conv_rate = 0%** (모수 약 2.6k~3.2k).  
   → 초기 실패의 핵심은 **“view 이후 click으로 못 넘어감”**.
 
 - **30d:** 최악 세그먼트는 대부분 `click_to_cart × A2_click`이고, 특히 **low consistency(C1/C2)**에서 전환이 최저(**~4–5%**, 모수 5k~6k). 반면 **C5_high**는 **~16%**까지 회복.  
