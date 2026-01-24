@@ -129,7 +129,7 @@ base AS
 
   WHERE a.anomaly_flag = 0
 )
-#======== full select outcome check ========#
+/* ======================== full select outcome check ==================== */
 SELECT activation_stage_14d,
        consistency_segment,
        COUNT(*) AS users,
@@ -177,3 +177,4 @@ GROUP BY 1,2
 
 ORDER BY activation_stage_14d, consistency_segment;
 =========================================================================================*/
+
