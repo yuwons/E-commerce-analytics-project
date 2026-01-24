@@ -77,7 +77,7 @@
 
 ### Key takeaway
 - **Result:** C5 vs C1 성과 격차는 전 Activation에서 관찰되며, 특히 Low activation(A0–A2)에서 revenue lift가 크게 나타난다(예: A0 30.3x, A1 21.0x).
-- **So what:** Low activation 유저를 한 덩어리로 버리기보다, Consistency 기반으로 “될 놈/안될 놈”을 먼저 분리해 타깃을 좁히는 게 효율적이다.
+- **So what:** Low activation 구간에서도 Consistency가 높은 하위군은 장기 성과 잠재력이 있어, Consistency를 추가 신호로 사용해 타깃팅/개입 대상을 정교화할 수 있다.
 - **Evidence:** Fig 02 (Activation bucket별 headline lift: C5 vs C1)
 
 Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약한 그림이며, Low activation(A0–A2)에서 lift가 상대적으로 더 크게 나타나는지 확인한다.
