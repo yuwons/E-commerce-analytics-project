@@ -163,10 +163,10 @@ SELECT activation_stage_14d,
        consistency_segment,
        COUNT(*) AS users,
        --# LTV 
-       ROUND(AVG(CAST(has_purchase_180d AS INT64)),4) AS purchase_rate_180d,
-       --#ROUND(AVG(orders_180d),4) AS avg_orders_180d,
-       ROUND(AVG(revenue_180d),4) AS avg_revenue_180d,
-       ROUND(AVG(active_last_week_173_179),4) AS retention_last_week_173_179
+       ROUND(AVG(CAST(has_purchase_180d AS INT64)),3) AS purchase_rate_180d,
+       --#ROUND(AVG(orders_180d),3) AS avg_orders_180d,
+       ROUND(AVG(revenue_180d),3) AS avg_revenue_180d,
+       ROUND(AVG(active_last_week_173_179),3) AS retention_last_week_173_179
 
 FROM base
 
@@ -177,4 +177,5 @@ GROUP BY 1,2
 
 ORDER BY activation_stage_14d, consistency_segment;
 =========================================================================================*/
+
 
