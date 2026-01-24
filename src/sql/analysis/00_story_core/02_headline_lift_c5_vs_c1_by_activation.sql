@@ -123,11 +123,6 @@ SELECT
   c1.retention_last_week_173_179 AS retention_last_week_c1,
   c5.retention_last_week_173_179 AS retention_last_week_c5,
 
-  -- lifts (absolute)
-  (c5.purchase_rate_180d - c1.purchase_rate_180d) AS purchase_rate_lift_abs,
-  (c5.avg_revenue_180d  - c1.avg_revenue_180d)    AS avg_revenue_lift_abs,
-  (c5.retention_last_week_173_179 - c1.retention_last_week_173_179) AS retention_last_week_lift_abs,
-
   -- lifts (relative)
   SAFE_DIVIDE(c5.purchase_rate_180d - c1.purchase_rate_180d, NULLIF(c1.purchase_rate_180d, 0)) AS purchase_rate_lift_ratio,
   SAFE_DIVIDE(c5.avg_revenue_180d  - c1.avg_revenue_180d,   NULLIF(c1.avg_revenue_180d, 0))   AS avg_revenue_lift_ratio,
@@ -148,3 +143,28 @@ ORDER BY
     ELSE 99
   END;
 
+/* ======================== For Story.md Screenshot  ===============================================
+
+SELECT c1.activation_stage_14d,
+
+       -- sample sizes
+       c1.users AS users_c1,
+       c5.users AS users_c5,
+
+       ROUND(SAFE_DIVIDE(c5.avg_revenue_180d  - c1.avg_revenue_180d,   NULLIF(c1.avg_revenue_180d, 0)),2)   AS avg_revenue_lift_ratio_x,
+       ROUND(SAFE_DIVIDE(c5.retention_last_week_173_179 - c1.retention_last_week_173_179,
+                   NULLIF(c1.retention_last_week_173_179, 0)),2) AS retention_last_week_lift_ratio_x
+
+  FROM c1 JOIN c5
+   ON c1.activation_stage_14d = c5.activation_stage_14d
+
+ORDER BY
+  CASE c1.activation_stage_14d
+    WHEN 'A0_no_activity' THEN 0
+    WHEN 'A1_view' THEN 1
+    WHEN 'A2_click' THEN 2
+    WHEN 'A3_add_to_cart' THEN 3
+    WHEN 'A4_checkout' THEN 4
+    WHEN 'A5_purchase' THEN 5
+    ELSE 99 END
+======================== For Story.md Screenshot  =============================================== */
