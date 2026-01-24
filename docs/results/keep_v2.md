@@ -52,14 +52,13 @@
 ### Key takeaway
 - **Result:** 같은 Activation stage 안에서도 Consistency(C1→C5)에 따라 180일 구매율/매출/리텐션 성과가 뚜렷하게 갈린다.
 - **So what:** 초기 퍼널 도달(Activation)만으로 유저의 장기 가치를 판단하면 놓치는 그룹이 생기며, ‘재방문 리듬(Consistency)’를 함께 봐야 세그먼트 기반 액션이 가능해진다.
-- **Evidence:** Fig 01 (Activation bucket × Consistency quintile → purchase_rate_180d / avg_revenue_180d / retention), Fig 03 (LTV slim)
+- **Evidence:** Evidence: Fig 01 (Activation × Consistency → 180d purchase / revenue / retention)
 
 아래 Figure들은 **Activation bucket 내부에서도** Consistency에 따라 180d 성과가 갈리는 패턴을 보여준다.
 
 ### Figure 01 — Activation × Consistency × (LTV / Retention)
 - Query: `src/sql/analysis/00_story_core/01_final_activation_x_consistency_ltv180d_retention_point.sql`
 ![](./figures/01_figure_a.png)
-![](./figures/01_figure_b.png)
 
 
 > **주의(해석 한계, v1.0):**  
