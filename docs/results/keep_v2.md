@@ -61,10 +61,6 @@
 ![](./figures/01_figure_a.png)
 ![](./figures/01_figure_b.png)
 
-### Figure 03 — Activation × Consistency × LTV (slim)
-- Query: `src/sql/analysis/00_story_core/01_activation_x_consistency_x_ltv_slim.sql`
-![](./figures/03_figure_a.png)
-![](./figures/03_figure_b.png)
 
 > **주의(해석 한계, v1.0):**  
 > Consistency 지표와 180일 성과가 같은 기간(0~180d) 안에서 같이 계산되기 때문에,  
