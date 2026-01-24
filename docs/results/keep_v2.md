@@ -52,24 +52,17 @@
 ### Key takeaway
 - **Result:** 같은 Activation stage 안에서도 Consistency(C1→C5)에 따라 180일 구매율/매출/리텐션 성과가 뚜렷하게 갈린다.
 - **So what:** 초기 퍼널 도달(Activation)만으로 유저의 장기 가치를 판단하면 놓치는 그룹이 생기며, ‘재방문 리듬(Consistency)’를 함께 봐야 세그먼트 기반 액션이 가능해진다.
-- **Evidence:** Figure 01 / Figure 03 (Activation × Consistency × LTV/Retention)
+- **Evidence:** Fig 01 (Activation bucket × Consistency quintile → 180d outcomes), Fig 03 (LTV slim)
 
-Activation stage가 높을수록 평균적으로 성과가 좋아지는 건 자연스러운 흐름이지만,  
-**같은 Activation stage 내부에서도 Consistency(C1~C5)에 따라 180일 성과가 꽤 다르게 나타났다.**
-
-- “초기 퍼널 도달”은 분명 중요한 신호지만,
-- 그 이후 **얼마나 규칙적으로 다시 방문/활동했는지(Consistency)**가 함께 보일 때  
-  유저의 180일 성과를 더 입체적으로 설명할 수 있었다.
+아래 Figure들은 **Activation bucket 내부에서도** Consistency에 따라 180d 성과가 갈리는 패턴을 보여준다.
 
 ### Figure 01 — Activation × Consistency × (LTV / Retention)
 - Query: `src/sql/analysis/00_story_core/01_final_activation_x_consistency_ltv180d_retention_point.sql`
-
 ![](./figures/01_figure_a.png)
 ![](./figures/01_figure_b.png)
 
 ### Figure 03 — Activation × Consistency × LTV (slim)
 - Query: `src/sql/analysis/00_story_core/01_activation_x_consistency_x_ltv_slim.sql`
-
 ![](./figures/03_figure_a.png)
 ![](./figures/03_figure_b.png)
 
@@ -85,24 +78,15 @@ Activation stage가 높을수록 평균적으로 성과가 좋아지는 건 자�
 ### Key takeaway
 - **Result:** Consistency(C5 vs C1) 성과 격차(lift)는 모든 Activation에서 보이지만, 특히 낮은 Activation(A0–A2) 구간에서 더 크게 나타나는 경향이 있다.
 - **So what:** ‘초기 전환이 낮아 보이는 유저’ 안에서도 Consistency가 높은 그룹은 장기 성과에서 회복/역전 가능성이 있어, 저Activation 유저를 한 덩어리로 버리면 손해다.
-- **Evidence:** Figure 02 (Headline lift: C5 vs C1 by Activation)
+- **Evidence:** Fig 02 (Activation bucket별 headline lift: C5 vs C1)
 
-C5(상위 Consistency)와 C1(하위 Consistency)을 비교했을 때,  
-Activation stage별로 성과 격차(lift)가 동일하게 나타나진 않았다.
-
-정리하면:
-
-- 높은 Activation(A4~A5)에서도 Consistency 차이는 보이지만,
-- **낮은 Activation(A0~A2)에서 C1 ↔ C5 격차가 더 크게 관찰되는 경향**이 있었다.
-
-이 말은 “초기 전환이 낮아 보이는 유저” 안에서도  
-**방문 리듬이 안정적인 그룹이 이후 성과에서 더 나은 흐름을 보일 수 있다**는 정도로 해석할 수 있다.  
-(단, v1.0에서는 동기간 지표 한계가 있으니, v1.1에서 분리 검증 예정)
+Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약한 그림이며, Low activation(A0–A2)에서 lift가 상대적으로 더 크게 나타나는지 확인한다.
 
 ### Figure 02 — Headline lift (C5 vs C1) by Activation
 - Query: `src/sql/analysis/00_story_core/02_headline_lift_c5_vs_c1_by_activation.sql`
-
 ![](./figures/02_figure.png)
+
+> **Note:** v1.0은 동기간(0–180d) 지표 한계가 있어, 이 패턴은 v1.1 time-split로 재확인한다.
 
 ---
 
