@@ -54,7 +54,7 @@
 - **So what:** 초기 퍼널 도달(Activation)만으로 유저의 장기 가치를 판단하면 놓치는 그룹이 생기며, ‘재방문 리듬(Consistency)’를 함께 봐야 세그먼트 기반 액션이 가능해진다.
 - **Evidence:** Evidence: Fig 01 (Activation × Consistency → 180d purchase / revenue / retention)
 
-아래 Figure들은 **Activation bucket 내부에서도** Consistency에 따라 180d 성과가 갈리는 패턴을 보여준다.
+아래 Figure **Activation bucket 내부에서도** Consistency에 따라 180d 성과가 갈리는 패턴을 보여준다.
 
 ### Figure 01 — Activation × Consistency × (LTV / Retention)
 - Query: `src/sql/analysis/00_story_core/01_final_activation_x_consistency_ltv180d_retention_point.sql`
@@ -71,7 +71,7 @@
 ## 3) Finding #2 — Consistency의 격차는 낮은 Activation 구간에서 더 크게 보이는 편이다 (v1.0)
 
 ### Key takeaway
-- **Result:** C5 vs C1 성과 격차는 전 Activation에서 관찰되며, 특히 Low activation(A0–A2)에서 revenue lift가 크게 나타난다(예: A0 30.3x, A1 21.0x).
+- **Result:** C5 vs C1 격차는 전 Activation에서 관찰되며, 특히 Low activation(A0–A2)에서 180d avg_revenue lift가 크게 나타난다 (예: A0 30.3x, A1 21.0x).
 - **So what:** Low activation 구간에서도 Consistency가 높은 하위군은 장기 성과 잠재력이 있어, Consistency를 추가 신호로 사용해 타깃팅/개입 대상을 정교화할 수 있다.
 - **Evidence:** Fig 02 (Activation bucket별 headline lift: C5 vs C1)
 
