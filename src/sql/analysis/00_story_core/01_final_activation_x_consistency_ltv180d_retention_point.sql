@@ -129,7 +129,7 @@ base AS
 
   WHERE a.anomaly_flag = 0
 )
-
+#======== full select outcome check ========#
 SELECT activation_stage_14d,
        consistency_segment,
        COUNT(*) AS users,
@@ -158,4 +158,22 @@ GROUP BY 1,2
 
 ORDER BY activation_stage_14d, consistency_segment;
 
+/*======================== For Story.md screenshot =========================================
+SELECT activation_stage_14d,
+       consistency_segment,
+       COUNT(*) AS users,
+       --# LTV 
+       ROUND(AVG(CAST(has_purchase_180d AS INT64)),4) AS purchase_rate_180d,
+       --#ROUND(AVG(orders_180d),4) AS avg_orders_180d,
+       ROUND(AVG(revenue_180d),4) AS avg_revenue_180d,
+       ROUND(AVG(active_last_week_173_179),4) AS retention_last_week_173_179
 
+FROM base
+
+WHERE activation_stage_14d IN ('A0_no_activity','A1_view','A2_click')
+  AND consistency_segment IN ('C1_low_consistency','C3_mid','C5_high_consistency')
+
+GROUP BY 1,2
+
+ORDER BY activation_stage_14d, consistency_segment;
+=========================================================================================*/
