@@ -52,7 +52,7 @@
 ### Key takeaway
 - **Result:** 같은 Activation stage 안에서도 Consistency(C1→C5)에 따라 180일 구매율/매출/리텐션 성과가 뚜렷하게 갈린다.
 - **So what:** 초기 퍼널 도달(Activation)만으로 유저의 장기 가치를 판단하면 놓치는 그룹이 생기며, ‘재방문 리듬(Consistency)’를 함께 봐야 세그먼트 기반 액션이 가능해진다.
-- **Evidence:** Fig 01 (Activation bucket × Consistency quintile → 180d outcomes), Fig 03 (LTV slim)
+- **Evidence:** Fig 01 (Activation bucket × Consistency quintile → purchase_rate_180d / avg_revenue_180d / retention), Fig 03 (LTV slim)
 
 아래 Figure들은 **Activation bucket 내부에서도** Consistency에 따라 180d 성과가 갈리는 패턴을 보여준다.
 
@@ -76,8 +76,8 @@
 ## 3) Finding #2 — Consistency의 격차는 낮은 Activation 구간에서 더 크게 보이는 편이다 (v1.0)
 
 ### Key takeaway
-- **Result:** Consistency(C5 vs C1) 성과 격차(lift)는 모든 Activation에서 보이지만, 특히 낮은 Activation(A0–A2) 구간에서 더 크게 나타나는 경향이 있다.
-- **So what:** ‘초기 전환이 낮아 보이는 유저’ 안에서도 Consistency가 높은 그룹은 장기 성과에서 회복/역전 가능성이 있어, 저Activation 유저를 한 덩어리로 버리면 손해다.
+- **Result:** C5 vs C1 성과 격차는 전 Activation에서 관찰되며, 특히 Low activation(A0–A2)에서 revenue lift가 크게 나타난다(예: A0 30.3x, A1 21.0x).
+- **So what:** Low activation 유저를 한 덩어리로 버리기보다, Consistency 기반으로 “될 놈/안될 놈”을 먼저 분리해 타깃을 좁히는 게 효율적이다.
 - **Evidence:** Fig 02 (Activation bucket별 headline lift: C5 vs C1)
 
 Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약한 그림이며, Low activation(A0–A2)에서 lift가 상대적으로 더 크게 나타나는지 확인한다.
