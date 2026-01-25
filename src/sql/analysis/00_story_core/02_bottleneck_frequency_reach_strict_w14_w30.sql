@@ -228,4 +228,16 @@ GROUP BY 1,2,3
 
 ORDER BY window_days, metric_type, segment_cells DESC;
 
+/* ============================ For Story.md Screenshot =================================
+SELECT  window_days,
+        step AS bottleneck_step,
+        COUNT(*) AS n_cell,                          
+        ROUND(AVG(conv_rate), 3) AS avg_conv_rate,
+        ROUND(APPROX_QUANTILES(conv_rate, 100)[OFFSET(50)], 3) AS median_conv_rate
+FROM ranked
+WHERE rn = 1
+  AND window_days IN (14, 30)  AND metric_type = 'strict'
+GROUP BY 1,2
+ORDER BY window_days, n_cell DESC, avg_conv_rate ASC;
+====================================================================================*/
 
