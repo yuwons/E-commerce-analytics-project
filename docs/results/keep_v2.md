@@ -110,21 +110,16 @@ Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약
 ## 5) Finding #4 — 최약 세그먼트 Top10을 보면 “개선 우선순위”가 더 구체적으로 잡힌다 (v1.0)
 
 ### Key takeaway
-- **Result:** strict 기준 Worst Top10을 보면, 14d에서는 `view_to_click × A1_view`가 최악(전환 0%, 모수 약 2.6k~3.2k)이고, 30d에서는 `click_to_cart × A2_click`에서 특히 low consistency(C1/C2)의 전환이 최저(약 4–5%)인 반면 C5_high는 ~16%까지 회복한다.
-- **So what:** 우선순위는 (1) 14d `view→click` 전사 개선, (2) 30d `click→cart` 저일관성 clicker 타깃 실험/개입으로 분리하는 게 합리적이다.
-- **Evidence:** Figure 05 (Worst segments Top10; strict w14/w30)
+- **Result:** strict 기준 Worst Top10에서 14d는 view→click × A1_view가 반복적으로 상위에 등장하며(전환 0% 포함), 30d는 click→cart × A2_click 조합이 다수이고 특히 low consistency(C1/C2) 에서 전환이 최저(≈4–5%)인 반면 C5는 더 높게 회복한다.
+- **So what:** (1) 14d: view→click 전사 개선(카피/추천/첫 클릭 유도)과 (2) 30d: click→cart ‘저일관성 clickers’ 타깃 실험/개입으로 분리하는 게 합리적이다.
+- **Evidence:** Fig 05 (Worst segments Top10; strict w14/w30)
 
 **왜 최약 세그먼트(Top10)를 보나?**  
-전체 평균만 보면 병목이 희석될 수 있어, w14/w30 **strict** 기준으로 성과가 가장 낮은 세그먼트 조합 Top10을 뽑아 *어느 조합에서 퍼널이 가장 심하게 깨지는지*를 확인했다.  
-이렇게 하면 개선/실험을 **세그먼트 단위 액션**으로 바로 설계할 수 있다.
+전체 평균만 보면 병목이 희석된다. 그래서 w14/w30 strict 기준으로 성과가 가장 낮은 세그먼트 조합 Top10을 확인해 “어디가 막히는지”를 “누가 특히 막히는지”까지 연결했다.
 
-- 14d: 최악 Top5가 전부 `view_to_click × A1_view`이며, Consistency(C1-C5)와 무관하게 conv_rate = 0% (모수 약 2.6k~3.2k).
-  → 초기 실패의 핵심은 “view 이후 click으로 못 넘어감”.
+- 14d: 상위는 주로 view→click × A1_view에 집중 → 초기 실패의 핵심은 “view 이후 클릭으로 못 넘어감”
 
-- 30d: 최악 세그먼트는 대부분 `click_to_cart × A2_click`이고, 특히 low consistency(C1/C2)에서 전환이 최저(약 4-5%, 모수 5k~6k). 반면 C5_high는 ~16%까지 회복.
-  → 30일 관점 병목은 “click → cart”이며, 저일관성 clicker가 최우선 타깃.
-
-- Action 제안: (1) 14d `view→click` 전사 UX 개선 + (2) 30d `click→cart` 저일관성 세그먼트 대상 타깃 실험/개입으로 우선순위 분리.
+- 30d: 상위는 주로 click→cart × A2_click, 특히 C1/C2에서 취약 → 30일 관점 병목은 “click→cart”, 타깃은 “저일관성 clickers”
 
 ### Figure 05 — Worst segments Top10 (strict w14/w30)
 - Query: `src/sql/analysis/00_story_core/03_bottleneck_worst_segments_top10_strict_w14_w30.sql`
