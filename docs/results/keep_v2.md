@@ -104,7 +104,6 @@ Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약
 - Query: `src/sql/analysis/00_story_core/02_bottleneck_frequency_reach_strict_w14_w30.sql`
 
 ![](./figures/04_figure_a.png)
-![](./figures/04_figure_b.png)
 
 ---
 
