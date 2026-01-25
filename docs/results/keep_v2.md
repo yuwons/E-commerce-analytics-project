@@ -90,8 +90,8 @@ Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약
 ## 4) Finding #3 — 퍼널 병목은 “전사 공통 병목”과 “세그먼트 취약 병목”으로 나누면 우선순위가 선명해진다 (v1.0)
 
 ### Key takeaway
-- **Result:** Result: (strict 기준) w14에서는 view→click이 가장 흔한 병목(n_cell=10)이고, w30에서는 click→cart가 가장 흔한 병목(n_cell=13)으로 나타난다.
-- **So what:** 먼저 전사 공통 병목(w14 view→click) 을 개선해 바닥을 끌어올리고, 이후 세그먼트 단위 병목(w30 click→cart) 은 타깃 실험/개입으로 해결하는 식으로 우선순위를 분리할 수 있다.
+- **Result:** Result: strict 기준, w14의 최빈 병목은 view→click(n_cell=10), w30의 최빈 병목은 click→cart(n_cell=13) 로 나타난다. 즉 초기(14d)는 “클릭 유도”, 30d 관점에서는 “카트 전환”이 더 자주 막힌다.
+- **So what:** 병목을 (1) 전사 공통 병목(빈도) 과 (2) 특정 세그먼트 병목(취약 조합) 으로 나누면, “전사 UX 개선”과 “세그먼트 타깃 실험”의 우선순위/역할 분담이 명확해진다.
 - **Evidence:** Figure 04 (Bottleneck frequency; strict only, w14/w30)
 
 퍼널을 “전환율이 낮다”로만 보면 액션이 흐려진다. 
