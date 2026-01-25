@@ -144,8 +144,10 @@ v1.0 결과는 “Activation만으로는 부족하고 Consistency가 성과와 �
 
 ## 6.1) Result 01 — Persona snapshot (Activation × Consistency)
 
+> Persona는 **Activation(초기 14d) × Consistency(0–60d 리듬)** 조합으로 정의했다.
+
 ### Key takeaway
-- **Result:** Persona 간 60–180d 성과가 뚜렷하게 갈리며, D_Loyal이 전반적으로 가장 높고 B_Observer는 낮다.
+- **Result:** time-split(60–180d) 기준에서도 persona별 **매출/구매율/리텐션**이 뚜렷하게 갈린다. **D_Loyal이 전반적으로 가장 높고**, **B_Observer는 낮다.**
 - **So what:** Activation만이 아니라 ‘재방문 리듬/성향’까지 포함한 persona 단위로 KPI/액션을 설계하면, 세그먼트 기반 운영(예: 타깃 캠페인/개입)이 가능해진다.
 - **Evidence:** persona_result.png (Persona snapshot: Activation × Consistency)
 
