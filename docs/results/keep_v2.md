@@ -106,14 +106,14 @@ Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약
 
 ---
 
-## 5) Finding #4 — 최약 세그먼트 Top10을 보면 “개선 우선순위”가 더 구체적으로 잡힌다 (v1.0)
+## 5) Finding #4 — 취약 세그먼트 Top10을 보면 “개선 우선순위”가 더 구체적으로 잡힌다 (v1.0)
 
 ### Key takeaway
 - **Result:** strict 기준 Worst Top10에서 14d는 view→click × A1_view가 상위권을 반복(전환 0% 포함, denom 약 2.6k~3.2k)하며, 30d는 click→cart × A2_click 조합이 다수이고 특히 **low consistency(C1/C2)**에서 전환이 최저(≈4–5%)인 반면 C5는 ~16%까지 회복한다.
 - **So what:** 우선순위는 (1) 14d: view→click 전사 개선(예: 첫 클릭 유도/노출·카피·추천 개선)과 (2) 30d: click→cart ‘저일관성 clickers’ 타깃 실험/개입으로 분리하는 게 합리적이다.
 - **Evidence:** Fig 05 (Worst segments Top10; strict w14/w30)
 
-**왜 최약 세그먼트(Top10)를 보나?**  
+**왜 취약약 세그먼트(Top10)를 보나?**  
 전체 평균만 보면 병목이 희석된다. strict 기준 Worst Top10은 **전사 공통 병목(어디가 막히는가)**과 **취약 세그먼트 병목(누가 특히 막히는가)**을 분리해 개선 우선순위를 더 구체화한다.
 
 - 14d: 상위는 주로 view→click × A1_view에 집중 → 초기 실패의 핵심은 “view 이후 클릭으로 못 넘어감”
