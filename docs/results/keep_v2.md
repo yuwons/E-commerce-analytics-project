@@ -87,7 +87,7 @@ Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약
 
 ---
 
-## 4) Finding #3 — 퍼널 병목은 “어디서 자주 막히는지”와 “어느 세그먼트가 특히 약한지”를 나눠보면 더 명확하다 (v1.0)
+## 4) Finding #3 — 퍼널 병목은 “전사 공통 병목”과 “세그먼트 취약 병목”으로 나누면 우선순위가 선명해진다 (v1.0)
 
 ### Key takeaway
 - **Result:** Result: (strict 기준) w14에서는 view→click이 가장 흔한 병목(n_cell=10)이고, w30에서는 click→cart가 가장 흔한 병목(n_cell=13)으로 나타난다.
