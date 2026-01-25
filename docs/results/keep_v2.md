@@ -184,21 +184,24 @@ time-split로 관측(0–60d)과 성과(60–180d)를 분리해도 **“Consiste
 ## 6.3) Result 03 — Activation × Consistency → Outcomes (time-split)
 
 ### Key takeaway
-- **Result:** Activation 수준이 같아도 Consistency(C1→C5)에 따라 60–180d 성과가 크게 달라지며, Activation만으로는 설명이 끝나지 않는다.
-- **So what:** 초기 전환이 낮아도 Consistency가 좋은 그룹은 장기 성과에서 회복 가능성이 있어, ‘Activation 중심’ 관점만으로 타깃/평가하면 기회를 놓칠 수 있다.
+- **Result:** time-split(0–60d 관측 → 60–180d 성과)에서도 **Activation 수준이 같아도 Consistency(C1→C5)에 따라 성과가 크게 갈린다.**
+  - 예: **Act_Low(A0–A1)**에서도 purchase_rate_60_180이 **0.016(C1) → 0.426(C5)**, retention이 **0.202 → 0.688**로 상승  
+  - 예: **Act_High(A4–A5)**에서도 purchase_rate_60_180 **0.068(C1) → 0.418(C5)**, retention **0.414 → 0.829**
+- **So what:** **Activation만으로 유저를 평가/타깃팅하면** “초기 전환은 낮지만 리듬이 좋은(high-consistency) 유저(특히 Act_Low/Act_Mid의 C5)”를 **과소평가**해 기회를 놓칠 수 있다.  
+  → 운영/개입의 단위는 **Activation 단독이 아니라 Activation×Consistency(persona)**가 더 합리적이다.
 - **Evidence:** Activation_x_consistency_outcome.png (Activation 0–14d × Consistency 0–60d → Outcomes 60–180d)
 
 - Query: `src/sql/analysis/story_core_v1.1/05_activation14d_x_consistency0_60d_summary.sql`
   
 ![Time-split: Activation (0–14d) × Consistency (0–60d) → Outcomes (60–180d)](./figures_v1.1/Activation_x_consistency_outcome.png)
 
-Activation 구간이 같아도, Consistency(C1→C5)에 따라 60–180d 성과가 크게 달라진다.  
-즉, Activation만으로는 설명이 끝나지 않고 Consistency가 추가 설명력을 갖는다.
+Activation 구간이 같아도, Consistency(C1→C5)에 따라 60–180d 성과가 일관되게 벌어진다.  
+즉, time-split을 적용해도 **Consistency는 Activation을 넘어서는 추가 설명력**을 가진다.
 
-- 같은 activation_bucket_14d 안에서 C1→C5로 갈수록 purchase_rate_60_180 / avg_revenue_60_180 / retention이 상승
-- 특히 Act_Low/Act_Mid에서도 C5가 의미 있게 높은 성과를 보이며 “초기 전환이 낮아도 리듬이 좋으면 회복 가능” 시그널이 나온다.
+- 같은 activation_bucket_14d 안에서도 C1→C5로 갈수록 **purchase_rate_60_180 / avg_revenue_60_180 / retention**이 상승
+- 특히 **Act_Low/Act_Mid에서도 C5가 의미 있게 높아**, “초기 전환이 낮아도 리듬이 좋으면 장기 성과에서 회복 가능” 신호가 유지된다.
 
-> **Note (limitation):** 본 프로젝트는 인과추론이 목적이 아니라 “분석 프레임/SQL+DM 설계 역량”을 보여주기 위한 synthetic 시뮬레이션이므로, **관계(패턴) 제시**를 핵심으로 한다.
+> **Note (limitation):** synthetic 데이터 특성상 효과 크기(lift)는 가정에 좌우될 수 있어, 본 결과는 인과추정보다 **관계/프레임(해석 구조) 검증**에 초점을 둔다.
 
 ---
 
