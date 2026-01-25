@@ -90,15 +90,15 @@ Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약
 ## 4) Finding #3 — 퍼널 병목은 “어디서 자주 막히는지”와 “어느 세그먼트가 특히 약한지”를 나눠보면 더 명확하다 (v1.0)
 
 ### Key takeaway
-- **Result:** 퍼널 병목은 *“전사적으로 자주 발생하는 구간(빈도)”*과 *“특정 세그먼트에서만 유난히 약한 구간(취약 조합)”*이 서로 다르게 나타난다. 따라서 병목을 두 축으로 분리하면, 같은 퍼널 분석이라도 개선 우선순위가 더 명확해진다.
-- **So what:** 먼저 빈도 기반으로 전체 임팩트가 큰 구간(전사 공통 병목)을 잡고, 다음으로 세그먼트 기반으로 실험/개입 대상을 좁히면 실행 계획(roadmap)을 바로 만들 수 있다.
-- **Evidence:** Figure 04 (Bottleneck frequency; reach-based / strict w14/w30)
+- **Result:** Result: (strict 기준) w14에서는 view→click이 가장 흔한 병목(n_cell=10)이고, w30에서는 click→cart가 가장 흔한 병목(n_cell=13)으로 나타난다.
+- **So what:** 먼저 전사 공통 병목(w14 view→click) 을 개선해 바닥을 끌어올리고, 이후 세그먼트 단위 병목(w30 click→cart) 은 타깃 실험/개입으로 해결하는 식으로 우선순위를 분리할 수 있다.
+- **Evidence:** Figure 04 (Bottleneck frequency; strict only, w14/w30)
 
-퍼널 분석을 할 때, 단순히 “전환율이 낮다”에서 끝내면 액션으로 이어지기 어렵다.  
-그래서 v1.0에서는 두 가지 관점으로 나눠 봤다.
+퍼널을 “전환율이 낮다”로만 보면 액션이 흐려진다. 
+그래서 v1.0에서는 두 가지 관점으로 분리해 분석을 진행했.
 
-- **(A) 빈도 관점:** 병목이 “자주 발생하는 구간”은 어디인가?  
-- **(B) 세그먼트 관점:** “특히 약한 세그먼트”는 어떤 조합인가?
+- **(A) 자주 발생하는 병목(빈도) :** 병목이 “자주 발생하는 구간”은 어디인가?  
+- **(B) 특정 조합에서 특히 약한 병목(최악 세그먼트):**
 
 ### Figure 04 — Bottleneck frequency (reach-based, strict w14/w30)
 - Query: `src/sql/analysis/00_story_core/02_bottleneck_frequency_reach_strict_w14_w30.sql`
