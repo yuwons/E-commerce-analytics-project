@@ -147,7 +147,7 @@ v1.0 결과는 “Activation만으로는 부족하고 Consistency가 성과와 �
 > Persona는 **Activation(초기 14d)** × **Consistency(0–60d 리듬)** 조합으로 정의했다.
 
 ### Key takeaway
-- **Result:** time-split(60–180d) 기준에서도 persona별 **매출/구매율/리텐션**이 뚜렷하게 갈린다. 특히 **초기 14d에 구매(Activation)가 없더라도**, 0–60d **Consistency(방문 리듬)**가 높은 persona는 60–180d 성과가 더 높게 나타난다.
+- **Result:** time-split(60–180d) 기준에서도 persona별 **매출/구매율/리텐션**이 뚜렷하게 갈린다. 특히 **초기 14d에 구매(Activation)가 없더라도**, 0–60d **Consistency(방문 리듬)** 가 높은 persona는 60–180d 성과가 더 높게 나타난다.
 - **So what:** “초기 구매 여부(Activation)”만으로 장기 성과를 판단하기 어렵고, **Consistency가 추가 설명력**을 가진다. 따라서 KPI/액션은 Activation뿐 아니라 **재방문 리듬/성향까지 포함한 persona 단위**로 설계하는 것이 합리적이다.
 - **Evidence:** persona_result.png (Persona snapshot: Activation × Consistency)
 
