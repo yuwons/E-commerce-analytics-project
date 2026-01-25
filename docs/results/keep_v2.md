@@ -142,21 +142,6 @@ v1.0 결과는 “Activation만으로는 부족하고 Consistency가 성과와 �
 
 ---
 
-## 6) v1.1 — Time-split으로 “관측(0–60d) → 성과(60–180d)”를 분리해 재검증
-
-### Key takeaway
-- **Result:** v1.0의 동기간(0–180d) 상관/tautology 가능성을 줄이기 위해, 관측(0–60d)과 성과(60–180d)를 분리한 time-split으로 동일 질문을 재검증한다.
-- **So what:** 이후 결과는 ‘동기간 상관’이 아닌 ‘초기 행동/리듬이 이후 성과와 연결되는지’를 보여주므로, v1.0보다 해석 방어력이 강해진다.
-- **Evidence:** Result 01–03 (v1.1 figures_v1.1)
-
-v1.0 결과는 “Activation만으로는 부족하고 Consistency가 성과와 함께 움직인다”는 패턴을 보여줬다.  
-다만 v1.0은 일부 지표가 **동기간(같은 0–180d 창)**에서 계산돼 상관(tautology) 우려가 남는다.
-
-그래서 v1.1에서는 **관측(0–60d)**에서 early behavior/consistency를 정의하고,  
-**성과(60–180d)**에서 purchase/revenue/retention을 측정해 같은 패턴이 유지되는지 확인한다.
-
----
-
 ## 6.1) Result 01 — Persona snapshot (Activation × Consistency)
 
 ### Key takeaway
