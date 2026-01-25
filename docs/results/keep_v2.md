@@ -155,11 +155,8 @@ v1.0 결과는 “Activation만으로는 부족하고 Consistency가 성과와 �
 
 ![Persona snapshot (Activation × Consistency)](./figures_v1.1/persona_result.png)
 
-Persona 간 성과가 뚜렷하게 갈린다.  
-특히 **D_Loyal**은 60–180d 매출/구매율/리텐션이 모두 가장 높고, **B_Observer**는 전반적으로 낮다.
-
-- 핵심: “초기 구매(Activation)만이 아니라, 이후 리듬/재방문 성향이 장기 성과를 좌우”하는 그림이 나온다.
-- 활용: Tableau에서 persona별 KPI 카드/트렌드로 보여주기 좋다.
+Persona별 60–180d 성과가 뚜렷하게 갈린다(특히 D_Loyal ↑, B_Observer ↓).
+→ 즉, 초기 구매(Activation)뿐 아니라 이후 리듬/재방문 성향(Consistency)이 장기 성과를 좌우하는 축으로 작동한다.
 
 > **Note (limitation):** 이 결과는 synthetic 데이터 설정(시뮬레이션 가정)에 영향을 받으므로, **절대 수치보다 ‘방향성/프레임(해석 구조)’** 에 초점을 둔다.
 
