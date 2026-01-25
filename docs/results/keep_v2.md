@@ -89,7 +89,7 @@ Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약
 ## 4) Finding #3 — 퍼널 병목은 “전사 공통 병목”과 “세그먼트 취약 병목”으로 나누면 우선순위가 선명해진다 (v1.0)
 
 ### Key takeaway
-- **Result:** Result: strict 기준, w14의 최빈 병목은 view→click(n_cell=10), w30의 최빈 병목은 click→cart(n_cell=13) 로 나타난다. 즉 초기(14d)는 “클릭 유도”, 30d 관점에서는 “카트 전환”이 더 자주 막힌다.
+- **Result:** Result: strict 기준, w14의 최빈 병목은 view→click(n_cell=10), w30의 최빈 병목은 click→cart(n_cell=13). 또한 w14는 median conv_rate=0으로 ‘클릭으로 못 넘어가는’ 세그먼트가 넓게 존재하고, w30은 click→cart의 전환이 상대적으로 낮게 형성되어 30일 관점에서 카트 전환이 반복 병목으로 나타난다.
 - **So what:** 병목을 (1) 전사 공통 병목(빈도) 과 (2) 특정 세그먼트 병목(취약 조합) 으로 나누면, “전사 UX 개선”과 “세그먼트 타깃 실험”의 우선순위/역할 분담이 명확해진다.
 - **Evidence:** Figure 04 (Bottleneck frequency; strict only, w14/w30)
 
@@ -97,9 +97,9 @@ Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약
 그래서 v1.0에서는 두 가지 관점으로 분리해 분석을 진행했.
 
 - **(A) 자주 발생하는 병목(빈도) :** 병목이 “자주 발생하는 구간”은 어디인가?  
-- **(B) 특정 조합에서 특히 약한 병목(최악 세그먼트):**
+- **(B) 세그먼트 관점:** 다음 Finding #4에서 Worst Top10으로 구체화한다.
 
-### Figure 04 — Bottleneck frequency (reach-based, strict w14/w30)
+### Figure 04 — Bottleneck frequency (strict w14/w30)
 - Query: `src/sql/analysis/00_story_core/02_bottleneck_frequency_reach_strict_w14_w30.sql`
 
 ![](./figures/04_figure_a.png)
@@ -109,12 +109,12 @@ Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약
 ## 5) Finding #4 — 최약 세그먼트 Top10을 보면 “개선 우선순위”가 더 구체적으로 잡힌다 (v1.0)
 
 ### Key takeaway
-- **Result:** strict 기준 Worst Top10에서 14d는 view→click × A1_view가 반복적으로 상위에 등장하며(전환 0% 포함), 30d는 click→cart × A2_click 조합이 다수이고 특히 low consistency(C1/C2) 에서 전환이 최저(≈4–5%)인 반면 C5는 더 높게 회복한다.
-- **So what:** (1) 14d: view→click 전사 개선(카피/추천/첫 클릭 유도)과 (2) 30d: click→cart ‘저일관성 clickers’ 타깃 실험/개입으로 분리하는 게 합리적이다.
+- **Result:** strict 기준 Worst Top10에서 14d는 view→click × A1_view가 상위권을 반복(전환 0% 포함, denom 약 2.6k~3.2k)하며, 30d는 click→cart × A2_click 조합이 다수이고 특히 **low consistency(C1/C2)**에서 전환이 최저(≈4–5%)인 반면 C5는 ~16%까지 회복한다.
+- **So what:** 우선순위는 (1) 14d: view→click 전사 개선(예: 첫 클릭 유도/노출·카피·추천 개선)과 (2) 30d: click→cart ‘저일관성 clickers’ 타깃 실험/개입으로 분리하는 게 합리적이다.
 - **Evidence:** Fig 05 (Worst segments Top10; strict w14/w30)
 
 **왜 최약 세그먼트(Top10)를 보나?**  
-전체 평균만 보면 병목이 희석된다. 그래서 w14/w30 strict 기준으로 성과가 가장 낮은 세그먼트 조합 Top10을 확인해 “어디가 막히는지”를 “누가 특히 막히는지”까지 연결했다.
+전체 평균만 보면 병목이 희석된다. strict 기준 Worst Top10은 **전사 공통 병목(어디가 막히는가)**과 **취약 세그먼트 병목(누가 특히 막히는가)**을 분리해 개선 우선순위를 더 구체화한다.
 
 - 14d: 상위는 주로 view→click × A1_view에 집중 → 초기 실패의 핵심은 “view 이후 클릭으로 못 넘어감”
 
