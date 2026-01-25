@@ -131,15 +131,14 @@ Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약
 ## 6) v1.1 — Time-split으로 “관측(0–60d) → 성과(60–180d)”를 분리해 재검증
 
 ### Key takeaway
-- **Result:** v1.0의 동기간(0–180d) 상관/tautology 가능성을 줄이기 위해, 관측(0–60d)과 성과(60–180d)를 분리한 time-split으로 동일 질문을 재검증한다.
-- **So what:** 이후 결과는 ‘동기간 상관’이 아닌 ‘초기 행동/리듬이 이후 성과와 연결되는지’를 보여주므로, v1.0보다 해석 방어력이 강해진다.
+- **Result:** v1.0에서 보였던 “Activation만으로는 부족하고, Consistency가 장기 성과를 추가로 가른다”는 패턴이 **time-split(0–60d 관측 → 60–180d 성과)** 에서도 **동일하게 재현**된다. 즉, 결과는 ‘동기간 상관’만으로 설명되지 않는다.
+- **So what:** 이제 Consistency는 **초기 60일 행동/리듬 기반의 선행 신호**로 해석할 수 있고, 같은 Activation 안에서도 **장기 가치(매출/구매율/리텐션) 관점의 세그먼트 액션**(타깃·개입)을 설계할 근거가 강화된다.
 - **Evidence:** Result 01–03 (v1.1 figures_v1.1)
 
 v1.0 결과는 “Activation만으로는 부족하고 Consistency가 성과와 함께 움직인다”는 패턴을 보여줬다.  
-다만 v1.0은 일부 지표가 **동기간(같은 0–180d 창)**에서 계산돼 상관(tautology) 우려가 남는다.
+다만 v1.0은 일부 지표가 **동기간(0–180d)** 안에서 함께 계산되어, 상관이 **tautology(동기간 산출) 위험**을 완전히 배제하기 어렵다.
 
-그래서 v1.1에서는 **관측(0–60d)**에서 early behavior/consistency를 정의하고,  
-**성과(60–180d)**에서 purchase/revenue/retention을 측정해 같은 패턴이 유지되는지 확인한다.
+그래서 v1.1에서는 **관측 구간(0–60d)**에서 early behavior/consistency를 정의하고, **성과 구간(60–180d)** 에서 purchase/revenue/retention을 측정해 **시간을 분리한 상태에서도 같은 패턴이 유지되는지**를 재검증한다.
 
 ---
 
