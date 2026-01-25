@@ -165,21 +165,19 @@ Persona별 60–180d 성과가 뚜렷하게 갈린다(예: **D_Loyal ↑, B_Obse
 ## 6.2) Result 02 — Consistency (0–60d) → Outcomes (60–180d)
 
 ### Key takeaway
-- **Result:** 0–60d Consistency가 높아질수록(C1→C5) 60–180d 구매율/매출/리텐션이 단조 증가한다(시간 분리 후에도 패턴 유지).
-- **So what:** Consistency는 ‘초기 60일의 리듬’ 관점에서 이후 120일 성과를 설명하는 유의미한 신호가 될 수 있다.
+- **Result:** 0–60d Consistency가 높아질수록(C1→C5) 60–180d **구매율/매출/리텐션이 단조 증가**한다(시간 분리 후에도 패턴 유지).  
+  - 예: purchase_rate_60_180 **0.049 → 0.467**, retention_last_week_180d_rate **0.257 → 0.767** (C1→C5).
+- **So what:** 초기 60일의 방문 리듬(Consistency)은 이후 120일 성과를 설명하는 **핵심 신호**다. 즉, Activation만으로는 부족하고 **Consistency가 추가 설명력**을 가진다(→ 다음 Result에서 Activation 통제/교차에서도 동일 패턴을 확인).
 - **Evidence:** Consistency_outcome.png (Consistency 0–60d → Outcomes 60–180d)
 
 - Query: `src/sql/analysis/story_core_v1.1/04_timesplit__consistency_0_60_segment__outcomes_60_180.sql`
 
 ![Time-split: Consistency (0–60d) → Outcomes (60–180d)](./figures_v1.1/Consistency_outcome.png)
 
-0–60d Consistency가 높아질수록(C1→C5) 60–180d 성과가 **단조 증가**한다.  
-매출/구매율/리텐션이 모두 같은 방향으로 움직여, “Consistency가 미래 성과를 가른다”를 time-split으로 재확인한다.
+0–60d Consistency가 높을수록(C1→C5) 60–180d 성과가 같은 방향으로 개선된다.  
+time-split로 관측(0–60d)과 성과(60–180d)를 분리해도 **“Consistency가 미래 성과와 함께 움직인다”**는 결론이 유지된다.
 
-- C1→C5로 갈수록 avg_revenue_60_180, purchase_rate_60_180, retention_last_week_180d_rate가 모두 상승
-- 메시지: “초기 60일의 리듬(Consistency)은 이후 120일 성과를 예측/설명하는 신호다.”
-
-> **Note (limitation):** time-split으로 동기간 상관은 줄였지만, 여전히 **생성 로직/가정에 의해 효과 크기(lift)가 커 보일 수 있어** 과도한 일반화는 피한다.
+> **Note (limitation):** synthetic 생성 가정(전환/재방문 로직)에 따라 효과 크기(lift)는 과장될 수 있어, 본 결과는 **인과 주장보다 방향성/프레임 검증** 에 초점을 둔다.
 
 ---
 
