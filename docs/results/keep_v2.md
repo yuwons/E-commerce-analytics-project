@@ -144,21 +144,21 @@ v1.0 결과는 “Activation만으로는 부족하고 Consistency가 성과와 �
 
 ## 6.1) Result 01 — Persona snapshot (Activation × Consistency)
 
-> Persona는 **Activation(초기 14d) × Consistency(0–60d 리듬)** 조합으로 정의했다.
+> Persona는 **Activation(초기 14d)** × **Consistency(0–60d 리듬)** 조합으로 정의했다.
 
 ### Key takeaway
-- **Result:** time-split(60–180d) 기준에서도 persona별 **매출/구매율/리텐션**이 뚜렷하게 갈린다. **D_Loyal이 전반적으로 가장 높고**, **B_Observer는 낮다.**
-- **So what:** Activation만이 아니라 ‘재방문 리듬/성향’까지 포함한 persona 단위로 KPI/액션을 설계하면, 세그먼트 기반 운영(예: 타깃 캠페인/개입)이 가능해진다.
+- **Result:** time-split(60–180d) 기준에서도 persona별 **매출/구매율/리텐션**이 뚜렷하게 갈린다. 특히 **초기 14d에 구매(Activation)가 없더라도**, 0–60d **Consistency(방문 리듬)**가 높은 persona는 60–180d 성과가 더 높게 나타난다.
+- **So what:** “초기 구매 여부(Activation)”만으로 장기 성과를 판단하기 어렵고, **Consistency가 추가 설명력**을 가진다. 따라서 KPI/액션은 Activation뿐 아니라 **재방문 리듬/성향까지 포함한 persona 단위**로 설계하는 것이 합리적이다.
 - **Evidence:** persona_result.png (Persona snapshot: Activation × Consistency)
 
 - Query: `src/sql/analysis/story_core_v1.1/Persona_Analysis.sql`
 
 ![Persona snapshot (Activation × Consistency)](./figures_v1.1/persona_result.png)
 
-Persona별 60–180d 성과가 뚜렷하게 갈린다(특히 D_Loyal ↑, B_Observer ↓).
-→ 즉, 초기 구매(Activation)뿐 아니라 이후 리듬/재방문 성향(Consistency)이 장기 성과를 좌우하는 축으로 작동한다.
+Persona별 60–180d 성과가 뚜렷하게 갈린다(예: **D_Loyal ↑, B_Observer ↓**).  
+이 결과는 “초기 구매(Activation)만이 아니라, 이후 리듬/재방문 성향(Consistency)이 장기 성과를 좌우하는 축으로 작동한다”는 그림을 강화한다.
 
-> **Note (limitation):** 이 결과는 synthetic 데이터 설정(시뮬레이션 가정)에 영향을 받으므로, **절대 수치보다 ‘방향성/프레임(해석 구조)’** 에 초점을 둔다.
+> **Note (limitation):** 일부 persona의 절대 순위(예: B_Observer > A_Burst)는 synthetic 생성 가정/노이즈의 영향을 받을 수 있어, 본 섹션은 **절대 순위보다 ‘Activation vs Consistency 역할 분리(프레임)’** 에 초점을 둔다.
 
 ---
 
