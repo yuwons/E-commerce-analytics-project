@@ -194,6 +194,10 @@ SQL에서 확인한 “C1→C5 단조 패턴”이 **표(평균)뿐 아니라 �
 
 ![](<figures(python)/fig_violin_log1p_revenue_60_180_buyers_only_by_consistency_segment_v1_1.png>)
 
+**Python Validation — Bootstrap CI (C5 − C1, purchase_rate_60_180)**  
+> 효과 크기와 불확실성을 함께 확인(95% CI).
+
+![](<figures(python)/fig_bootstrap_ci_c5_minus_c1_purchase_rate_60_180_v1_1.png>)
 
 ---
 
@@ -218,6 +222,11 @@ Activation 구간이 같아도, Consistency(C1→C5)에 따라 60–180d 성과�
 - 특히 **Act_Low/Act_Mid에서도 C5가 의미 있게 높아**, “초기 전환이 낮아도 리듬이 좋으면 장기 성과에서 회복 가능” 신호가 유지된다.
 
 > **Note (limitation):** synthetic 데이터 특성상 효과 크기(lift)는 가정에 좌우될 수 있어, 본 결과는 인과추정보다 **관계/프레임(해석 구조) 검증**에 초점을 둔다.
+
+**Python Validation — Heatmap (Purchase rate, 60–180d)**  
+> Activation stage(0–14d)와 Consistency(C1–C5)를 교차해, 60–180d 구매율이 두 축에서 어떻게 달라지는지 한 번에 확인한다.
+
+![](<figures(python)/fig_heatmap_purchase_rate_60_180_by_activation_x_consistency_v1_1.png>)
 
 ---
 
