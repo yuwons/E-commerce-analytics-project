@@ -192,7 +192,11 @@ SQL에서 확인한 “C1→C5 단조 패턴”이 **표(평균)뿐 아니라 �
 **Python Validation — Distribution (buyers-only, log1p revenue)**  
 > 평균값이 소수 고액 구매자(outlier)에 의해 왜곡될 수 있어, 구매자만 대상으로 `log1p(revenue_60_180)` 분포를 세그먼트별로 비교한다(중앙값/분산/꼬리까지 확인).
 
-![](<figures(python)/fig_violin_log1p_revenue_60_180_buyers_only_by_consistency_segment_v1_1.png>)
+<img src="figures(python)/fig_line_retention_174_180_by_consistency_segment_v1_1.png" width="650">
+
+<details>
+<summary><b>Distribution check (buyers only, log1p revenue)</b></summary>
+
 
 **Python Validation — Bootstrap CI (C5 − C1, purchase_rate_60_180)**  
 > 효과 크기와 불확실성을 함께 확인(95% CI).
