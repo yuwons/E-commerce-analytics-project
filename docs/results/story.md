@@ -184,20 +184,24 @@ time-split로 관측(0–60d)과 성과(60–180d)를 분리해도 **“Consiste
 아래 그래프는 `DM_timesplit_60_180_final`을 Python에서 다시 집계/시각화해,
 SQL에서 확인한 “C1→C5 단조 패턴”이 **표(평균)뿐 아니라 분포/추세 관점에서도 동일하게 보이는지**를 보강한다.
 
-**Python Validation — Retention trend (day 174–180)**  
-> Consistency(C1–C5)별 180d 리텐션(마지막 주 활동 여부)을 요약해, 세그먼트 간 단조 증가(gradient) 패턴을 빠르게 확인한다.
+### Python Validation — Retention trend (day 174–180)
+> **Purpose:** Consistency(C1–C5)와 180d retention의 단조 관계를 Python에서 재확인한다.  
+> **Result:** SQL에서 확인한 **C1→C5 상승 패턴이 동일하게 재현**된다.
 
 ![](<figures(python)/fig_line_retention_174_180_by_consistency_segment_v1_1.png>)
 
 
 **Python Validation — Distribution (buyers-only, log1p revenue)**  
-> 평균값이 소수 고액 구매자(outlier)에 의해 왜곡될 수 있어, 구매자만 대상으로 `log1p(revenue_60_180)` 분포를 세그먼트별로 비교한다(중앙값/분산/꼬리까지 확인).
+> **Purpose:** 평균이 outlier에 의해 왜곡될 수 있어, 구매자만 대상으로 `log1p(revenue_60_180)` 분포를 세그먼트별로 비교한다.  
+> **Result:** 중앙값/분포에서도 **C1→C5 우상향 경향이 유지**되어, 평균 기반 결론을 보강한다.
+
 
 ![](<figures(python)/fig_violin_log1p_revenue_60_180_buyers_only_by_consistency_segment_v1_1.png>)
 
 
 **Python Validation — Bootstrap CI (C5 − C1, purchase_rate_60_180)**  
-> 효과 크기와 불확실성을 함께 확인(95% CI).
+> **Purpose:** C5와 C1의 구매율 차이를 부트스트랩으로 추정해 불확실성(95% CI)을 함께 제시한다.  
+> **Result:** 관측 차이(pp)가 **95% CI 범위에서도 일관**하게 나타나, 효과 크기 방향성 증명한.
 
 ![](<figures(python)/fig_bootstrap_ci_c5_minus_c1_purchase_rate_60_180_v1_1.png>)
 
@@ -227,7 +231,8 @@ Activation 구간이 같아도, Consistency(C1→C5)에 따라 60–180d 성과�
 > **Note (limitation):** synthetic 데이터 특성상 효과 크기(lift)는 가정에 좌우될 수 있어, 본 결과는 인과추정보다 **관계/프레임(해석 구조) 검증**에 초점을 둔다.
 
 **Python Validation — Heatmap (Purchase rate, 60–180d)**  
-> Activation stage(0–14d)와 Consistency(C1–C5)를 교차해, 60–180d 구매율이 두 축에서 어떻게 달라지는지 한 번에 확인한다.
+> **Purpose:** Activation stage(0–14d) × Consistency(C1–C5) 교차에서 60–180d 구매율이 두 축에 따라 어떻게 달라지는지 한 번에 확인한다.  
+> **Result:** (1) 동일 Activation stage 내에서도 **C1→C5로 갈수록 구매율이 상승**하고, (2) 동일 Consistency 구간 내에서도 **Activation stage가 높을수록 구매율이 상승**하는 패턴이 재현된다.
 
 ![](<figures(python)/fig_heatmap_purchase_rate_60_180_by_activation_x_consistency_v1_1.png>)
 
