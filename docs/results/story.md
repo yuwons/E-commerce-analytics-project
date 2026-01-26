@@ -189,19 +189,18 @@ SQL에서 확인한 “C1→C5 단조 패턴”이 **표(평균)뿐 아니라 �
 
 ![](<figures(python)/fig_line_retention_174_180_by_consistency_segment_v1_1.png>)
 
+
 **Python Validation — Distribution (buyers-only, log1p revenue)**  
 > 평균값이 소수 고액 구매자(outlier)에 의해 왜곡될 수 있어, 구매자만 대상으로 `log1p(revenue_60_180)` 분포를 세그먼트별로 비교한다(중앙값/분산/꼬리까지 확인).
 
-<img src="figures(python)/fig_line_retention_174_180_by_consistency_segment_v1_1.png" width="650">
-
-<details>
-<summary><b>Distribution check (buyers only, log1p revenue)</b></summary>
+![](<figures(python)/fig_violin_log1p_revenue_60_180_buyers_only_by_consistency_segment_v1_1.png>)
 
 
 **Python Validation — Bootstrap CI (C5 − C1, purchase_rate_60_180)**  
 > 효과 크기와 불확실성을 함께 확인(95% CI).
 
 ![](<figures(python)/fig_bootstrap_ci_c5_minus_c1_purchase_rate_60_180_v1_1.png>)
+
 
 ---
 
@@ -231,6 +230,7 @@ Activation 구간이 같아도, Consistency(C1→C5)에 따라 60–180d 성과�
 > Activation stage(0–14d)와 Consistency(C1–C5)를 교차해, 60–180d 구매율이 두 축에서 어떻게 달라지는지 한 번에 확인한다.
 
 ![](<figures(python)/fig_heatmap_purchase_rate_60_180_by_activation_x_consistency_v1_1.png>)
+
 
 ---
 
