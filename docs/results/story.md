@@ -179,6 +179,22 @@ time-split로 관측(0–60d)과 성과(60–180d)를 분리해도 **“Consiste
 
 > **Note (limitation):** synthetic 생성 가정(전환/재방문 로직)에 따라 효과 크기(lift)는 과장될 수 있어, 본 결과는 **인과 주장보다 방향성/프레임 검증** 에 초점을 둔다.
 
+### Python validation (EDA / distribution / simple stats)
+
+아래 그래프는 `DM_timesplit_60_180_final`을 Python에서 다시 집계/시각화해,
+SQL에서 확인한 “C1→C5 단조 패턴”이 **표(평균)뿐 아니라 분포/추세 관점에서도 동일하게 보이는지**를 보강한다.
+
+**Python Validation — Retention trend (day 174–180)**  
+> Consistency(C1–C5)별 180d 리텐션(마지막 주 활동 여부)을 요약해, 세그먼트 간 단조 증가(gradient) 패턴을 빠르게 확인한다.
+
+![](<figures(python)/fig_line_retention_174_180_by_consistency_segment_v1_1.png>)
+
+**Python Validation — Distribution (buyers-only, log1p revenue)**  
+> 평균값이 소수 고액 구매자(outlier)에 의해 왜곡될 수 있어, 구매자만 대상으로 `log1p(revenue_60_180)` 분포를 세그먼트별로 비교한다(중앙값/분산/꼬리까지 확인).
+
+![](<figures(python)/fig_violin_log1p_revenue_60_180_buyers_only_by_consistency_segment_v1_1.png>)
+
+
 ---
 
 ## 6.3) Result 03 — Activation × Consistency → Outcomes (time-split)
