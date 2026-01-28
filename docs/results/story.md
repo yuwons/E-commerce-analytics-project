@@ -239,6 +239,67 @@ Activation 구간이 같아도, Consistency(C1→C5)에 따라 60–180d 성과�
 
 ---
 
+## 7) A/B Test: 관찰 결과를 “개입 효과” 관점에서 검증
+
+### 7.1 왜 A/B Test를 했나 (v1.1 이후)
+v1.0/v1.1(Time-split) 분석에서는 **Consistency(방문 리듬/규칙성)** 가 60–180일 구간 성과(매출/리텐션)와 강하게 연관되는 패턴을 확인했다.  
+다만 이 결과는 어디까지나 **관찰(Observational) 기반**이라, time-split으로 누수 위험을 줄였더라도 **교란/선택 효과** 가능성을 완전히 제거할 수는 없다.
+
+그래서 “관찰된 패턴이 실제 개입(intervention)으로도 성과를 움직일 수 있는가?”를 보기 위해, **신규 유입 유저 코호트(베이스라인과 분리된 별도 사용자 집합)** 를 대상으로 **2×2 factorial A/B Test**를 수행했다.  
+목표는 “스토리를 증명”하는 게 아니라, **무작위 배정 하에서도 Consistency 개입이 장기 KPI를 안정적으로 개선하는지**, 그리고 **Activation 개입은 초기 전환에 주로 영향을 주는지**를 보수적으로 확인하는 것이다.
+
+---
+
+### 7.2 실험 설계 요약 (2×2 factorial)
+- **대상**: 신규 유입 코호트(베이스라인과 분리), 4개 셀에 균등 배정
+- **Factor**
+  - **Activation uplift (A)**: **초기 전환(0–13일)** 개선을 목표로 하는 소폭 개입
+  - **Consistency uplift (C)**: 초기 생애주기에서 **방문 리듬/규칙성(weekly cadence)** 을 강화하는 개입
+- **셀 구성**: CC(대조), CT(C만), TC(A만), TT(A+C)
+- **장기 KPI(Primary)**: **60–180 ΔE[rev]**  
+  - 60–180일 구간의 기대매출 변화(0 포함 평균; *synthetic units*)
+- **초기 KPI(Secondary)**: **0–13일 early conversion / 주문율**
+- **추정/판정 기준**: bootstrap 95% CI
+  - 95% CI가 **0을 제외**하면 방향성 있는 효과로 해석
+  - 95% CI가 **0을 포함**하면 불확실 → 과장 없이 “보수적으로” 처리
+
+---
+
+### 7.3 결과 (그래프 2장으로 핵심만)
+
+#### Figure 7-1. Bootstrap 분포: 60–180 ΔE[rev]에서 Consistency main effect
+Consistency main effect의 bootstrap 95% CI가 **0을 초과**하여, 60–180 ΔE[rev] 개선이 **우연 변동만으로 설명될 가능성이 낮음**을 시사한다.  
+(단위는 *synthetic units*로 통일)
+
+![Figure 7-1 Bootstrap distribution (Consistency main effect on 60–180 ΔE[rev])](docs/results/figures(python)/fig01_ab_bootstrap_deltaErev_hist.png)
+
+> 캡션: “Consistency main effect on 60–180 ΔE[rev]의 bootstrap 95% CI가 0을 초과 → 무작위 변동만으로 설명될 가능성 낮음.”
+
+---
+
+#### Figure 7-2. Main effects 비교: Activation vs Consistency vs Interaction (60–180 ΔE[rev])
+동일 KPI(60–180 ΔE[rev]) 기준에서 효과 크기를 비교하면:
+- **Consistency main effect**가 가장 큰 **+효과**
+- **Activation main effect**는 +방향이지만 상대적으로 **작음**(장기 매출에 대해 과장 금지)
+- **Interaction(A×C)** 은 0을 포함 → **불확실(보수적 해석)**
+
+![Figure 7-2 Main effects comparison (60–180 ΔE[rev])](docs/results/figures(python)/fig02_ab_main_effects_deltaErev_bar.png)
+
+> 캡션: “Consistency가 가장 큰 +효과, Activation은 +지만 상대적으로 작음, Interaction은 0 포함 → 해석 보수.”
+
+---
+
+### 7.4 해석 (과장 금지 원칙)
+- **Consistency uplift → 장기 KPI(60–180 ΔE[rev])**: bootstrap CI 관점에서 **유의미한 개선 근거** 확보
+- **Activation uplift → 초기 KPI(0–13 전환)**: Activation은 **초기 전환 개선 근거**로만 말한다(장기 매출 유의미 주장 금지)
+- **Interaction(A×C)**: 현 결과만으로는 시너지/상호작용 주장 불가 → 후속 검증 후보
+
+**결론(2줄)**
+1) 장기 성과(60–180 기대매출)를 목표로 하면, 우선순위는 **Consistency 개입**이 더 높다.  
+2) **Activation은 초기 전환(0–13일)** 관점에서 의미가 있으며, 장기 효과는 보수적으로 해석한다.
+
+---
+
 ## Appendix) Used Data Marts (v1.0)
 - `ecommerce_dm.DM_user_window`
 - `ecommerce_dm.DM_consistency_180d`
