@@ -287,7 +287,7 @@ Consistency main effect의 bootstrap 95% CI가 0을 상회하여, 60–180 ΔE[r
 
 > 캡션: “Consistency가 가장 큰 +효과를 보이며, Activation은 +방향이지만 효과 크기가 작다. Interaction(A×C)은 95% CI가 0을 포함해 상호작용 효과는 불확실하다.”
 
-> 데이터/분석 파이프라인: AB 전용 신규 유입 코호트(베이스라인과 분리)로 데이터셋을 생성한 뒤, **DM_ab_user_kpi**에서 윈도우 KPI/feature를 구성하고 CSV로 export하여 Python 노트북에서 효과 추정(bootstrap)을 수행했다.
+> 데이터/분석 파이프라인: AB 전용 신규 유입 코호트(베이스라인과 분리)로 데이터셋을 생성한 뒤, DM_ab_user_kpi → CSV export → Python(bootstrap) 흐름으로 효과를 추정했다.
 
 ---
 
@@ -342,3 +342,6 @@ Primary KPI는 60–180 ΔE[rev]이지만, **전환율 기반 지표**에서도 
 ## Appendix) Used Data Marts (v1.1)
 - `ecommerce_dm.DM_timesplit_60_180_final`
 ---
+
+## Appendix) Used Data Mart (A/B Test)
+- `ecommerce_dm_ab.AB_user_kpi
