@@ -7,7 +7,7 @@ SQL로 Activation × Consistency가 단기 전환(0–14d)과 장기 성과(60�
 - **(Data Modeling)** Raw log → optimized tables → data marts로 이어지는 BigQuery 중심 분석용 데이터 모델링
 - **(Analytics)** Activation/Consistency 기반 LTV·Retention·Funnel 분석 + time-split(0–60 관측 / 60–180 성과) 재검증
 - **(Validation/Experiment)** Python 시각화·bootstrap CI로 불확실성을 확인하고, 2×2 A/B로 개입 효과를 보수적으로 평가
-
+- **(BI / Delivery)** 핵심 KPI·세그먼트 결과를 Tableau 대시보드로 패키징하는 작업을 진행 중 *(링크/산출물은 추후 업데이트 예정)*
 ---
 
 ## 1) Project Goal
