@@ -1,34 +1,26 @@
+**한 줄 요약:** Synthetic e-commerce 로그를 설계·생성하고 BigQuery에서 Raw → Optimized → Data Mart까지 구축한 뒤,  
+SQL로 Activation × Consistency가 단기 전환(0–14d)과 장기 성과(60–180d)에 연결되는 패턴을 v1.0 → v1.1(Time-split)로 재검증하고,  
+Python(bootstrap CI) 및 2×2 factorial A/B 실험으로 “개입 효과” 관점까지 확장한 end-to-end 분석 프로젝트입니다.
 
-**한 줄 요약:** Synthetic e-commerce 행동/주문 로그를 설계하고 생성 파이프라인을 구축(BigQuery 로딩/최적화/DM 구축)한 뒤,  
-SQL로 *Activation × Consistency*가 이후 LTV/Retention과 연결되는 패턴을 **v1.0 → v1.1(Time-split)**로 검증하고, Python EDA/간단 통계 + Tableau 대시보드로 마무리하는 end-to-end 분석 프로젝트입니다.
+---
 
-**이 프로젝트에서 보여주는 것**
-- (Data modeling) raw log → optimized tables → data marts로 이어지는 BigQuery 중심의 분석용 데이터 모델링
-- (Analytics) Activation/Consistency 기반의 LTV·Retention·Funnel 분석 + time-split(0–60 관측 / 60–180 성과) 검증
-- (Delivery) Python 시각화/검정으로 결과를 재확인하고, Tableau로 KPI/세그먼트 대시보드를 구성
+## 이 프로젝트에서 보여주는 것
+- **(Data Modeling)** Raw log → optimized tables → data marts로 이어지는 BigQuery 중심 분석용 데이터 모델링
+- **(Analytics)** Activation/Consistency 기반 LTV·Retention·Funnel 분석 + time-split(0–60 관측 / 60–180 성과) 재검증
+- **(Validation/Experiment)** Python 시각화·bootstrap CI로 불확실성을 확인하고, 2×2 A/B로 개입 효과를 보수적으로 평가
 
 ---
 
 ## 1) Project Goal
+이 프로젝트는 “초기 Activation(단기 전환)만으로는 장기 성과를 충분히 설명하기 어렵다”는 문제의식에서 출발합니다.  
+특히, 같은 Activation 수준에서도 **방문 리듬(Consistency)** 차이가 이후 LTV/Retention을 추가로 분리하는지 확인하는 것이 목표입니다.
 
-이 프로젝트는 **초기 14일 Activation(단기 전환)**만으로는 유저의 **장기 성과(LTV/Retention)**를 충분히 설명하기 어려울 수 있다는 가정에서 출발합니다.  
-같은 Activation 수준이라도, 유저가 **얼마나 규칙적으로 다시 방다)
+- **v1.0:** 0–180일 윈도우에서 핵심 패턴을 확인하고 결과를 `docs/results/story.md`에 정리
+- **v1.1:** Time-split(관측 0–60d / 성과 60–180d) 구조로 누수 위험을 줄여 재검증 (`DM_timesplit_60_180_final`)
+- **추가 검증:** Python으로 분포/불확실성(bootstrap CI)을 확인하고, 신규 유입 코호트 기반 2×2 A/B로 개입 효과를 보수적으로 평가
 
-- users ≈ 30,000 / products = 300  
-- sessions ≈ 0.748,757 / events ≈ 1.8M  
-- orders ≈ 15k / order_items ≈ 25k
+> Note: 자세한 분석 결과/해석은 `docs/results/story.md`에 요약했습니다.
 
-Funnel event counts:
-- view = 1,465,245
-- click = 290,912
-- add_to_cart = 74,228
-- checkout = 25,223
-- purchase = 15,721
-
-생성 후 최소 sanity check로 아래를 확인합니다.
-- row count 확인
-- PK uniqueness 확인
-- 주요 테이블 정합성(가능한 범위 내)
 
 ---
 
