@@ -341,6 +341,6 @@ Primary KPI는 60–180 ΔE[rev]이지만, **전환율 기반 지표**에서도 
 
 ## Appendix 2) Used Data Marts (v1.1)
 - `ecommerce_dm.DM_timesplit_60_180_final`
-- 
+
 ## Appendix 3) Used Data Marts (A/B Test)
 - `ecommerce_dm_ab.AB_user_kpi` — 실험 셀(exp_cell), 윈도우 KPI(0–13, 60–180), ΔE[rev] 및 분석용 feature를 구성해 Python으로 export한 기준 테이블
