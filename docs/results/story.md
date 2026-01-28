@@ -263,6 +263,8 @@ v1.0/v1.1(Time-split) 분석에서는 **Consistency(방문 리듬/규칙성)** �
   - 95% CI가 **0을 포함하지 않으면**, 방향성 있는 효과로 해석한다.
   - 95% CI가 **0을 포함하면**, 현 결과만으로 효과를 확정하기 어렵다.
 
+> 데이터/분석 파이프라인: AB 전용 신규 유입 코호트(베이스라인과 분리)로 데이터셋을 생성한 뒤, DM_ab_user_kpi → CSV export → Python(bootstrap) 흐름으로 효과를 추정했다.
+
 ---
 
 ### 7.3 결과 (그래프 2장으로 핵심만)
@@ -286,8 +288,6 @@ Consistency main effect의 bootstrap 95% CI가 0을 상회하여, 60–180 ΔE[r
 ![](<figures(python)/fig02_ab_main_effects_deltaErev_bar.png>)
 
 > 캡션: “Consistency가 가장 큰 +효과를 보이며, Activation은 +방향이지만 효과 크기가 작다. Interaction(A×C)은 95% CI가 0을 포함해 상호작용 효과는 불확실하다.”
-
-> 데이터/분석 파이프라인: AB 전용 신규 유입 코호트(베이스라인과 분리)로 데이터셋을 생성한 뒤, DM_ab_user_kpi → CSV export → Python(bootstrap) 흐름으로 효과를 추정했다.
 
 ---
 
