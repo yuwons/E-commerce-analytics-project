@@ -32,6 +32,63 @@ Funnel event counts:
 
 ---
 
+## 2) Data Model (ERD)
+
+이 프로젝트는 이커머스 도메인을 가정한 **synthetic dataset**으로 구성되어 있습니다.
+
+![ERD](data/erd.png)
+
+핵심 테이블:
+- `users` : 유저 속성 및 가입 정보
+- `products` : 상품 마스터
+- `sessions` : 세션 단위 로그
+- `events` : 이벤트 로그
+- `orders` : 주문 헤더
+- `order_items` : 주문 아이템
+
+- Raw data 보관: `data/`
+
+### Frozen Specs (분석 일관성 유지)
+아래 규칙은 데이터 생성/가공 과정에서 일관되게 유지하여, 분석 결과가 데이터 정합성 이슈에 의해 흔들리지 않도록 했습니다.
+
+- Funnel step은 5단계로 고정: **view → click → add_to_cart → checkout → purchase**
+- `order_id`는 **purchase 이벤트에서만** 생성
+- **purchase 1건 = orders 1건** 정합성 유지
+- Raw 로그(`sessions`/`events`)는 원형 보존, 파생 지표는 **Data Mart(DM)** 에서 계산
+
+---
+
+## 3) Synthetic Dataset Generation (Python)
+
+실제 서비스 데이터가 아닌, 분석 목적에 맞게 설계한 규칙 기반 **synthetic dataset**을 Python으로 생성했습니다.  
+목표는 “현업 데이터 모사”가 아니라, **Activation / Consistency / Funnel / LTV/Retention** 분석을 재현 가능한 형태로 구성하는 것입니다.
+
+- (Optional) 데이터 생성 코드: `src/data_generation/`
+
+### 3.1 Dataset Scale (예시)
+아래 수치는 **생성 시점/파라미터에 따라 달라질 수 있는 예시 값**입니다.
+
+- users ≈ 30,000 / products = 300  
+- sessions ≈ 748,757 / events ≈ 1.8M  
+- orders ≈ 15k / order_items ≈ 25k  
+
+Funnel event counts (예시):
+- view = 1,465,245
+- click = 290,912
+- add_to_cart = 74,228
+- checkout = 25,223
+- purchase = 15,721
+
+### 3.2 Minimum Sanity Checks
+생성 후 최소 sanity check로 아래를 확인합니다.
+- row count 확인
+- PK uniqueness 확인
+- 주요 테이블 정합성(가능한 범위 내: `orders`–`order_items`, 이벤트 순서/누락 등)
+
+> Note: 분석에서 사용하는 KPI/파생 feature는 Raw를 직접 수정하지 않고, BigQuery **Data Mart(SQL)** 에서 계산합니다.
+
+---
+
 ## 4) BigQuery (Raw Loading → Optimised Tables → Data Marts)
 
 이 프로젝트는 Raw 로그를 원형 그대로 보존하고,
