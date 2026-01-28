@@ -176,6 +176,9 @@ SQL(v1.1 time-split) 결과를 Python에서 **분포/추세/불확실성(CI)** �
 - Notebook: `src/python/Python (EDA + Visualisation).ipynb`
 - Figures: `docs/results/figures(python)/`
 - Story 위치: `docs/results/story.md`의 Python validation 섹션
+- Schema: `docs/schema/timesplit_validation_schema.md`
+- Sample CSV: `data/sample/time_split_min_sample.csv`
+
 
 ### 6.2 A/B Experiment (2×2 factorial: Activation uplift × Consistency uplift)
 베이스라인과 분리된 **AB 전용 신규 유입 코호트(≈30,000 users)** 로 데이터셋을 별도 생성해 실험을 구성했습니다.
@@ -184,6 +187,9 @@ SQL(v1.1 time-split) 결과를 Python에서 **분포/추세/불확실성(CI)** �
 - Figures: `docs/results/figures(python)/`
 - 데이터/분석 파이프라인: **`ecommerce_dm_ab.AB_user_kpi` → CSV export → Python(bootstrap)**  
 - Story 위치: `docs/results/story.md`의 섹션 7 (A/B Test)
+- Schema: `docs/schema/ab_user_kpi_schema.md`
+- Sample CSV: `data/sample/dm_ab_dataset_sample.csv`
+
 
 ### 6.3 Repro Steps (빠른 재현 순서)
 1) **Story 확인:** `docs/results/story.md`에서 문제정의/결론과 figure를 먼저 훑는다.  
