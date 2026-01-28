@@ -280,9 +280,9 @@ Consistency main effect의 bootstrap 95% CI가 **0을 초과**하여, 60–180 �
 
 #### Figure 7-2. Main effects 비교: Activation vs Consistency vs Interaction (60–180 ΔE[rev])
 동일 KPI(60–180 ΔE[rev]) 기준에서 효과 크기를 비교하면:
-- **Consistency main effect**가 가장 큰 **+효과**
-- **Activation main effect**는 +방향이지만 상대적으로 **작음**(장기 매출에 대해 과장 금지)
-- **Interaction(A×C)** 은 0을 포함 → **불확실(보수적 해석)**
+- **Consistency main effect**가 가장 큰 **+효과** 를 보인다.
+- **Activation main effect**는 +방향이지만 **Consistency 대비 효과** 크기가 작다.
+- **Interaction(A×C)** 은 95% CI가 0을 포함하여 **상호작용 효과는 불확실하다.**
 
 ![](<figures(python)/fig02_ab_main_effects_deltaErev_bar.png>)
 
@@ -290,12 +290,13 @@ Consistency main effect의 bootstrap 95% CI가 **0을 초과**하여, 60–180 �
 
 ---
 
-### 7.4 해석 (과장 금지 원칙)
-- **Consistency uplift → 장기 KPI(60–180 ΔE[rev])**: bootstrap CI 관점에서 **유의미한 개선 근거** 확보
-- **Activation uplift → 초기 KPI(0–13 전환)**: Activation은 **초기 전환 개선 근거**로만 말한다(장기 매출 유의미 주장 금지)
-- **Interaction(A×C)**: 현 결과만으로는 시너지/상호작용 주장 불가 → 후속 검증 후보
+### 7.4 해석
+- **Consistency uplift → 장기 KPI(60–180 ΔE[rev])**: bootstrap 95% CI가 0을 상회하여, 60–180 기대매출 개선에 대한 근거가 확인된다.
+- **Activation uplift → 초기 KPI(0–13 전환)**: Activation은 0–13일 초기 전환 지표에서 개선 신호가 관찰되며, 장기 KPI에 대한 해석은 보수적으로 유지한다.
+- **Interaction(A×C)**: interaction 항의 95% CI가 0을 포함하여, 현 결과만으로 상호작용 효과를 확정하기는 어렵다.
 
-**결론(2줄)**
+
+**결론**
 1) 장기 성과(60–180 기대매출)를 목표로 하면, 우선순위는 **Consistency 개입**이 더 높다.  
 2) **Activation은 초기 전환(0–13일)** 관점에서 의미가 있으며, 장기 효과는 보수적으로 해석한다.
 
