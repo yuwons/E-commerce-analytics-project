@@ -273,6 +273,7 @@ Consistency main effect의 bootstrap 95% CI가 **0을 초과**하여, 60–180 �
 
 ![Figure 7-1 Bootstrap distribution (Consistency main effect on 60–180 ΔE[rev])](docs/results/figures(python)/fig01_ab_bootstrap_deltaErev_hist.png)
 
+
 > 캡션: “Consistency main effect on 60–180 ΔE[rev]의 bootstrap 95% CI가 0을 초과 → 무작위 변동만으로 설명될 가능성 낮음.”
 
 ---
