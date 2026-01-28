@@ -63,7 +63,8 @@ Funnel event counts:
 실제 서비스 데이터가 아닌, 분석 목적에 맞게 설계한 규칙 기반 **synthetic dataset**을 Python으로 생성했습니다.  
 목표는 “현업 데이터 모사”가 아니라, **Activation / Consistency / Funnel / LTV/Retention** 분석을 재현 가능한 형태로 구성하는 것입니다.
 
-- (Optional) 데이터 생성 코드: `src/data_generation/`
+> 데이터 생성 로직은 분석 재현성과 무관한 구현 상세이므로, 본 공개 repo에서는 제외했습니다.
+
 
 ### 3.1 Dataset Scale (예시)
 아래 수치는 **생성 시점/파라미터에 따라 달라질 수 있는 예시 값**입니다.
