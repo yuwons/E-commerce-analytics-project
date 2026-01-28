@@ -271,7 +271,7 @@ v1.0/v1.1(Time-split) 분석에서는 **Consistency(방문 리듬/규칙성)** �
 Consistency main effect의 bootstrap 95% CI가 **0을 초과**하여, 60–180 ΔE[rev] 개선이 **우연 변동만으로 설명될 가능성이 낮음**을 시사한다.  
 (단위는 *synthetic units*로 통일)
 
-![Figure 7-1 Bootstrap distribution (Consistency main effect on 60–180 ΔE[rev])](docs/results/figures(python)/fig01_ab_bootstrap_deltaErev_hist.png)
+![](<figures(python)/fig01_ab_bootstrap_deltaErev_hist.png>)
 
 
 > 캡션: “Consistency main effect on 60–180 ΔE[rev]의 bootstrap 95% CI가 0을 초과 → 무작위 변동만으로 설명될 가능성 낮음.”
@@ -284,7 +284,7 @@ Consistency main effect의 bootstrap 95% CI가 **0을 초과**하여, 60–180 �
 - **Activation main effect**는 +방향이지만 상대적으로 **작음**(장기 매출에 대해 과장 금지)
 - **Interaction(A×C)** 은 0을 포함 → **불확실(보수적 해석)**
 
-![Figure 7-2 Main effects comparison (60–180 ΔE[rev])](docs/results/figures(python)/fig02_ab_main_effects_deltaErev_bar.png)
+![](<figures(python)/fig02_ab_main_effects_deltaErev_bar.png>)
 
 > 캡션: “Consistency가 가장 큰 +효과, Activation은 +지만 상대적으로 작음, Interaction은 0 포함 → 해석 보수.”
 
