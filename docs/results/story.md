@@ -245,8 +245,8 @@ Activation 구간이 같아도, Consistency(C1→C5)에 따라 60–180d 성과�
 v1.0/v1.1(Time-split) 분석에서는 **Consistency(방문 리듬/규칙성)** 가 60–180일 구간 성과(매출/리텐션)와 강하게 연관되는 패턴을 확인했다.  
 다만 이 결과는 어디까지나 **관찰(Observational) 기반**이라, time-split으로 누수 위험을 줄였더라도 **교란/선택 효과** 가능성을 완전히 제거할 수는 없다.
 
-그래서 “관찰된 패턴이 실제 개입(intervention)으로도 성과를 움직일 수 있는가?”를 보기 위해, **신규 유입 유저 코호트(베이스라인과 분리된 별도 사용자 집합)** 를 대상으로 **2×2 factorial A/B Test**를 수행했다.  
-목표는 “스토리를 증명”하는 게 아니라, **무작위 배정 하에서도 Consistency 개입이 장기 KPI를 안정적으로 개선하는지**, 그리고 **Activation 개입은 초기 전환에 주로 영향을 주는지**를 보수적으로 확인하는 것이다.
+따라서 “관찰된 패턴이 실제 개입(intervention)으로도 성과를 움직일 수 있는가?”를 확인하기 위해, **신규 유입 유저 코호트(베이스라인과 분리된 별도 사용자 집합)** 를 대상으로 **2×2 factorial A/B Test**를 수행했다.  
+목표는 무작위 배정 하에서 **Consistency/Activation 개입이 각각 장기 KPI(60–180 ΔE[rev])와 초기 KPI(0–13 전환)에 어떤 영향을 주는지** 확인하는 것이다.
 
 ---
 
@@ -256,45 +256,72 @@ v1.0/v1.1(Time-split) 분석에서는 **Consistency(방문 리듬/규칙성)** �
   - **Activation uplift (A)**: **초기 전환(0–13일)** 개선을 목표로 하는 소폭 개입
   - **Consistency uplift (C)**: 초기 생애주기에서 **방문 리듬/규칙성(weekly cadence)** 을 강화하는 개입
 - **셀 구성**: CC(대조), CT(C만), TC(A만), TT(A+C)
-- **장기 KPI(Primary)**: **60–180 ΔE[rev]**  
+- **장기 KPI(Primary)**: **60–180 ΔE[rev]**
   - 60–180일 구간의 기대매출 변화(0 포함 평균; *synthetic units*)
 - **초기 KPI(Secondary)**: **0–13일 early conversion / 주문율**
-- **추정/판정 기준**: bootstrap 95% CI
-  - 95% CI가 **0을 제외**하면 방향성 있는 효과로 해석
-  - 95% CI가 **0을 포함**하면 불확실 → 과장 없이 “보수적으로” 처리
+- **추정/해석 기준**: bootstrap 95% CI
+  - 95% CI가 **0을 포함하지 않으면**, 방향성 있는 효과로 해석한다.
+  - 95% CI가 **0을 포함하면**, 현 결과만으로 효과를 확정하기 어렵다.
 
 ---
 
 ### 7.3 결과 (그래프 2장으로 핵심만)
 
 #### Figure 7-1. Bootstrap 분포: 60–180 ΔE[rev]에서 Consistency main effect
-Consistency main effect의 bootstrap 95% CI가 **0을 초과**하여, 60–180 ΔE[rev] 개선이 **우연 변동만으로 설명될 가능성이 낮음**을 시사한다.  
-(단위는 *synthetic units*로 통일)
+Consistency main effect의 bootstrap 95% CI가 0을 상회하여, 60–180 ΔE[rev]에서 **Consistency main effect가 양(+)의 방향임을 시사**한다.  
+(모든 금액 단위는 *synthetic units*로 표기)
 
 ![](<figures(python)/fig01_ab_bootstrap_deltaErev_hist.png>)
 
-
-> 캡션: “Consistency main effect on 60–180 ΔE[rev]의 bootstrap 95% CI가 0을 초과 → 무작위 변동만으로 설명될 가능성 낮음.”
+> 캡션: “Bootstrap 95% CI가 0을 상회 → 60–180 ΔE[rev]에서 Consistency main effect가 +방향임을 시사.”
 
 ---
 
 #### Figure 7-2. Main effects 비교: Activation vs Consistency vs Interaction (60–180 ΔE[rev])
 동일 KPI(60–180 ΔE[rev]) 기준에서 효과 크기를 비교하면:
-- **Consistency main effect**가 가장 큰 **+효과** 를 보인다.
-- **Activation main effect**는 +방향이지만 **Consistency 대비 효과** 크기가 작다.
-- **Interaction(A×C)** 은 95% CI가 0을 포함하여 **상호작용 효과는 불확실하다.**
+- Consistency main effect가 60–180 ΔE[rev]에서 가장 큰 +효과를 보인다.
+- Activation main effect는 +방향이지만 Consistency 대비 효과 크기가 작다.
+- Interaction(A×C)은 95% CI가 0을 포함하여, 상호작용 효과는 불확실하다.
 
 ![](<figures(python)/fig02_ab_main_effects_deltaErev_bar.png>)
 
-> 캡션: “Consistency가 가장 큰 +효과, Activation은 +지만 상대적으로 작음, Interaction은 0 포함 → 해석 보수.”
+> 캡션: “Consistency가 가장 큰 +효과를 보이며, Activation은 +방향이지만 효과 크기가 작다. Interaction(A×C)은 95% CI가 0을 포함해 상호작용 효과는 불확실하다.”
 
 ---
 
-### 7.4 해석
+### 7.4 보조 지표(전환율)로 확인한 패턴
+Primary KPI는 60–180 ΔE[rev]이지만, **전환율 기반 지표**에서도 개입 방향이 일관적인지 확인했다(아래 값은 **point estimate**).
+
+#### (a) 60–180 구매율(purchase rate)
+| exp_cell | purchase_rate (60–180) |
+|---|---:|
+| CC | 0.2408 |
+| CT | 0.2608 |
+| TC | 0.2473 |
+| TT | 0.2633 |
+
+- 구매율 관점에서도 **Consistency uplift**가 +방향(CT/TT 상승)이며, Activation의 효과는 상대적으로 작다.
+
+#### (b) 0–13 초기 주문율(early order rate)
+| exp_cell | early_order_rate (0–13) |
+|---|---:|
+| CC | 0.0681 |
+| CT | 0.0613 |
+| TC | 0.0803 |
+| TT | 0.0800 |
+
+- 초기 주문율은 **Activation uplift**가 +방향(TC/TT 상승)으로 나타난다.
+
+> 참고(효과 요약, point estimate):  
+> - (60–180 구매확률 Δp) Activation: +0.0045, Consistency: +0.0180, Interaction: -0.0040  
+> - (0–13 초기전환 Δp0) Activation: +0.0154, Consistency: -0.0035, Interaction: +0.0065
+
+---
+
+### 7.5 해석
 - **Consistency uplift → 장기 KPI(60–180 ΔE[rev])**: bootstrap 95% CI가 0을 상회하여, 60–180 기대매출 개선에 대한 근거가 확인된다.
 - **Activation uplift → 초기 KPI(0–13 전환)**: Activation은 0–13일 초기 전환 지표에서 개선 신호가 관찰되며, 장기 KPI에 대한 해석은 보수적으로 유지한다.
 - **Interaction(A×C)**: interaction 항의 95% CI가 0을 포함하여, 현 결과만으로 상호작용 효과를 확정하기는 어렵다.
-
 
 **결론**
 1) 장기 성과(60–180 기대매출)를 목표로 하면, 우선순위는 **Consistency 개입**이 더 높다.  
