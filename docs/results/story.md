@@ -344,4 +344,4 @@ Primary KPI는 60–180 ΔE[rev]이지만, **전환율 기반 지표**에서도 
 ---
 
 ## Appendix) Used Data Mart (A/B Test)
-- `ecommerce_dm_ab.AB_user_kpi
+- `ecommerce_dm_ab.AB_user_kpi`
