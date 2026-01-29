@@ -1,4 +1,4 @@
-# Schema 문서 안내 (docs/schema)
+# Schema 문서 (docs/schema)
 
 이 폴더는 **Python 노트북에서 사용하는 CSV export 데이터**의 컬럼/지표 정의를 빠르게 확인할 수 있도록 만든 **최소 스키마 문서**입니다.
 
