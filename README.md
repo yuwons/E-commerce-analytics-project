@@ -172,29 +172,32 @@ v1.1에서는 **Time-split(관측 0–60d / 성과 60–180d)** 구조로 동일
 SQL(v1.1 time-split) 결과를 Python에서 **분포/추세/불확실성(CI)** 관점으로 재확인하고, 관찰 결과를 “개입 효과” 관점에서 보기 위해 **2×2 factorial A/B Test**를 추가로 수행했습니다.  
 (핵심 해석/결론은 `docs/results/story.md`에 정리)
 
-### 6.1 Python Validation (v1.1 결과 재확인)
-- Notebook: `src/python/Python (EDA + Visualisation).ipynb`
-- Figures: `docs/results/figures(python)/`
-- Story 위치: `docs/results/story.md`의 Python validation 섹션
-- Schema: `docs/schema/timesplit_validation_schema.md`
-- Sample CSV: `data/sample/time_split_min_sample.csv`
+> **Note (Reproducibility):** GitHub에는 용량 이슈로 `data/sample/`의 **샘플 CSV**만 포함했습니다.  
+> 노트북은 샘플로도 실행 가능하며, `docs/results/story.md` 및 `docs/results/figures(python)/`의 **최종 결과/그래프는 full export 기준**으로 생성되었습니다.
 
+### 6.1 Python Validation (v1.1 결과 재확인)
+- **Notebook:** `src/python/Python (EDA + Visualisation).ipynb`
+- **Figures:** `docs/results/figures(python)/`
+- **Story:** `docs/results/story.md`의 Python validation 섹션
+- **Schema:** `docs/schema/timesplit_validation_schema.md`
+- **Sample CSV:** `data/sample/time_split_min_sample.csv`
 
 ### 6.2 A/B Experiment (2×2 factorial: Activation uplift × Consistency uplift)
-베이스라인과 분리된 **AB 전용 신규 유입 코호트(≈30,000 users)** 로 데이터셋을 별도 생성해 실험을 구성했습니다.
+베이스라인과 분리된 **AB 전용 신규 유입 코호트(≈30,000 users)**로 데이터셋을 별도 생성해 실험을 구성했습니다.
 
-- Notebook: `src/python/Python_(AB Experiment).ipynb`
-- Figures: `docs/results/figures(python)/`
-- 데이터/분석 파이프라인: **`ecommerce_dm_ab.AB_user_kpi` → CSV export → Python(bootstrap)**  
-- Story 위치: `docs/results/story.md`의 섹션 7 (A/B Test)
-- Schema: `docs/schema/ab_user_kpi_schema.md`
-- Sample CSV: `data/sample/dm_ab_dataset_sample.csv`
-
+- **Notebook:** `src/python/Python_(AB Experiment).ipynb`
+- **Figures:** `docs/results/figures(python)/`
+- **Data/Analysis pipeline:** `ecommerce_dm_ab.AB_user_kpi` → CSV export → Python (bootstrap CI)
+- **Story:** `docs/results/story.md`의 섹션 7 (A/B Test)
+- **Schema:** `docs/schema/ab_user_kpi_schema.md`
+- **Sample CSV:** `data/sample/dm_ab_dataset_sample.csv`
 
 ### 6.3 Repro Steps (빠른 재현 순서)
-1) **Story 확인:** `docs/results/story.md`에서 문제정의/결론과 figure를 먼저 훑는다.  
-2) **SQL 재현(v1.1):** `src/sql/analysis/story_core_v1.1/` 쿼리로 time-split 결과를 재현한다.  
-3) **Python validation:** `src/python/Python (EDA + Visualisation).ipynb` 실행 후, figure는 `docs/results/figures(python)/`에서 확인한다.  
-4) **A/B experiment:** `src/python/Python_(AB Experiment).ipynb` 실행(입력: `ecommerce_dm_ab.AB_user_kpi` export CSV), 효과 추정은 bootstrap CI로 확인한다.
+1. **Story 확인:** `docs/results/story.md`에서 문제정의/결론과 figure를 먼저 훑는다.
+2. **SQL 재현(v1.1):** `src/sql/analysis/story_core_v1.1/` 쿼리로 time-split 결과를 재현한다.
+3. **Python validation:** `src/python/Python (EDA + Visualisation).ipynb` 실행 후, figure는 `docs/results/figures(python)/`에서 확인한다.  
+   - (샘플 입력: `data/sample/time_split_min_sample.csv`)
+4. **A/B experiment:** `src/python/Python_(AB Experiment).ipynb` 실행 후, 효과 추정은 bootstrap CI로 확인한다.  
+   - (샘플 입력: `data/sample/dm_ab_dataset_sample.csv` / full export 입력: `ecommerce_dm_ab.AB_user_kpi` export CSV)
 
 > Note: `docs/results/figures(python)/`처럼 폴더명에 괄호가 포함되어 있어, Story에서는 GitHub 렌더링 안정성을 위해 `<...>` 형태 경로를 사용합니다.
