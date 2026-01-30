@@ -283,7 +283,7 @@ retention_last_week AS
 SELECT a.user_id,
        a.signup_date,
 
-       -- controls (방어/확장용)
+       -- controls (확장용)
        a.device,
        a.region,
        a.marketing_source,
@@ -323,3 +323,4 @@ FROM activation a LEFT JOIN consistency_segment c
       ON a.user_id = o.user_id LEFT JOIN retention_last_week r
         ON a.user_id = r.user_id
 ;
+
