@@ -102,7 +102,7 @@ Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약
 - **Evidence:** Figure 04 (Bottleneck frequency; strict only, w14/w30)
 
 퍼널을 “전환율이 낮다”로만 보면 액션이 흐려진다. 
-그래서 v1.0에서는 두 가지 관점으로 분리해 분석을 진행했.
+그래서 v1.0에서는 두 가지 관점으로 분리해 분석을 진행했다.
 
 - **(A) 자주 발생하는 병목(빈도) :** 병목이 “자주 발생하는 구간”은 어디인가?  
 - **(B) 세그먼트 관점:** 다음 Finding #4에서 Worst Top10으로 구체화한다.
