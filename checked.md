@@ -1,4 +1,8 @@
-**한 줄 요약:** Synthetic e-commerce 로그로 BigQuery **Raw→Optimized→Data Mart** 파이프라인을 구축하고, SQL **v1.0→v1.1(Time-split)** 로 Activation × Consistency의 **단기 전환(0–14d)→장기 성과(60–180d)** 연결을 재검증했으며, Python(**bootstrap CI**)과 **2×2 factorial A/B**로 “개입 효과” 관점까지 확장하였고, Tableau로 핵심 KPI/세그먼트 결과를 패키징하는 작업을 진행 중인 프로젝트입니다.
+# 🚀 Activation vs Consistency: 단기 전환(0–14d)과 장기 성장(60–180d)을 분리해 검증한 E-commerce Analytics
+
+**Scope:** Synthetic e-commerce 로그를 설계·생성해 BigQuery **Raw→Optimized→Data Mart** 파이프라인을 구축하고, Activation×Consistency가 **단기(0–14d)→장기(60–180d)** 성과로 이어지는 패턴을 **v1.0→v1.1(Time-split)** 로 재검증한 뒤, Python(**bootstrap CI**)과 **2×2 factorial A/B**로 “개입 효과” 관점까지 확장한 프로젝트입니다.
+
+**Stack:** `BigQuery (Raw→Optimized→Data Mart)`, `SQL`, `Python (EDA + Bootstrap CI)`, `2×2 Factorial A/B`, `Tableau (dashboarding in progress)`
 
 ---
 
