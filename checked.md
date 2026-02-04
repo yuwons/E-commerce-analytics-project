@@ -4,6 +4,35 @@ Python(bootstrap CI) 및 2×2 factorial A/B 실험으로 “개입 효과” 관
 
 ---
 
+## 결론 요약 (Conclusion & Actions)
+
+### Conclusion
+초기 Activation(0–14d)만으로는 180일 성과를 충분히 설명하기 어렵고, **방문 리듬(Consistency)** 이 같은 Activation 내부에서도 장기 KPI(60–180d)를 추가로 분리했다.  
+이 패턴은 **Time-split(0–60 관측 → 60–180 성과)** 로도 유지되어, 동기간 상관(tautology)만으로 설명되기 어렵다.
+
+### Key Evidence (numbers)
+- Time-split 기준에서도 Consistency C1→C5로 갈수록 성과가 상승  
+  - purchase_rate_60_180: 0.049 → 0.467  
+  - retention_last_week_180d_rate: 0.257 → 0.767
+- Activation 수준이 같아도 Consistency에 따라 성과가 크게 갈림  
+  - Act_Low(A0–A1): purchase_rate_60_180 0.016(C1) → 0.426(C5), retention 0.202 → 0.688  
+  - Act_High(A4–A5): purchase_rate_60_180 0.068(C1) → 0.418(C5), retention 0.414 → 0.829
+- 2×2 A/B(Activation uplift × Consistency uplift): 60–180 ΔE[rev]에서 **Consistency main effect**는 bootstrap 95% CI가 0을 상회(+)했고, Interaction(A×C)은 0을 포함해 불확실
+
+### Actions (what I’d do in a real product)
+1) 장기 KPI(60–180 매출/리텐션)를 목표로 한다면, 우선순위는 **Activation 단독 개선**이 아니라 **Consistency(주간 방문 리듬) 개입**에 둔다.  
+2) 유저 타깃팅/운영 단위는 Activation 단독이 아니라 **Activation × Consistency persona**로 설계한다.  
+3) 퍼널 개선은 “전사 공통 병목”과 “세그먼트 취약 병목”으로 분리해 실험한다.  
+   - 14d: view→click (첫 클릭 유도)  
+   - 30d: click→cart (특히 low-consistency 유저 타깃)
+
+### Where to look (evidence links)
+- Story (full narrative & figures): `docs/results/story.md`
+- v1.1 time-split SQL: `src/sql/analysis/story_core_v1.1/`
+- Python validation (dist/heatmap/bootstrap): `src/python/Python (EDA + Visualisation).ipynb`
+- A/B experiment (bootstrap CI): `src/python/Python_(AB Experiment).ipynb`
+
+
 ## 이 프로젝트에서 보여주는 것
 - **(Data Modeling)** Raw log → optimized tables → data marts로 이어지는 BigQuery 중심 분석용 데이터 모델링
 - **(Analytics)** Activation/Consistency 기반 LTV·Retention·Funnel 분석 + time-split(0–60 관측 / 60–180 성과) 재검증
