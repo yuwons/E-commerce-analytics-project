@@ -124,13 +124,12 @@ Funnel event counts (예시):
 이 프로젝트는 Raw 로그를 원형 그대로 보존하고,
 Retention / Funnel / Conversion / LTV / Consistency 등 파생 지표는 BigQuery Data Mart(SQL)에서 계산한다.
 
-### 4.1 BigQuery Setup (요약)
-- Project: `eternal-argon-479503-e8`
+### 4.1 BigQuery Setup 
 - Raw dataset: `ecommerce`
 - DM dataset: `ecommerce_dm`
 - Location: `US`
 
-### 4.2 Raw Tables (보존)
+### 4.2 Raw Tables 
 Raw 테이블은 Python으로 생성한 CSV를 BigQuery에 로드하여 구성한다.
 - `users`
 - `sessions`
