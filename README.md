@@ -1,14 +1,51 @@
-**한 줄 요약:** Synthetic e-commerce 로그를 설계·생성하고 BigQuery에서 Raw → Optimized → Data Mart까지 구축한 뒤,  
-SQL로 Activation × Consistency가 단기 전환(0–14d)과 장기 성과(60–180d)에 연결되는 패턴을 v1.0 → v1.1(Time-split)로 재검증하고, 
-Python(bootstrap CI) 및 2×2 factorial A/B 실험으로 “개입 효과” 관점까지 확장했으며, Tableau로 핵심 KPI/세그먼트 결과를 패키징하는 작업을 진행 중인 프로젝트입니다.
+# 🚀 Activation vs Consistency: 단기 전환(0–14d)과 장기 성장(60–180d)을 분리해 입증한 E-commerce Analytics
+
+**Scope:** “초기 전환(Activation)만으로 장기 LTV/Retention을 설명하기 어렵다”는 문제를, **방문 리듬(Consistency)** 관점에서 검증하고 액션 플랜으로 연결했습니다.  
+(Time-split v1.1 + bootstrap CI + 2×2 factorial A/B로 패턴/개입효과 확인)
+
+**Stack:** `BigQuery (Raw→Optimized→Data Mart)`, `SQL`, `Python (EDA + Bootstrap CI)`, `2×2 Factorial A/B`, `Tableau (dashboarding in progress)`
 
 ---
 
+## 결론 요약 (Conclusion & Actions)
+
+### 결론 (Decision)
+**장기 성장(60–180d) 관점에서 핵심 레버는 Activation이 아니라 Consistency였다.**
+
+Time-split(0–60 관측 / 60–180 성과)에서도 Consistency가 높을수록 장기 성과가 단조 상승했고,  
+2×2 factorial A/B(bootstrap CI)에서도 **Consistency uplift는 60–180 매출(LTV proxy)을 유의미하게 개선**한 반면,  
+Activation uplift는 **0–13 초기 전환 개선**에 더 가까웠다.
+
+### Evidence snapshot
+
+| 지표 (60–180d) | Low Consistency (C1) | High Consistency (C5) | 개선 폭 |
+|---|---:|---:|---:|
+| 구매율 | 4.9% | 46.7% | ~9.5× (+41.8%p) |
+| 마지막 주 리텐션 | 25.7% | 76.7% | ~3.0× (+51.0%p) |
+
+- 2×2 A/B(bootstrap CI): **Consistency main effect > 0**, Interaction(A×C)은 0 포함(불확실)
+
+### Actions (what I’d do in a real product)
+1. 장기 KPI(60–180 매출/리텐션)를 목표로 한다면, 우선순위는 Activation 단독 개선이 아니라 **Consistency(주간 방문 리듬) 개입**에 둔다.
+2. 유저 타깃팅/운영 단위는 Activation 단독이 아니라 **Activation × Consistency persona**로 설계한다.
+3. 퍼널 개선은 “전사 공통 병목”과 “세그먼트 취약 병목”으로 분리해 실험한다.  
+   - 14d: view→click (첫 클릭 유도)  
+   - 30d: click→cart (특히 low-consistency 유저 타깃)
+
+### Where to look (evidence links)
+- Story (full narrative & figures): `docs/results/story.md`
+- v1.1 time-split SQL: `src/sql/analysis/story_core_v1.1/`
+- Python validation (dist/heatmap/bootstrap): `src/python/Python (EDA + Visualisation).ipynb`
+- A/B experiment (bootstrap CI): `src/python/Python_(AB Experiment).ipynb`
+
+
 ## 이 프로젝트에서 보여주는 것
-- **(Data Modeling)** Raw log → optimized tables → data marts로 이어지는 BigQuery 중심 분석용 데이터 모델링
-- **(Analytics)** Activation/Consistency 기반 LTV·Retention·Funnel 분석 + time-split(0–60 관측 / 60–180 성과) 재검증
-- **(Validation/Experiment)** Python 시각화·bootstrap CI로 불확실성을 확인하고, 2×2 A/B로 개입 효과를 보수적으로 평가
-- **(BI/Delivery)** 핵심 KPI·세그먼트 결과를 Tableau 대시보드로 패키징하는 작업을 진행 중 *(산출물은 추후 업데이트 예정)*
+- **Data pipeline & modeling:** BigQuery Raw→Optimized→Data Mart 설계(재현 가능한 분석 구조)
+- **Analytics & validation:** Activation×Consistency를 Time-split(v1.1) + bootstrap CI로 검증, 2×2 A/B로 개입효과 평가
+- **Delivery:** Tableau로 KPI/세그먼트 결과 패키징(진행 중)
+
+> Method note: 0–60 관측 / 60–180 성과로 분리(Time-split v1.1)해 동기간 상관/누수 리스크를 줄이고 패턴을 재검증했습니다.
+
 ---
 
 ## 1) Project Goal
