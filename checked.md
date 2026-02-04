@@ -17,7 +17,12 @@ Time-split(0–60 관측 / 60–180 성과)에서도 Consistency가 높을수록
 Activation uplift는 **0–13 초기 전환 개선**에 더 가까웠다.
 
 ### Evidence snapshot
-- 60–180 구매율: **4.9% → 46.7%** (+41.8%p, ~9.5×) / 마지막 주 리텐션: **25.7% → 76.7%** (+51.0%p, ~3.0×)
+
+| 지표 (60–180d) | Low Consistency (C1) | High Consistency (C5) | 개선 폭 |
+|---|---:|---:|---:|
+| 구매율 | 4.9% | 46.7% | ~9.5× (+41.8%p) |
+| 마지막 주 리텐션 | 25.7% | 76.7% | ~3.0× (+51.0%p) |
+
 - 2×2 A/B(bootstrap CI): **Consistency main effect > 0**, Interaction(A×C)은 0 포함(불확실)
 
 ### Actions (what I’d do in a real product)
