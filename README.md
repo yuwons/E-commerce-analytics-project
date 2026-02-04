@@ -16,7 +16,7 @@ Time-split(0–60 관측 / 60–180 성과)에서도 Consistency가 높을수록
 2×2 factorial A/B(bootstrap CI)에서도 **Consistency uplift는 60–180 매출(LTV proxy)을 유의미하게 개선**한 반면,  
 Activation uplift는 **0–13 초기 전환 개선**에 더 가까웠다.
 
-### Evidence snapshot
+### Key Evidence snapshot
 
 | 지표 (60–180d) | Low Consistency (C1) | High Consistency (C5) | 개선 폭 |
 |---|---:|---:|---:|
