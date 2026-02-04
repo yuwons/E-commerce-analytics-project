@@ -5,9 +5,14 @@
 ## 결론 요약 (Conclusion & Actions)
 
 ### 결론 (Decision)
-**장기 성장(60–180d) 관점에서 핵심 레버는 Activation이 아니라 Consistency였다.**  
-Time-split(0–60 관측 / 60–180 성과)에서도 C1→C5로 갈수록 60–180 구매율이 **0.049→0.467**, 마지막 주 리텐션이 **0.257→0.767**로 상승했고,  
-2×2 A/B(bootstrap CI) 기준으로도 **Consistency uplift는 60–180 매출(LTV proxy)을 유의미하게 개선**한 반면, Activation uplift는 **0–13 초기 전환 개선**에 더 가까웠다.
+**장기 성장(60–180d) 관점에서 핵심 레버는 Activation이 아니라 Consistency였다.**
+
+Time-split(0–60 관측 / 60–180 성과)에서도 C1→C5로 갈수록  
+60–180 구매율은 **0.049→0.467**, 마지막 주 리텐션은 **0.257→0.767**로 상승했다.
+
+또한 2×2 A/B(bootstrap CI) 기준으로 **Consistency uplift는 60–180 매출(LTV proxy)을 유의미하게 개선**한 반면,  
+Activation uplift는 **0–13 초기 전환 개선**에 더 가까웠다.
+
 
 ### Key Evidence (numbers)
 - Time-split 기준에서도 Consistency C1→C5로 갈수록 성과가 상승  
