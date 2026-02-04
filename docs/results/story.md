@@ -1,25 +1,26 @@
 
 # [Story] Activation × Consistency → Future LTV/Retention (v1.0 → v1.1)
 
-초기 Activation만으로는 180일 성과를 설명하기 어렵고, **Consistency**가 추가로 성과를 갈라낸다. 이를 **Time-split(0–60d → 60–180d)** 로 재검증했다.
+## 0) 분석 핵심 요약 (TL;DR)
 
----
+**한 줄 결론:** 단기 전환(Activation)만으로는 장기 성과(60–180d)를 설명하기 어렵고, **방문 리듬(Consistency)** 이 장기 KPI를 가장 강하게 분리했다.
 
-## 0) Executive Summary
+### Key insights
+1) **Time-split v1.1로 ‘선행 지표’ 성격을 재확인**  
+   - 관측(0–60d)과 성과(60–180d)를 분리해도 Consistency가 높을수록 장기 성과가 단조 상승했다.
 
-### 0.1 What we saw (v1.0)
+2) **Activation이 낮아도 Consistency가 높으면 ‘장기 반등’이 가능**  
+   - 예: Act_Low(A0–A1)에서도 purchase_rate_60_180이 **0.016(C1) → 0.426(C5)** 로 크게 상승했다.
 
-- 유저를 Activation stage(A0-A5)로 나눈 뒤, 각 stage 내부에서 Consistency(C1-C5)로 다시 나누면 **C1 → C5로 갈수록 180일 구매율/매출이 뚜렷하게 상승**하는 패턴이 반복적으로 관찰된다.
-- 특히 **낮은 Activation(A0-A2)** 구간에서 Consistency에 따른 성과 격차(lift)가 더 크게 나타난다. 즉, 초기 전환이 낮아 보여도 **리듬(Consistency)**이 안정적이면 장기 성과에서 회복/역전 가능성이 있다.
-- 단, v1.0은 동일한 0-180일 창에서 “신호(Activation/Consistency)”와 “성과(구매/매출)”가 함께 움직일 수 있어(누수/tautology 가능성), 이후 v1.1에서 **관측창(0-60d) vs 성과창(60-180d) time-split**으로 재검증이 필요하다.
+3) **2×2 factorial A/B에서 ‘개입 효과’ 관점의 근거 추가**  
+   - bootstrap CI 기준, **Consistency uplift는 60–180 매출(ΔE[rev], LTV proxy)을 유의미하게 개선**한 반면  
+     Activation uplift는 **0–13 초기 전환 개선**에 더 가까웠다.  
+   - (Interaction A×C는 0을 포함해 보수적으로 해석)
 
+4) **퍼널 병목의 이원화(전사 개선 vs 세그먼트 타깃)** *(Finding #4)*  
+   - 초기(14d) **view→click**은 전사 공통 개선 과제인 반면, 30일 관점의 **click→cart** 병목은 특히 **저일관성(C1/C2)** 유저에 집중되어 정교한 타깃팅 실험이 필요하다.
 
-### 0.2 What we saw (v1.1)
-
-- v1.0의 한계(동일 0–180d 창에서 predictor/outcome이 함께 움직일 수 있음)를 줄이기 위해, **관측창(0–60d)** 과 **성과창(60–180d)** 을 분리(Time-split)해 재검증했다.  
-- Time-split 후에도 **초기 리듬(Consistency)** 이 이후 성과(60–180d 구매율/매출/리텐션)와 **단조롭게 연결되는 패턴이 유지**됐다.  
-- 특히 **Activation 수준이 같아도**(Activation bucket 고정), Consistency가 높은 그룹이 **구매율/매출/리텐션이 더 높아** Consistency의 **추가 설명력**이 확인됐다.  
-- 이를 바탕으로 Activation×Consistency 조합으로 만든 **Persona(예: Loyal/Steady/Burst/Observer)** 가 60–180d 성과를 뚜렷하게 구분해, **세그먼트 기반 액션 설계**에 바로 연결할 수 있다.
+> **Method note:** v1.0의 동기간 상관(tautology) 가능성을 줄이기 위해 v1.1에서 **0–60 관측 / 60–180 성과**로 time-split 재검증했다.
 
 ---
 
