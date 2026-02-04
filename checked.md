@@ -7,25 +7,18 @@
 ### 결론 (Decision)
 **장기 성장(60–180d) 관점에서 핵심 레버는 Activation이 아니라 Consistency였다.**
 
-Time-split(0–60 관측 / 60–180 성과)에서도 C1→C5로 갈수록  
-60–180 구매율은 **0.049→0.467**, 마지막 주 리텐션은 **0.257→0.767**로 상승했다.
-
-또한 2×2 A/B(bootstrap CI) 기준으로 **Consistency uplift는 60–180 매출(LTV proxy)을 유의미하게 개선**한 반면,  
+Time-split(0–60 관측 / 60–180 성과)에서도 Consistency가 높을수록 장기 성과가 단조 상승했고,  
+2×2 factorial A/B(bootstrap CI)에서도 **Consistency uplift는 60–180 매출(LTV proxy)을 유의미하게 개선**한 반면,  
 Activation uplift는 **0–13 초기 전환 개선**에 더 가까웠다.
 
-### Key Evidence (numbers)
-- Time-split 기준에서도 Consistency C1→C5로 갈수록 성과가 상승  
-  - purchase_rate_60_180: 0.049 → 0.467  
-  - retention_last_week_180d_rate: 0.257 → 0.767
-- Activation 수준이 같아도 Consistency에 따라 성과가 크게 갈림  
-  - Act_Low(A0–A1): purchase_rate_60_180 0.016(C1) → 0.426(C5), retention 0.202 → 0.688  
-  - Act_High(A4–A5): purchase_rate_60_180 0.068(C1) → 0.418(C5), retention 0.414 → 0.829
-- 2×2 A/B(Activation uplift × Consistency uplift): 60–180 ΔE[rev]에서 **Consistency main effect**는 bootstrap 95% CI가 0을 상회(+)했고, Interaction(A×C)은 0을 포함해 불확실
+### Evidence snapshot (2 lines)
+- Time-split 기준 C1→C5: purchase_rate_60_180 **0.049→0.467**, retention_last_week_180d_rate **0.257→0.767**
+- 2×2 A/B(bootstrap CI): **Consistency main effect > 0**, Interaction(A×C)은 0 포함(불확실)
 
 ### Actions (what I’d do in a real product)
-1) 장기 KPI(60–180 매출/리텐션)를 목표로 한다면, 우선순위는 **Activation 단독 개선**이 아니라 **Consistency(주간 방문 리듬) 개입**에 둔다.  
-2) 유저 타깃팅/운영 단위는 Activation 단독이 아니라 **Activation × Consistency persona**로 설계한다.  
-3) 퍼널 개선은 “전사 공통 병목”과 “세그먼트 취약 병목”으로 분리해 실험한다.  
+1. 장기 KPI(60–180 매출/리텐션)를 목표로 한다면, 우선순위는 Activation 단독 개선이 아니라 **Consistency(주간 방문 리듬) 개입**에 둔다.
+2. 유저 타깃팅/운영 단위는 Activation 단독이 아니라 **Activation × Consistency persona**로 설계한다.
+3. 퍼널 개선은 “전사 공통 병목”과 “세그먼트 취약 병목”으로 분리해 실험한다.  
    - 14d: view→click (첫 클릭 유도)  
    - 30d: click→cart (특히 low-consistency 유저 타깃)
 
