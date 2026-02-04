@@ -22,6 +22,11 @@
   **30d 병목은 click→cart가 특히 저일관성(C1/C2)에서 취약**하다.  
   → “전사 UX 개선(초기 클릭)”과 “저일관성 clickers 타깃 실험(카트 전환)”으로 역할 분담이 명확해진다.
 
+  ### Where to look (repro & evidence)
+- **v1.1 time-split SQL (repro):** `src/sql/analysis/story_core_v1.1/`
+- **Python validation (EDA + bootstrap CI):** `src/python/Python (EDA + Visualisation).ipynb`
+- **2×2 factorial A/B (bootstrap CI):** `src/python/Python_(AB Experiment).ipynb`
+
 > **Method note:** v1.0의 동기간 상관(tautology) 가능성을 줄이기 위해 v1.1에서 **0–60 관측 / 60–180 성과**로 time-split 재검증했다.
 
 ---
