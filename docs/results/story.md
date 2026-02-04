@@ -6,19 +6,21 @@
 **한 줄 결론:** 단기 전환(Activation)만으로는 장기 성과(60–180d)를 설명하기 어렵고, **방문 리듬(Consistency)** 이 장기 KPI를 가장 강하게 분리했다.
 
 ### Key insights
-1) **Time-split v1.1로 ‘선행 지표’ 성격을 재확인**  
-   - 관측(0–60d)과 성과(60–180d)를 분리해도 Consistency가 높을수록 장기 성과가 단조 상승했다.
+- **Insight 1 (재검증):** v1.0에서 관찰한 “Activation만으로는 부족하고 Consistency가 장기 성과를 추가로 가른다”는 패턴이 **v1.1 time-split(0–60d 관측 → 60–180d 성과)**에서도 동일하게 재현됐다.  
+  → Consistency를 “초기 행동 리듬 기반의 선행 신호”로 해석할 근거가 강화된다.  
+  (자세한 근거: v1.1 Result 01–03)  
 
-2) **Activation이 낮아도 Consistency가 높으면 ‘장기 반등’이 가능**  
-   - 예: Act_Low(A0–A1)에서도 purchase_rate_60_180이 **0.016(C1) → 0.426(C5)** 로 크게 상승했다.
+- **Insight 2 (세그먼트 액션):** **Activation 수준이 같아도** Consistency(C1→C5)에 따라 60–180d 구매율/리텐션이 크게 갈린다.  
+  예: Act_Low(A0–A1)에서도 purchase_rate_60_180 **0.016→0.426**, retention **0.202→0.688**로 상승.  
+  → 운영/개입 단위는 Activation 단독이 아니라 **Activation×Consistency persona**가 더 합리적이다.
 
-3) **2×2 factorial A/B에서 ‘개입 효과’ 관점의 근거 추가**  
-   - bootstrap CI 기준, **Consistency uplift는 60–180 매출(ΔE[rev], LTV proxy)을 유의미하게 개선**한 반면  
-     Activation uplift는 **0–13 초기 전환 개선**에 더 가까웠다.  
-   - (Interaction A×C는 0을 포함해 보수적으로 해석)
+- **Insight 3 (개입 효과 관점):** 2×2 factorial A/B(bootstrap CI) 기준, **Consistency uplift는 장기 KPI(60–180 ΔE[rev]) 개선 신호가 확인**된 반면, Activation uplift는 **초기 전환(0–13일)** 개선에 더 가까웠다.  
+  (Interaction은 0 포함 → 보수적 해석)
 
-4) **퍼널 병목의 이원화(전사 개선 vs 세그먼트 타깃)** *(Finding #4)*  
-   - 초기(14d) **view→click**은 전사 공통 개선 과제인 반면, 30일 관점의 **click→cart** 병목은 특히 **저일관성(C1/C2)** 유저에 집중되어 정교한 타깃팅 실험이 필요하다.
+- **Insight 4 (Finding #4): 퍼널 병목의 이원화 — “전사 개선” vs “세그먼트 타깃”**  
+  Worst Top10 기준, **14d 병목은 view→click이 전사적으로 넓게 발생**하고(클릭으로 못 넘어가는 세그먼트가 넓게 존재),  
+  **30d 병목은 click→cart가 특히 저일관성(C1/C2)에서 취약**하다.  
+  → “전사 UX 개선(초기 클릭)”과 “저일관성 clickers 타깃 실험(카트 전환)”으로 역할 분담이 명확해진다.
 
 > **Method note:** v1.0의 동기간 상관(tautology) 가능성을 줄이기 위해 v1.1에서 **0–60 관측 / 60–180 성과**로 time-split 재검증했다.
 
