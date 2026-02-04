@@ -1,6 +1,7 @@
 # 🚀 Activation vs Consistency: 단기 전환(0–14d)과 장기 성장(60–180d)을 분리해 입증한 E-commerce Analytics
 
-**Scope:** Synthetic e-commerce 로그를 설계·생성해 BigQuery **Raw→Optimized→Data Mart** 파이프라인을 구축하고, Activation×Consistency가 **단기(0–14d)→장기(60–180d)** 성과로 이어지는 패턴을 **v1.0→v1.1(Time-split)** 로 재검증한 뒤, Python(**bootstrap CI**)과 **2×2 factorial A/B**로 “개입 효과” 관점까지 확장한 프로젝트입니다.
+**Scope:** “초기 전환(Activation)만으로 장기 LTV/Retention을 설명하기 어렵다”는 문제를, **방문 리듬(Consistency)** 관점에서 검증하고 액션 플랜으로 연결했습니다.  
+(Time-split v1.1 + bootstrap CI + 2×2 factorial A/B로 패턴/개입효과 확인)
 
 **Stack:** `BigQuery (Raw→Optimized→Data Mart)`, `SQL`, `Python (EDA + Bootstrap CI)`, `2×2 Factorial A/B`, `Tableau (dashboarding in progress)`
 
@@ -16,7 +17,7 @@ Time-split(0–60 관측 / 60–180 성과)에서도 Consistency가 높을수록
 Activation uplift는 **0–13 초기 전환 개선**에 더 가까웠다.
 
 ### Evidence snapshot (2 lines)
-- Time-split 기준 C1→C5: purchase_rate_60_180 **0.049→0.467**, retention_last_week_180d_rate **0.257→0.767**
+- 60–180 구매율: **4.9% → 46.7%** (+41.8%p, ~9.5×) / 마지막 주 리텐션: **25.7% → 76.7%** (+51.0%p, ~3.0×)
 - 2×2 A/B(bootstrap CI): **Consistency main effect > 0**, Interaction(A×C)은 0 포함(불확실)
 
 ### Actions (what I’d do in a real product)
@@ -34,10 +35,12 @@ Activation uplift는 **0–13 초기 전환 개선**에 더 가까웠다.
 
 
 ## 이 프로젝트에서 보여주는 것
-- **(Data Modeling)** Raw log → optimized tables → data marts로 이어지는 BigQuery 중심 분석용 데이터 모델링
-- **(Analytics)** Activation/Consistency 기반 LTV·Retention·Funnel 분석 + time-split(0–60 관측 / 60–180 성과) 재검증
-- **(Validation/Experiment)** Python 시각화·bootstrap CI로 불확실성을 확인하고, 2×2 A/B로 개입 효과를 보수적으로 평가
-- **(BI/Delivery)** 핵심 KPI·세그먼트 결과를 Tableau 대시보드로 패키징하는 작업을 진행 중 *(산출물은 추후 업데이트 예정)*
+- **Data pipeline & modeling:** BigQuery Raw→Optimized→Data Mart 설계(재현 가능한 분석 구조)
+- **Analytics & validation:** Activation×Consistency를 Time-split(v1.1) + bootstrap CI로 검증, 2×2 A/B로 개입효과 평가
+- **Delivery:** Tableau로 KPI/세그먼트 결과 패키징(진행 중)
+
+> Method note: 0–60 관측 / 60–180 성과로 분리(Time-split v1.1)해 동기간 상관/누수 리스크를 줄이고 패턴을 재검증했습니다.
+
 ---
 
 ## 1) Project Goal
