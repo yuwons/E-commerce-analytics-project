@@ -94,6 +94,7 @@ Activation stage(첫 14일)는 14일 내 도달 이벤트를 기준으로 **purc
 > 그래서 다음 단계(v1.1)에서 Time-split으로 분리 검증한다.
 
 ---
+
 ## 3) Finding #2 — Consistency 격차는 낮은 Activation 구간에서 더 크게 관측된다 (v1.0)
 
 ### Key takeaway
