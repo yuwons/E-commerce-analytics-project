@@ -94,22 +94,26 @@ Activation stage(첫 14일)는 14일 내 도달 이벤트를 기준으로 **purc
 > 그래서 다음 단계(v1.1)에서 Time-split으로 분리 검증한다.
 
 ---
-## 3) Finding #2 — Consistency의 격차는 낮은 Activation 구간에서 더 크게 보이는 편이다 (v1.0)
+## 3) Finding #2 — Consistency 격차는 낮은 Activation 구간에서 더 크게 관측된다 (v1.0)
 
 ### Key takeaway
-- **Result:** C5 vs C1 격차는 전 Activation에서 관찰되며, 특히 Low activation(A0–A2)에서 **180d avg_revenue lift(C5/C1)**가 크게 나타난다 (A0 30.25x, A1 20.97x, A2 7.45x).
-- **So what:** Low activation 구간에서도 Consistency가 높은 하위군은 장기 성과 잠재력이 있어, Consistency를 추가 신호로 사용해 타깃팅/개입 대상을 정교화할 수 있다.
-- **Evidence:** Fig 02 (Activation bucket별 headline lift: C5 vs C1)
+- C5 vs C1 격차는 모든 Activation stage에서 관찰되며, 특히 **Low activation(A0–A2)**에서 **180d avg_revenue의 배수(C5/C1)**가 크게 나타난다 (A0 **30.25x**, A1 **20.97x**, A2 **7.45x**). 즉, **초기 퍼널 도달이 낮아도 Consistency가 높은 하위군은 장기 성과 잠재력이 있다**.
 
-Figure 02는 Activation bucket별로 **C5–C1 격차(headline lift)**를 요약한 그림이며, Low activation(A0–A2)에서 lift가 상대적으로 더 크게 나타나는지 확인한다.
+### Evidence
+- **Headline lift (avg_revenue, C5/C1)**: A0 **30.25x**, A1 **20.97x**, A2 **7.45x** (A3 **7.49x**, A4 **3.87x**, A5 **1.37x**)
+- **Interpretation hint**: Activation이 높아질수록(특히 A4–A5) 이미 “선별된” 유저 집단이 되어 **C1의 베이스가 올라가거나 상한(ceiling)**이 생기면서 배수 격차가 축소될 수 있다.
+- **Sample size check**: users_c1/users_c5를 함께 보고(특히 A0, A4) 극단 배수는 보수적으로 해석한다.
+
+### So what
+- Low activation 구간에서도 “포기할 유저”를 Activation만으로 판단하면 놓칠 수 있다. **Consistency를 추가 신호로 사용해 타깃팅/개입 대상을 정교화**하면, 낮은 초기 행동에서도 장기 성과가 기대되는 하위군을 구분할 수 있다.
 
 ### Figure 02 — Headline lift (C5 vs C1) by Activation
 - Query: `src/sql/analysis/00_story_core/02_headline_lift_c5_vs_c1_by_activation.sql`
 ![](./figures/02_figure.png)
 
-> **Note:** v1.0은 동기간(0–180d) 지표 한계가 있어, 이 패턴은 v1.1 time-split로 재확인한다.
-> lift는 ratio(C5/C1) 이므로 C1의 베이스가 낮은 구간(A0–A1)에서 배수가 더 크게 보일 수 있어,
-> 표본(users_c1/users_c5) 과 함께 해석한다.
+> **Note (v1.0):**  
+> v1.0은 동기간(0–180d) 지표 한계가 있어, 이 패턴은 v1.1 time-split로 재확인한다.  
+> 또한 lift는 ratio(C5/C1)이므로 C1 베이스가 낮은 구간(A0–A1)에서 배수가 더 커 보일 수 있어 표본(users_c1/users_c5)과 함께 해석한다.
 
 ---
 
