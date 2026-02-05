@@ -42,6 +42,8 @@
 - A4: checkout  
 - A5: purchase
 
+Activation stage(첫 14일)는 14일 내 이벤트 중 **최고 단계(max stage)**(purchase→…→view)를 A0~A5로 정의했다.
+
 > 사용 DM: `DM_user_window` (has_view_14d ~ has_purchase_14d)
 
 ### 1.2 Consistency (0~180일, v1.0)
@@ -53,6 +55,8 @@
 ### 1.3 Long-term outcomes (0~180일, v1.0)
 - 구매/매출: `DM_ltv_180d`
 - 리텐션: `DM_retention_cohort` (day 180 정의 포함)
+
+> v1.1 검증에서는 **관측(0–60d) / 성과(60–180d)** time-split으로 동일 패턴을 재검증한다.
 
 ---
 
