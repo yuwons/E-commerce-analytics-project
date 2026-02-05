@@ -42,7 +42,7 @@
 - A4: checkout  
 - A5: purchase
 
-Activation stage(첫 14일)는 14일 내 이벤트 중 **최고 단계(max stage)**(purchase→…→view)를 A0~A5로 정의했다.
+Activation stage(첫 14일)는 14일 내 도달 이벤트를 기준으로 **purchase > checkout > add_to_cart > click > view** 우선순위의 최고 단계를 A1~A5로 정의하고, 이벤트가 없으면 A0로 분류했다.
 
 > 사용 DM: `DM_user_window` (has_view_14d ~ has_purchase_14d)
 
