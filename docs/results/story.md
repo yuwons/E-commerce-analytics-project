@@ -102,7 +102,7 @@ Activation stage(첫 14일)는 14일 내 도달 이벤트를 기준으로 **purc
 
 ### Evidence
 - **Headline lift (avg_revenue, C5/C1)**: A0 **30.25x**, A1 **20.97x**, A2 **7.45x** (A3 **7.49x**, A4 **3.87x**, A5 **1.37x**)
-- **Interpretation hint**: Activation이 높아질수록(특히 A4–A5) 이미 “선별된” 유저 집단이 되어 **C1의 베이스가 올라가거나 상한(ceiling)** 이 생기면서 배수 격차가 축소될 수 있다.
+- **Data Insight**: Activation이 높아질수록(특히 A4–A5) 이미 “선별된” 유저 집단이 되어 **C1의 베이스가 올라가거나 상한(ceiling)** 이 생기면서 배수 격차가 축소될 수 있다.
 - **Sample size check**: users_c1/users_c5를 함께 보고(특히 A0, A4) 극단 배수는 보수적으로 해석한다.
 
 ### So what
