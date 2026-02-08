@@ -43,9 +43,7 @@
 - A5: purchase
 
 > 사용 DM: `DM_user_window` (has_view_14d ~ has_purchase_14d)  
-> Note: Activation stage(첫 14일)는 14일 내 도달 이벤트의 **최고 단계(max stage)**를,
-        **purchase > checkout > add_to_cart > click > view** 우선순위로 A1~A5에 매핑하고, 이벤트가 없으면 A0로 정의했다.
-
+> Note: Activation stage(첫 14일)는 14일 내 이벤트 발생 여부(reach)를 만든 뒤, **단계 우선순위**(purchase가 가장 높음)로 A0~A5를 라벨링했다.
 
 ### 1.2 Consistency (0~180일, v1.0)
 - 세션 기반 지표(예: active_days, intervisit_cv 등)로 Consistency score를 만들고,
