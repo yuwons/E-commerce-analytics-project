@@ -33,7 +33,32 @@
 ---
 
 ## 1) Definitions (v1.0 기준)
-간(특히 A0, A4) 극단 배수는 보수적으로 해석한다.
+
+### 1.1 Activation stage (첫 14일)
+- A0: no activity  
+- A1: view  
+- A2: click  
+- A3: add_to_cart  
+- A4: checkout  
+- A5: purchase
+
+> 사용 DM: `DM_user_window` (has_view_14d ~ has_purchase_14d)  
+> Note: Activation stage(첫 14일)는 14일 내 도달 이벤트의 **최고 단계(max stage)**를,
+        **purchase > checkout > add_to_cart > click > view** 우선순위로 A1~A5에 매핑하고, 이벤트가 없으면 A0로 정의했다.
+
+
+### 1.2 Consistency (0~180일, v1.0)
+- 세션 기반 지표(예: active_days, intervisit_cv 등)로 Consistency score를 만들고,
+- score를 **퀸타일로 C1(하위) - C5(상위)**로 구간화
+
+> 사용 DM: `DM_consistency_180d`
+
+### 1.3 Long-term outcomes (0~180일, v1.0)
+- 구매/매출: `DM_ltv_180d`
+- 리텐션: `DM_retention_cohort` (day 180 정의 포함)
+
+> v1.1 검증에서는 **관측(0–60d) / 성과(60–180d)** time-split으로 동일 패턴을 재검증한다.
+
 
 ### So what
 - Low activation 구간에서도 “포기할 유저”를 Activation만으로 판단하면 놓칠 수 있다. **Consistency를 추가 신호로 사용해 타깃팅/개입 대상을 정교화**하면, 낮은 초기 행동에서도 장기 성과가 기대되는 하위군을 구분할 수 있다.
