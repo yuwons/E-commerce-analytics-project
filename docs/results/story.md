@@ -96,12 +96,12 @@
 - C5 vs C1 격차는 모든 Activation stage에서 관찰되며, 특히 low activation(A0–A2)에서 180d avg_revenue 배수(C5/C1)가 크게 나타난다 (A0 30.25x, A1 20.97x, A2 7.45x). 즉, 초기 퍼널 도달이 낮아도 Consistency가 높은 하위군은 장기 성과 잠재력이 있다.
 
 ### Evidence
-- **Headline lift (avg_revenue, C5/C1)**: A0 30.25x, A1 20.97x, A2 7.45x *(A3 7.49x, A4 3.87x, A5 1.37x)*
-- **Data insight**: Activation이 높아질수록(특히 A4–A5) 이미 “선별된” 유저 집단이 되어 C1의 베이스가 올라가거나 상한(ceiling)이 생기면서 배수 격차가 축소될 수 있다.
+- **Headline lift (avg_revenue, C5/C1)**: A0 30.25x, A1 20.97x, A2 7.45x **(A3 7.49x, A4 3.87x, A5 1.37x)**
+- **Data insight**: Activation이 높아질수록(특히 A4–A5) 이미 “선별된” 유저 집단이 되어 **C1의 베이스가 올라가거나 상한(ceiling)** 이 생기면서 배수 격차가 축소될 수 있다.
 - **Sample size check**: users_c1/users_c5를 함께 보고(표본이 작은 구간, 특히 A0·A4) 극단 배수는 보수적으로 해석한다.
 
 ### So what
-- Low activation 구간에서도 “포기할 유저”를 Activation만으로 판단하면 놓칠 수 있다. Consistency를 추가 신호로 사용해 타깃팅/개입 대상을 정교화하면, 낮은 초기 행동에서도 장기 성과가 기대되는 하위군을 구분할 수 있다.
+- Low activation 구간에서도 “포기할 유저”를 Activation만으로 판단하면 놓칠 수 있다. **Consistency를 추가 신호로 사용해 타깃팅/개입 대상을 정교화**하면, 낮은 초기 행동에서도 장기 성과가 기대되는 하위군을 구분할 수 있다.
 
 ### Figure 02 — Headline lift (C5 vs C1) by Activation
 - Query: `src/sql/analysis/00_story_core/02_headline_lift_c5_vs_c1_by_activation.sql`
