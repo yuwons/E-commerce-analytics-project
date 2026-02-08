@@ -62,7 +62,7 @@
 ## 2) Finding #1 — Activation만으로는 부족하다: 같은 단계에서도 Consistency가 180일 성과를 가른다 (v1.0)
 
 ### Key takeaway
-- 같은 Activation stage 안에서도 Consistency(C1→C5)에 따라 180일 성과가 극단적으로 갈린다. 예를 들어 **A1_view**에서 180d 구매율은 **6.0% → 69.8% (+63.8%p)**까지 벌어진다.
+- 같은 Activation stage 안에서도 Consistency(C1→C5)에 따라 180일 성과가 극단적으로 갈린다. 예를 들어 **A1_view**에서 180d 구매율은 **6.0% → 69.8% (+63.8%p)** 까지 벌어진다.
 
 ### Evidence
 - **Purchase rate (180d)**
@@ -77,7 +77,7 @@
 - **Note (sample size)**: **A0_no_activity–C5**는 **n=198**로 작아 변동성이 있을 수 있으나, 모든 Activation stage에서 **C1 < C3 < C5**의 단조 패턴은 일관적이다.
 
 ### So what
-- 따라서 “초기 퍼널 도달(Activation)”만으로 장기 LTV를 판단하면 같은 Activation stage 내부의 승자/패자를 놓친다. 즉, ‘재방문 리듬(Consistency)’를 함께 봐야 세그먼트 기반 액션이 가능해진다.
+- 따라서 “초기 퍼널 도달(Activation)”만으로 장기 LTV를 판단하면 같은 Activation stage 내부의 승자/패자를 놓친다. 즉, **‘재방문 리듬(Consistency)’** 를 함께 봐야 세그먼트 기반 액션이 가능해진다.
 
 ### Figure 01 — Activation × Consistency × (Purchase / Revenue / Retention)
 - Query: `src/sql/analysis/00_story_core/01_final_activation_x_consistency_ltv180d_retention_point.sql`
