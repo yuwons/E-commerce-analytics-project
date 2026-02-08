@@ -47,7 +47,7 @@
 
 ### 1.2 Consistency (0~180일, v1.0)
 - 세션 기반 지표(예: active_days, intervisit_cv 등)로 Consistency score를 만들고,
-- score를 **퀸타일로 C1(하위) - C5(상위)**로 구간화
+- score를 **퀸타일로 C1(하위) - C5(상위)** 로 구간화
 
 > 사용 DM: `DM_consistency_180d`
 
