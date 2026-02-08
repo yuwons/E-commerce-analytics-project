@@ -57,16 +57,58 @@
 
 > v1.1 검증에서는 **관측(0–60d) / 성과(60–180d)** time-split으로 동일 패턴을 재검증한다.
 
+---
+
+## 2) Finding #1 — Activation만으로는 부족하다: 같은 단계에서도 Consistency가 180일 성과를 가른다 (v1.0)
+
+### Key takeaway
+- 같은 Activation stage 안에서도 Consistency(C1→C5)에 따라 180일 성과가 극단적으로 갈린다. 예를 들어 **A1_view**에서 180d 구매율은 **6.0% → 69.8% (+63.8%p)**까지 벌어진다.
+
+### Evidence
+- **Purchase rate (180d)**
+  - **A1_view**: **C1 6.0% → C3 25.2% → C5 69.8%**
+  - **A2_click**: **C1 16.5% → C3 33.4% → C5 81.3%**
+- **Avg revenue (180d)**
+  - **A1_view**: **11,231 → 56,727 → 246,750** (C1→C5 약 **22.0x**)
+  - **A0_no_activity**에서도 **3,543 → 110,716**로 격차가 큼
+- **Retention (week 173–179)**
+  - **A1_view**: **25.8% → 46.4% → 80.7%**
+  - **A2_click**: **40.9% → 56.3% → 86.3%**
+- **Note (sample size)**: **A0_no_activity–C5**는 **n=198**로 작아 변동성이 있을 수 있으나, 모든 Activation stage에서 **C1 < C3 < C5**의 단조 패턴은 일관적이다.
 
 ### So what
-- Low activation 구간에서도 “포기할 유저”를 Activation만으로 판단하면 놓칠 수 있다. **Consistency를 추가 신호로 사용해 타깃팅/개입 대상을 정교화**하면, 낮은 초기 행동에서도 장기 성과가 기대되는 하위군을 구분할 수 있다.
+- 따라서 “초기 퍼널 도달(Activation)”만으로 장기 LTV를 판단하면 같은 Activation stage 내부의 승자/패자를 놓친다. 즉, ‘재방문 리듬(Consistency)’를 함께 봐야 세그먼트 기반 액션이 가능해진다.
+
+### Figure 01 — Activation × Consistency × (Purchase / Revenue / Retention)
+- Query: `src/sql/analysis/00_story_core/01_final_activation_x_consistency_ltv180d_retention_point.sql`
+![](./figures/01_figure_a.png)
+
+> **주의(해석 한계, v1.0):**  
+> Consistency 지표와 180일 성과가 같은 기간(0–180d) 안에서 함께 계산되기 때문에,  
+> “예측”이라기보다 “동기간 상관 패턴”이 강하게 섞여 있을 수 있다.  
+> 그래서 다음 단계(v1.1)에서 Time-split으로 분리 검증한다.
+
+---
+
+## 3) Finding #2 — Consistency 격차는 낮은 Activation 구간에서 더 크게 관측된다 (v1.0)
+
+### Key takeaway
+- C5 vs C1 격차는 모든 Activation stage에서 관찰되며, 특히 low activation(A0–A2)에서 180d avg_revenue 배수(C5/C1)가 크게 나타난다 (A0 30.25x, A1 20.97x, A2 7.45x). 즉, 초기 퍼널 도달이 낮아도 Consistency가 높은 하위군은 장기 성과 잠재력이 있다.
+
+### Evidence
+- **Headline lift (avg_revenue, C5/C1)**: A0 30.25x, A1 20.97x, A2 7.45x *(A3 7.49x, A4 3.87x, A5 1.37x)*
+- **Data insight**: Activation이 높아질수록(특히 A4–A5) 이미 “선별된” 유저 집단이 되어 C1의 베이스가 올라가거나 상한(ceiling)이 생기면서 배수 격차가 축소될 수 있다.
+- **Sample size check**: users_c1/users_c5를 함께 보고(표본이 작은 구간, 특히 A0·A4) 극단 배수는 보수적으로 해석한다.
+
+### So what
+- Low activation 구간에서도 “포기할 유저”를 Activation만으로 판단하면 놓칠 수 있다. Consistency를 추가 신호로 사용해 타깃팅/개입 대상을 정교화하면, 낮은 초기 행동에서도 장기 성과가 기대되는 하위군을 구분할 수 있다.
 
 ### Figure 02 — Headline lift (C5 vs C1) by Activation
 - Query: `src/sql/analysis/00_story_core/02_headline_lift_c5_vs_c1_by_activation.sql`
 ![](./figures/02_figure.png)
 
 > **Note (v1.0):**  
-> v1.0은 동기간(0–180d) 지표 한계가 있어, 이 패턴은 v1.1 time-split로 재확인한다.  
+> v1.0은 동기간(0–180d) 지표 한계가 있어, 이 패턴은 v1.1 Time-split로 재확인한다.  
 > 또한 lift는 ratio(C5/C1)이므로 C1 베이스가 낮은 구간(A0–A1)에서 배수가 더 커 보일 수 있어 표본(users_c1/users_c5)과 함께 해석한다.
 
 ---
