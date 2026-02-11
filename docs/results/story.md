@@ -248,30 +248,30 @@ v1.0은 “Activation만으로는 부족하고 Consistency가 성과와 함께 �
 
 ### Key takeaway
 - **Result:** time-split(0–60d 관측 → 60–180d 성과)에서도 **Activation 수준이 같아도 Consistency(C1→C5)에 따라 성과가 크게 갈린다.**
-  - 예: **Act_Low(A0–A1)**에서도 purchase_rate_60_180이 **0.016(C1) → 0.426(C5)**, retention이 **0.202 → 0.688**로 상승  
-  - 예: **Act_High(A4–A5)**에서도 purchase_rate_60_180 **0.068(C1) → 0.418(C5)**, retention **0.414 → 0.829**
-- **So what:** **Activation만으로 유저를 평가/타깃팅하면** “초기 전환은 낮지만 리듬이 좋은(high-consistency) 유저(특히 Act_Low/Act_Mid의 C5)”를 **과소평가**해 기회를 놓칠 수 있다.  
+  - 예: **Act_Low(A0–A1)** 구매율(60–180d) **1.6% → 42.6% (+41.0%p)**, 리텐션 **20.2% → 68.8% (+48.6%p)** (C1→C5)
+  - 예: **Act_High(A4–A5)** 구매율(60–180d) **6.8% → 41.8% (+35.0%p)**, 리텐션 **41.4% → 82.9% (+41.5%p)** (C1→C5)
+- **So what:** **Activation만으로 타깃팅하면** “초기 전환은 낮지만 리듬이 좋은(high-consistency) 유저(특히 Act_Low/Act_Mid의 C5)”를 **과소평가**할 수 있다.  
   → 운영/개입의 단위는 **Activation 단독이 아니라 Activation×Consistency(persona)**가 더 합리적이다.
-- **Evidence:** Activation_x_consistency_outcome.png (Activation 0–14d × Consistency 0–60d → Outcomes 60–180d)
+- **Evidence:** `Activation_x_consistency_outcome.png` (Activation 0–14d × Consistency 0–60d → Outcomes 60–180d)
 
+### Figure — Time-split: Activation (0–14d) × Consistency (0–60d) → Outcomes (60–180d)
 - Query: `src/sql/analysis/story_core_v1.1/05_activation14d_x_consistency0_60d_summary.sql`
-  
 ![Time-split: Activation (0–14d) × Consistency (0–60d) → Outcomes (60–180d)](./figures_v1.1/Activation_x_consistency_outcome.png)
 
-Activation 구간이 같아도, Consistency(C1→C5)에 따라 60–180d 성과가 일관되게 벌어진다.  
-즉, time-split을 적용해도 **Consistency는 Activation을 넘어서는 추가 설명력**을 가진다.
+동일 Activation bucket 내부에서도 Consistency가 높아질수록(C1→C5) **구매율/매출/리텐션이 단조 상승**한다.  
+즉, time-split 이후에도 **Consistency는 Activation을 보완하는 추가 신호**로 작동한다.
 
-- 같은 activation_bucket_14d 안에서도 C1→C5로 갈수록 **purchase_rate_60_180 / avg_revenue_60_180 / retention**이 상승
-- 특히 **Act_Low/Act_Mid에서도 C5가 의미 있게 높아**, “초기 전환이 낮아도 리듬이 좋으면 장기 성과에서 회복 가능” 신호가 유지된다.
+> **Note (limitation):** synthetic 데이터 특성상 효과 크기(lift)는 가정에 좌우될 수 있어, 본 결과는 **인과추정보다 관계/프레임(해석 구조) 검증**에 초점을 둔다.
 
-> **Note (limitation):** synthetic 데이터 특성상 효과 크기(lift)는 가정에 좌우될 수 있어, 본 결과는 인과추정보다 **관계/프레임(해석 구조) 검증**에 초점을 둔다.
+<details>
+<summary><b>Python Validation — Heatmap (Purchase rate, 60–180d)</b></summary>
 
-**Python Validation — Heatmap (Purchase rate, 60–180d)**  
 > **Purpose:** Activation stage(0–14d) × Consistency(C1–C5) 교차에서 60–180d 구매율이 두 축에 따라 어떻게 달라지는지 한 번에 확인한다.  
 > **Result:** (1) 동일 Activation stage 내에서도 **C1→C5로 갈수록 구매율이 상승**하고, (2) 동일 Consistency 구간 내에서도 **Activation stage가 높을수록 구매율이 상승**하는 패턴이 재현된다.
 
 ![](<figures(python)/fig_heatmap_purchase_rate_60_180_by_activation_x_consistency_v1_1.png>)
 
+</details>
 
 ---
 
