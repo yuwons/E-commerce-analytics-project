@@ -139,7 +139,7 @@
 
 ### Key takeaway
 - **14d window** Worst Top10은 **view→click** 병목이 반복적으로 상위에 나타나며(특히 **A1_view** 조합), “view 이후 클릭으로 못 넘어가는” 초기 실패가 광범위하게 존재한다.
-- **30d window** Worst Top10은 **click→cart** 병목이 다수이며, 특히 **A2_click × low consistency(C1/C2)** 에서 전환이 최저(≈4–5%)로 떨어진다(반면 C5는 ~16% 수준까지 회복).
+- **30d window** Worst Top10은 **click→cart** 병목이 다수이며, 특히 **A2_click × low consistency(C1/C2)** 에서 전환이 최저(≈4–5%)로 떨어진다(반면 C5는 ~16% 대비 3배+ 격차).
 
 ### Evidence
 - **14d (Top10 패턴)**: view→click × A1_view 조합이 상위권을 반복하며, 일부는 **전환 0%** 도 포함한다. (denom 약 **2.6k–3.2k**)
@@ -159,14 +159,13 @@
 ## 6) v1.1 — Time-split으로 “관측(0–60d) → 성과(60–180d)”를 분리해 재검증
 
 ### Key takeaway
-- **Result:** v1.0에서 보였던 “Activation만으로는 부족하고, Consistency가 장기 성과를 추가로 가른다”는 패턴이 **time-split(0–60d 관측 → 60–180d 성과)** 에서도 **동일하게 재현**된다. 즉, 결과는 ‘동기간 상관’만으로 설명되지 않는다.
-- **So what:** 이제 Consistency는 **초기 60일 행동/리듬 기반의 선행 신호**로 해석할 수 있고, 같은 Activation 안에서도 **장기 가치(매출/구매율/리텐션) 관점의 세그먼트 액션**(타깃·개입)을 설계할 근거가 강화된다.
+- **Result:** v1.0의 핵심 패턴(Activation만으로는 부족, Consistency가 추가로 장기 성과를 분리)이 **Time-split(0–60d 관측 → 60–180d 성과)**에서도 **재현**된다.
+- **So what:** Consistency는 **초기 60일 행동/리듬 기반의 선행 신호**로 해석 가능하며, 동일 Activation 내부에서도 **장기 가치(매출/구매율/리텐션) 관점의 세그먼트 액션(타깃·개입)**을 설계할 근거가 강화된다.
 - **Evidence:** Result 01–03 (v1.1 figures_v1.1)
 
-v1.0 결과는 “Activation만으로는 부족하고 Consistency가 성과와 함께 움직인다”는 패턴을 보여줬다.  
-다만 v1.0은 일부 지표가 **동기간(0–180d)** 안에서 함께 계산되어, 상관이 **tautology(동기간 산출) 위험**을 완전히 배제하기 어렵다.
+v1.0은 “Activation만으로는 부족하고 Consistency가 성과와 함께 움직인다”는 패턴을 보여줬지만, 일부 지표가 **동기간(0–180d)**에서 함께 계산되어 **tautology(동기간 산출)** 가능성을 완전히 배제하기 어렵다.
 
-그래서 v1.1에서는 **관측 구간(0–60d)**에서 early behavior/consistency를 정의하고, **성과 구간(60–180d)** 에서 purchase/revenue/retention을 측정해 **시간을 분리한 상태에서도 같은 패턴이 유지되는지**를 재검증한다.
+따라서 v1.1에서는 **관측 구간(0–60d)**에서 early behavior/consistency를 정의하고, **성과 구간(60–180d)**에서 outcomes(purchase/revenue/retention)를 측정해 **시간 분리 후에도 동일 패턴이 유지되는지** 재검증한다.
 
 ---
 
