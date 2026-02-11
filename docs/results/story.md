@@ -171,7 +171,8 @@ v1.0은 “Activation만으로는 부족하고 Consistency가 성과와 함께 �
 
 ## 6.1) Result 01 — Persona snapshot (Activation × Consistency)
 
-> Legend: **A_Burst/D_Loyal = 14d 구매 있음**, **B_Observer/C_Steady = 14d 구매 없음** / **Burst·Observer = low consistency**, **Steady·Loyal = high consistency**
+> Legend: **A_Burst/D_Loyal = 14d 구매 있음**, **B_Observer/C_Steady = 14d 구매 없음** /
+>         **Burst·Observer = low consistency**, **Steady·Loyal = high consistency**
 
 > Persona는 **Activation(초기 14d)** × **Consistency(0–60d 방문 리듬)** 조합으로 정의했다.  
 > (예: **Observer/Burst = low consistency**, **Steady/Loyal = high consistency**)
