@@ -140,7 +140,7 @@
 
 ### Key takeaway
 - **14d window** Worst Top10은 **view→click** 병목이 반복적으로 상위에 나타나며(특히 **A1_view** 조합), “view 이후 클릭으로 못 넘어가는” 초기 실패가 광범위하게 존재한다.
-- **30d window** Worst Top10은 **click→cart** 병목이 다수이며, 특히 **A2_click × low consistency(C1/C2)**에서 전환이 최저(≈4–5%)로 떨어진다(반면 C5는 ~16% 수준까지 회복).
+- **30d window** Worst Top10은 **click→cart** 병목이 다수이며, 특히 **A2_click × low consistency(C1/C2)** 에서 전환이 최저(≈4–5%)로 떨어진다(반면 C5는 ~16% 수준까지 회복).
 
 ### Evidence
 - **14d (Top10 패턴)**: view→click × A1_view 조합이 상위권을 반복하며, 일부는 **전환 0%** 도 포함한다. (denom 약 **2.6k–3.2k**)
