@@ -130,7 +130,7 @@
 
 ### Figure 04 — Bottleneck frequency (strict, 14d vs 30d)
 - Query: `src/sql/analysis/00_story_core/02_bottleneck_frequency_reach_strict_w14_w30.sql`
-![](./figures/04_figure.png)
+![](./figures/04_figure_a.png)
 
 ---
 
