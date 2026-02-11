@@ -90,26 +90,25 @@
 
 ---
 
-## 3) Finding #2 — Consistency 격차는 낮은 Activation 구간에서 더 크게 관측된다 (v1.0)
+## 4) Finding #3 — 퍼널 병목은 “전사 공통”과 “세그먼트 취약”으로 나누면 우선순위가 선명해진다 (v1.0)
 
 ### Key takeaway
-- C5 vs C1 격차는 모든 Activation stage에서 관찰되며, 특히 low activation(A0–A2)에서 180d avg_revenue 배수(C5/C1)가 크게 나타난다 (A0 30.25x, A1 20.97x, A2 7.45x). 즉, 초기 퍼널 도달이 낮아도 Consistency가 높은 하위군은 장기 성과 잠재력이 있다.
+- strict 기준으로 병목을 집계하면, **14d window에서는 view→click**이 가장 자주 발생하고, **30d window에서는 click→cart**가 가장 자주 발생한다. 즉, **초기(14일)는 ‘클릭 진입’**, 30일 관점에서는 **‘카트 전환’**이 반복 병목으로 관측된다.
 
 ### Evidence
-- **Headline lift (avg_revenue, C5/C1)**: A0 30.25x, A1 20.97x, A2 7.45x (A3 7.49x, A4 3.87x, A5 1.37x)
-- **Data insight**: Activation이 높아질수록(특히 A4–A5) 이미 “선별된” 유저 집단이 되어 **C1의 베이스가 올라가거나 상한(ceiling)** 이 생기면서 배수 격차가 축소될 수 있다.
-- **Sample size check**: users_c1/users_c5를 함께 보고(표본이 작은 구간, 특히 A0·A4) 극단 배수는 보수적으로 해석한다.
+- **Bottleneck frequency (strict, 14d vs 30d)**
+  - 14d 최빈 병목: **view→click**
+  - 30d 최빈 병목: **click→cart**
 
-### So what
-- Low activation 구간에서도 “포기할 유저”를 Activation만으로 판단하면 놓칠 수 있다. **Consistency를 추가 신호로 사용해 타깃팅/개입 대상을 정교화**하면, 낮은 초기 행동에서도 장기 성과가 기대되는 하위군을 구분할 수 있다.
+### So what (transition)
+- 병목을 **(1) 전사 공통 병목(발생 빈도)**과 **(2) 세그먼트 취약 병목(특정 조합의 급격한 저성과)**로 나누면,  
+  **“전사 UX 개선”**(공통 병목)과 **“세그먼트 타깃 실험”**(취약 세그먼트)의 우선순위/역할 분담이 명확해진다.  
+  → 다음 Finding #4에서 Worst Top10 세그먼트로 “취약 병목”을 구체화한다.
 
-### Figure 02 — Headline lift (C5 vs C1) by Activation
-- Query: `src/sql/analysis/00_story_core/02_headline_lift_c5_vs_c1_by_activation.sql`
-![](./figures/02_figure.png)
+### Figure 04 — Bottleneck frequency (strict, 14d vs 30d)
+- Query: `src/sql/analysis/00_story_core/02_bottleneck_frequency_reach_strict_w14_w30.sql`
+![](./figures/04_figure.png)
 
-> **Note (v1.0):**  
-> v1.0은 동기간(0–180d) 지표 한계가 있어, 이 패턴은 v1.1 Time-split로 재확인한다.  
-> 또한 lift는 ratio(C5/C1)이므로 C1 베이스가 낮은 구간(A0–A1)에서 배수가 더 커 보일 수 있어 표본(users_c1/users_c5)과 함께 해석한다.
 
 ---
 
