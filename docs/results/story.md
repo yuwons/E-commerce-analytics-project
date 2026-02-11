@@ -171,24 +171,21 @@ v1.0은 “Activation만으로는 부족하고 Consistency가 성과와 함께 �
 
 ## 6.1) Result 01 — Persona snapshot (Activation × Consistency)
 
-> Legend: **A_Burst/D_Loyal = 14d 구매 있음**, **B_Observer/C_Steady = 14d 구매 없음** / **Burst·Observer = low consistency**, **Steady·Loyal = high consistency**
-
 > Persona는 **Activation(초기 14d)** × **Consistency(0–60d 방문 리듬)** 조합으로 정의했다.  
-> (예: **Observer/Burst = low consistency**, **Steady/Loyal = high consistency**)
+> Legend(Activation): **A/D = early purchase(14d 구매 있음)**, **B/C = no early purchase(14d 구매 없음)**  
+> Legend(Consistency): **Burst·Observer = low consistency**, **Steady·Loyal = high consistency**
 
 ### Key takeaway
-- **Result:** time-split(60–180d) 기준에서도 persona별 **매출/구매율/리텐션**이 뚜렷하게 갈린다. 특히 **초기 14d 구매율이 0.0%인 집단 내부에서도**, Consistency가 높은 **C_Steady**가 낮은 **B_Observer**보다 60–180 성과가 크게 높다.
-- **So what:** “초기 구매 여부(Activation)”만으로 장기 성과를 판단하면 같은 Activation 내부의 승자/패자를 놓친다. 따라서 KPI/액션은 Activation뿐 아니라 **Consistency까지 포함한 persona 단위**로 설계하는 것이 합리적이다.
+- **Result:** time-split(60–180d) 기준에서도 persona별 **매출/구매율/리텐션**이 뚜렷하게 갈린다. 특히 **C_Steady(14d 구매율 0.0%)가 A_Burst(69.1%)보다도** 60–180d 구매율(**32.6% vs 13.8%**)과 평균매출(**88,489 vs 41,280**)이 높아, **Consistency가 장기 성과를 좌우하는 축**임을 보여준다.
+- **So what:** “초기 구매 여부(Activation)”만으로 장기 성과를 판단하면 놓치는 그룹이 생긴다. 따라서 KPI/액션은 Activation뿐 아니라 **재방문 리듬(Consistency)**까지 포함한 **persona 단위**로 설계하는 것이 합리적이다.
 - **Evidence:** `persona_result.png` (Persona snapshot: Activation × Consistency)
 
 ### Evidence (60–180d outcomes)
-- **No early purchase(14d 구매율 0.0%)에서도 Consistency 효과가 큼**
-  - **B_Observer → C_Steady**
+- **(Activation 통제: 14d 구매율 0.0% 내부 비교)** **B_Observer → C_Steady**
   - 구매율(60–180d): **17.0% → 32.6% (+15.6%p)**
   - 평균매출(60–180d): **41,882 → 88,489 (2.1×)**
   - 리텐션(마지막 주): **41.3% → 59.3% (+18.0%p)**
-- **Early purchase가 높아도(14d 구매율 유사) Consistency에 따라 장기 성과가 갈림**
-  - **A_Burst(14d 구매율 69.1%) vs D_Loyal(67.7%)**
+- **(Early purchase가 높아도 Consistency에 따라 장기 성과가 갈림)** **A_Burst(69.1%) vs D_Loyal(67.7%)**
   - 구매율(60–180d): **13.8% vs 34.3% (+20.5%p)**
   - 평균매출(60–180d): **41,280 vs 104,139 (2.5×)**
   - 리텐션(마지막 주): **54.3% vs 75.0% (+20.7%p)**
