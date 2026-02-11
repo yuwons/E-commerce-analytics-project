@@ -90,6 +90,29 @@
 
 ---
 
+## 3) Finding #2 — Consistency 격차는 낮은 Activation 구간에서 더 크게 관측된다 (v1.0)
+
+### Key takeaway
+- C5 vs C1 격차는 모든 Activation stage에서 관찰되며, 특히 low activation(A0–A2)에서 180d avg_revenue 배수(C5/C1)가 크게 나타난다 (A0 30.25x, A1 20.97x, A2 7.45x). 즉, 초기 퍼널 도달이 낮아도 Consistency가 높은 하위군은 장기 성과 잠재력이 있다.
+
+### Evidence
+- **Headline lift (avg_revenue, C5/C1)**: A0 30.25x, A1 20.97x, A2 7.45x (A3 7.49x, A4 3.87x, A5 1.37x)
+- **Data insight**: Activation이 높아질수록(특히 A4–A5) 이미 “선별된” 유저 집단이 되어 **C1의 베이스가 올라가거나 상한(ceiling)** 이 생기면서 배수 격차가 축소될 수 있다.
+- **Sample size check**: users_c1/users_c5를 함께 보고(표본이 작은 구간, 특히 A0·A4) 극단 배수는 보수적으로 해석한다.
+
+### So what
+- Low activation 구간에서도 “포기할 유저”를 Activation만으로 판단하면 놓칠 수 있다. **Consistency를 추가 신호로 사용해 타깃팅/개입 대상을 정교화**하면, 낮은 초기 행동에서도 장기 성과가 기대되는 하위군을 구분할 수 있다.
+
+### Figure 02 — Headline lift (C5 vs C1) by Activation
+- Query: `src/sql/analysis/00_story_core/02_headline_lift_c5_vs_c1_by_activation.sql`
+![](./figures/02_figure.png)
+
+> **Note (v1.0):**  
+> v1.0은 동기간(0–180d) 지표 한계가 있어, 이 패턴은 v1.1 Time-split로 재확인한다.  
+> 또한 lift는 ratio(C5/C1)이므로 C1 베이스가 낮은 구간(A0–A1)에서 배수가 더 커 보일 수 있어 표본(users_c1/users_c5)과 함께 해석한다.
+
+---
+
 ## 4) Finding #3 — 퍼널 병목은 “전사 공통”과 “세그먼트 취약”으로 나누면 우선순위가 선명해진다 (v1.0)
 
 ### Key takeaway
@@ -108,27 +131,6 @@
 ### Figure 04 — Bottleneck frequency (strict, 14d vs 30d)
 - Query: `src/sql/analysis/00_story_core/02_bottleneck_frequency_reach_strict_w14_w30.sql`
 ![](./figures/04_figure.png)
-
-
----
-
-## 4) Finding #3 — 퍼널 병목은 “전사 공통 병목”과 “세그먼트 취약 병목”으로 나누면 우선순위가 선명해진다 (v1.0)
-
-### Key takeaway
-- **Result:** Result: strict 기준, w14의 최빈 병목은 view→click(n_cell=10), w30의 최빈 병목은 click→cart(n_cell=13). 또한 w14는 median conv_rate=0으로 ‘클릭으로 못 넘어가는’ 세그먼트가 넓게 존재하고, w30은 click→cart의 전환이 상대적으로 낮게 형성되어 30일 관점에서 카트 전환이 반복 병목으로 나타난다.
-- **So what:** 병목을 (1) 전사 공통 병목(빈도) 과 (2) 특정 세그먼트 병목(취약 조합) 으로 나누면, “전사 UX 개선”과 “세그먼트 타깃 실험”의 우선순위/역할 분담이 명확해진다.
-- **Evidence:** Figure 04 (Bottleneck frequency; strict only, w14/w30)
-
-퍼널을 “전환율이 낮다”로만 보면 액션이 흐려진다. 
-그래서 v1.0에서는 두 가지 관점으로 분리해 분석을 진행했다.
-
-- **(A) 자주 발생하는 병목(빈도) :** 병목이 “자주 발생하는 구간”은 어디인가?  
-- **(B) 세그먼트 관점:** 다음 Finding #4에서 Worst Top10으로 구체화한다.
-
-### Figure 04 — Bottleneck frequency (strict w14/w30)
-- Query: `src/sql/analysis/00_story_core/02_bottleneck_frequency_reach_strict_w14_w30.sql`
-
-![](./figures/04_figure_a.png)
 
 ---
 
