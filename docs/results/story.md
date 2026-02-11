@@ -139,20 +139,19 @@
 ## 5) Finding #4 — 취약 세그먼트 Top10을 보면 “개선 우선순위”가 더 구체적으로 잡힌다 (v1.0)
 
 ### Key takeaway
-- **Result:** strict 기준 Worst Top10에서 14d는 view→click × A1_view가 상위권을 반복(전환 0% 포함, denom 약 2.6k~3.2k)하며, 30d는 click→cart × A2_click 조합이 다수이고 특히 **low consistency(C1/C2)**에서 전환이 최저(≈4–5%)인 반면 C5는 ~16%까지 회복한다.
-- **So what:** 우선순위는 (1) 14d: view→click 전사 개선(예: 첫 클릭 유도/노출·카피·추천 개선)과 (2) 30d: click→cart ‘저일관성 clickers’ 타깃 실험/개입으로 분리하는 게 합리적이다.
-- **Evidence:** Fig 05 (Worst segments Top10; strict w14/w30)
+- **14d window** Worst Top10은 **view→click** 병목이 반복적으로 상위에 나타나며(특히 **A1_view** 조합), “view 이후 클릭으로 못 넘어가는” 초기 실패가 광범위하게 존재한다.
+- **30d window** Worst Top10은 **click→cart** 병목이 다수이며, 특히 **A2_click × low consistency(C1/C2)**에서 전환이 최저(≈4–5%)로 떨어진다(반면 C5는 ~16% 수준까지 회복).
 
-**왜 취약약 세그먼트(Top10)를 보나?**  
-전체 평균만 보면 병목이 희석된다. strict 기준 Worst Top10은 **전사 공통 병목(어디가 막히는가)**과 **취약 세그먼트 병목(누가 특히 막히는가)**을 분리해 개선 우선순위를 더 구체화한다.
+### Evidence
+- **14d (Top10 패턴)**: view→click × A1_view 조합이 상위권을 반복하며, 일부는 **전환 0%** 도 포함한다. (denom 약 **2.6k–3.2k**)
+- **30d (Top10 패턴)**: click→cart × A2_click 조합이 다수이고, **저일관성(C1/C2)** 에서 전환이 최저(≈4–5%)로 관측된다. 반면 **C5는 ~16%** 까지 회복한다.
 
-- 14d: 상위는 주로 view→click × A1_view에 집중 → 초기 실패의 핵심은 “view 이후 클릭으로 못 넘어감”
+### So what
+- 개선 우선순위는 (1) **14d: view→click “전사 개선”**(첫 클릭 유도: 노출·카피·추천·UI)과  
+  (2) **30d: click→cart “세그먼트 타깃 실험”**(저일관성 clickers 대상 개입)으로 역할을 분리하는 게 합리적이다.
 
-- 30d: 상위는 주로 click→cart × A2_click, 특히 C1/C2에서 취약 → 30일 관점 병목은 “click→cart”, 타깃은 “저일관성 clickers”
-
-### Figure 05 — Worst segments Top10 (strict w14/w30)
+### Figure 05 — Worst segments Top10 (strict, 14d vs 30d)
 - Query: `src/sql/analysis/00_story_core/03_bottleneck_worst_segments_top10_strict_w14_w30.sql`
-
 ![](./figures/05_figure_a.png)
 ![](./figures/05_figure_b.png)
 
