@@ -159,13 +159,13 @@
 ## 6) v1.1 — Time-split으로 “관측(0–60d) → 성과(60–180d)”를 분리해 재검증
 
 ### Key takeaway
-- **Result:** v1.0의 핵심 패턴(Activation만으로는 부족, Consistency가 추가로 장기 성과를 분리)이 **Time-split(0–60d 관측 → 60–180d 성과)**에서도 **재현**된다.
-- **So what:** Consistency는 **초기 60일 행동/리듬 기반의 선행 신호**로 해석 가능하며, 동일 Activation 내부에서도 **장기 가치(매출/구매율/리텐션) 관점의 세그먼트 액션(타깃·개입)**을 설계할 근거가 강화된다.
-- **Evidence:** Result 01–03 (v1.1 figures_v1.1)
+- **Result:** v1.0의 핵심 패턴(Activation만으로는 부족하고, Consistency가 장기 성과를 추가로 분리)이 **time-split(관측 0–60d → 성과 60–180d)** 에서도 **재현**된다.
+- **So what:** Consistency는 **초기 60일 행동/리듬 기반의 선행 신호**로 해석 가능하며, 동일 Activation 내부에서도 **장기 가치(매출/구매율/리텐션) 관점의 세그먼트 액션(타깃·개입)** 을 설계할 근거가 강화된다.
+- **Evidence:** Result 01–03 (figures_v1.1)
 
-v1.0은 “Activation만으로는 부족하고 Consistency가 성과와 함께 움직인다”는 패턴을 보여줬지만, 일부 지표가 **동기간(0–180d)**에서 함께 계산되어 **tautology(동기간 산출)** 가능성을 완전히 배제하기 어렵다.
+v1.0은 “Activation만으로는 부족하고 Consistency가 성과와 함께 움직인다”는 패턴을 보여줬지만, 일부 지표가 **동기간(0–180d)** 에서 함께 계산되어 **tautology(동기간 산출)** 가능성을 완전히 배제하기 어렵다.
 
-따라서 v1.1에서는 **관측 구간(0–60d)**에서 early behavior/consistency를 정의하고, **성과 구간(60–180d)**에서 outcomes(purchase/revenue/retention)를 측정해 **시간 분리 후에도 동일 패턴이 유지되는지** 재검증한다.
+따라서 v1.1에서는 **관측 구간(0–60d)** 에서 early behavior/consistency를 정의하고, **성과 구간(60–180d)** 에서 outcomes(purchase/revenue/retention)를 측정해 **시간을 분리한 상태에서도 동일 패턴이 유지되는지** 재검증한다.
 
 ---
 
@@ -177,7 +177,7 @@ v1.0은 “Activation만으로는 부족하고 Consistency가 성과와 함께 �
 
 ### Key takeaway
 - **Result:** time-split(60–180d) 기준에서도 persona별 **매출/구매율/리텐션**이 뚜렷하게 갈린다. 특히 **C_Steady(14d 구매율 0.0%)가 A_Burst(69.1%)보다도** 60–180d 구매율(**32.6% vs 13.8%**)과 평균매출(**88,489 vs 41,280**)이 높아, **Consistency가 장기 성과를 좌우하는 축**임을 보여준다.
-- **So what:** “초기 구매 여부(Activation)”만으로 장기 성과를 판단하면 놓치는 그룹이 생긴다. 따라서 KPI/액션은 Activation뿐 아니라 **재방문 리듬(Consistency)**까지 포함한 **persona 단위**로 설계하는 것이 합리적이다.
+- **So what:** “초기 구매 여부(Activation)”만으로 장기 성과를 판단하면 놓치는 그룹이 생긴다. 따라서 KPI/액션은 Activation뿐 아니라 **재방문 리듬(Consistency)** 까지 포함한 **persona 단위**로 설계하는 것이 합리적이다.
 - **Evidence:** `persona_result.png` (Persona snapshot: Activation × Consistency)
 
 ### Evidence (60–180d outcomes)
@@ -192,17 +192,17 @@ v1.0은 “Activation만으로는 부족하고 Consistency가 성과와 함께 �
 - **Persona 분포(샘플 비중):** B_Observer **50.9% (n=15,280)**, C_Steady **37.2% (n=11,171)**, A_Burst **6.0% (n=1,808)**, D_Loyal **5.8% (n=1,741)**
 
 ### Figure — Persona snapshot (Activation × Consistency)
-- Query: `src/sql/analysis/story_core_v1.1/Persona_Analysis.sql`
+- Query: `src/sql/analysis/story_core_v1.1/Persona_Analysis.sql`  
 ![Persona snapshot (Activation × Consistency)](./figures_v1.1/persona_result.png)
 
-> **Note (limitation):** synthetic 생성 가정/노이즈로 인해 persona의 **절대 순위**는 달라질 수 있다. 본 결과는 **Activation vs Consistency의 역할 분리(프레임)**가 time-split에서도 재현되는지에 초점을 둔다.
+> **Note (limitation):** synthetic 생성 가정/노이즈로 인해 persona의 **절대 순위**는 달라질 수 있다. 본 결과는 **Activation vs Consistency의 역할 분리(프레임)** 가 time-split에서도 재현되는지에 초점을 둔다.
 
 ---
 
 ## 6.2) Result 02 — Consistency (0–60d) → Outcomes (60–180d)
 
 ### Key takeaway
-- **Result:** time-split(0–60d 관측 → 60–180d 성과)에서도 Consistency가 높아질수록(C1→C5) **구매율/매출/리텐션이 단조 증가**한다.
+- **Result:** time-split(관측 0–60d → 성과 60–180d)에서도 Consistency가 높아질수록(C1→C5) **구매율/매출/리텐션이 단조 증가**한다.  
   - 예: 구매율(60–180d) **4.9% → 46.7% (+41.8%p)**, 리텐션(마지막 주) **25.7% → 76.7% (+51.0%p)** (C1→C5)
 - **So what:** 초기 60일의 방문 리듬(Consistency)은 이후 120일 성과를 설명하는 **핵심 신호**다. KPI/액션은 Activation만 보지 말고 **Consistency를 함께** 포함해야 한다(→ 다음 Result에서 Activation 통제/교차에서도 재확인).
 - **Evidence:** `Consistency_outcome.png` (Consistency 0–60d → Outcomes 60–180d)
@@ -213,30 +213,28 @@ v1.0은 “Activation만으로는 부족하고 Consistency가 성과와 함께 �
 - 리텐션(마지막 주, day 174–180): **25.7% → 76.7% (+51.0%p)**
 
 ### Figure — Time-split: Consistency (0–60d) → Outcomes (60–180d)
-- Query: `src/sql/analysis/story_core_v1.1/04_timesplit__consistency_0_60_segment__outcomes_60_180.sql`
+- Query: `src/sql/analysis/story_core_v1.1/04_timesplit__consistency_0_60_segment__outcomes_60_180.sql`  
 ![Time-split: Consistency (0–60d) → Outcomes (60–180d)](./figures_v1.1/Consistency_outcome.png)
 
 > **Note (limitation):** synthetic 생성 가정에 따라 효과 크기(lift)는 과장될 수 있다. 본 결과는 **인과 주장**이 아니라 **방향성/프레임 검증**에 초점을 둔다.
-
----
 
 ### Python validation (EDA / distribution)
 
 #### Python Validation — Retention trend (day 174–180)
 > **Purpose:** Consistency(C1–C5)와 180d 리텐션의 단조 관계를 Python에서 재확인한다.  
-> **Result:** **C1→C5 리텐션 우상향 패턴이 동일하게 재현**된다.
+> **Result:** **C1→C5 리텐션 우상향 패턴이 동일하게 재현**된다.  
 ![](<figures(python)/fig_line_retention_174_180_by_consistency_segment_v1_1.png>)
 
 #### Python Validation — Distribution (buyers-only, log1p revenue)
 > **Purpose:** 평균 왜곡(outlier) 가능성을 줄이기 위해 구매자만 대상으로 `log1p(revenue_60_180)` 분포를 세그먼트별로 비교한다.  
-> **Result:** 중앙값/분포에서도 **C1→C5 우상향 경향이 유지**되어 평균 기반 결론을 보강한다.
+> **Result:** 중앙값/분포에서도 **C1→C5 우상향 경향이 유지**되어 평균 기반 결론을 보강한다.  
 ![](<figures(python)/fig_violin_log1p_revenue_60_180_buyers_only_by_consistency_segment_v1_1.png>)
 
 <details>
 <summary><b>Appendix — Bootstrap CI (C5 − C1, purchase_rate_60_180)</b></summary>
 
 > **Purpose:** C5와 C1의 구매율 차이를 bootstrap으로 추정해 95% CI로 불확실성을 함께 제시한다.  
-> **Result:** 구매율 차이(**+41.8%p**)가 **95% CI에서도 일관**하게 나타나 방향성 결론을 보강한다.
+> **Result:** 구매율 차이(**+41.8%p**)가 **95% CI에서도 일관**하게 나타나 방향성 결론을 보강한다.  
 
 ![](<figures(python)/fig_bootstrap_ci_c5_minus_c1_purchase_rate_60_180_v1_1.png>)
 
@@ -247,7 +245,7 @@ v1.0은 “Activation만으로는 부족하고 Consistency가 성과와 함께 �
 ## 6.3) Result 03 — Activation × Consistency → Outcomes (time-split)
 
 ### Key takeaway
-- **Result:** time-split(0–60d 관측 → 60–180d 성과)에서도 **Activation 수준이 같아도 Consistency(C1→C5)에 따라 성과가 크게 갈린다.**
+- **Result:** time-split(관측 0–60d → 성과 60–180d)에서도 **Activation 수준이 같아도 Consistency(C1→C5)에 따라 성과가 크게 갈린다.**
   - 예: **Act_Low(A0–A1)** 구매율(60–180d) **1.6% → 42.6% (+41.0%p)**, 리텐션 **20.2% → 68.8% (+48.6%p)** (C1→C5)
   - 예: **Act_High(A4–A5)** 구매율(60–180d) **6.8% → 41.8% (+35.0%p)**, 리텐션 **41.4% → 82.9% (+41.5%p)** (C1→C5)
 - **So what:** **Activation만으로 타깃팅하면** “초기 전환은 낮지만 리듬이 좋은(high-consistency) 유저(특히 Act_Low/Act_Mid의 C5)”를 **과소평가**할 수 있다.  
@@ -255,7 +253,7 @@ v1.0은 “Activation만으로는 부족하고 Consistency가 성과와 함께 �
 - **Evidence:** `Activation_x_consistency_outcome.png` (Activation 0–14d × Consistency 0–60d → Outcomes 60–180d)
 
 ### Figure — Time-split: Activation (0–14d) × Consistency (0–60d) → Outcomes (60–180d)
-- Query: `src/sql/analysis/story_core_v1.1/05_activation14d_x_consistency0_60d_summary.sql`
+- Query: `src/sql/analysis/story_core_v1.1/05_activation14d_x_consistency0_60d_summary.sql`  
 ![Time-split: Activation (0–14d) × Consistency (0–60d) → Outcomes (60–180d)](./figures_v1.1/Activation_x_consistency_outcome.png)
 
 동일 Activation bucket 내부에서도 Consistency가 높아질수록(C1→C5) **구매율/매출/리텐션이 단조 상승**한다.  
@@ -267,7 +265,7 @@ v1.0은 “Activation만으로는 부족하고 Consistency가 성과와 함께 �
 <summary><b>Python Validation — Heatmap (Purchase rate, 60–180d)</b></summary>
 
 > **Purpose:** Activation stage(0–14d) × Consistency(C1–C5) 교차에서 60–180d 구매율이 두 축에 따라 어떻게 달라지는지 한 번에 확인한다.  
-> **Result:** (1) 동일 Activation stage 내에서도 **C1→C5로 갈수록 구매율이 상승**하고, (2) 동일 Consistency 구간 내에서도 **Activation stage가 높을수록 구매율이 상승**하는 패턴이 재현된다.
+> **Result:** (1) 동일 Activation stage 내에서도 **C1→C5로 갈수록 구매율이 상승**하고, (2) 동일 Consistency 구간 내에서도 **Activation stage가 높을수록 구매율이 상승**하는 패턴이 재현된다.  
 
 ![](<figures(python)/fig_heatmap_purchase_rate_60_180_by_activation_x_consistency_v1_1.png>)
 
