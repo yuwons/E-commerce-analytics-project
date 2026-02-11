@@ -202,46 +202,45 @@ v1.0은 “Activation만으로는 부족하고 Consistency가 성과와 함께 �
 ## 6.2) Result 02 — Consistency (0–60d) → Outcomes (60–180d)
 
 ### Key takeaway
-- **Result:** 0–60d Consistency가 높아질수록(C1→C5) 60–180d **구매율/매출/리텐션이 단조 증가**한다(시간 분리 후에도 패턴 유지).  
-  - 예: purchase_rate_60_180 **0.049 → 0.467**, retention_last_week_180d_rate **0.257 → 0.767** (C1→C5).
-- **So what:** 초기 60일의 방문 리듬(Consistency)은 이후 120일 성과를 설명하는 **핵심 신호**다. 즉, Activation만으로는 부족하고 **Consistency가 추가 설명력**을 가진다(→ 다음 Result에서 Activation 통제/교차에서도 동일 패턴을 확인).
-- **Evidence:** Consistency_outcome.png (Consistency 0–60d → Outcomes 60–180d)
+- **Result:** time-split(0–60d 관측 → 60–180d 성과)에서도 Consistency가 높아질수록(C1→C5) **구매율/매출/리텐션이 단조 증가**한다.
+  - 예: 구매율(60–180d) **4.9% → 46.7% (+41.8%p)**, 리텐션(마지막 주) **25.7% → 76.7% (+51.0%p)** (C1→C5)
+- **So what:** 초기 60일의 방문 리듬(Consistency)은 이후 120일 성과를 설명하는 **핵심 신호**다. KPI/액션은 Activation만 보지 말고 **Consistency를 함께** 포함해야 한다(→ 다음 Result에서 Activation 통제/교차에서도 재확인).
+- **Evidence:** `Consistency_outcome.png` (Consistency 0–60d → Outcomes 60–180d)
 
+### Evidence — Consistency segment summary (0–60d → 60–180d)
+- 구매율(60–180d): **C1 4.9% → C5 46.7% (+41.8%p)**
+- 평균매출(60–180d): **10,247 → 142,561 (13.9×)**
+- 리텐션(마지막 주, day 174–180): **25.7% → 76.7% (+51.0%p)**
+
+### Figure — Time-split: Consistency (0–60d) → Outcomes (60–180d)
 - Query: `src/sql/analysis/story_core_v1.1/04_timesplit__consistency_0_60_segment__outcomes_60_180.sql`
-
 ![Time-split: Consistency (0–60d) → Outcomes (60–180d)](./figures_v1.1/Consistency_outcome.png)
 
-0–60d Consistency가 높을수록(C1→C5) 60–180d 성과가 같은 방향으로 개선된다.  
-time-split로 관측(0–60d)과 성과(60–180d)를 분리해도 **“Consistency가 미래 성과와 함께 움직인다”**는 결론이 유지된다.
+> **Note (limitation):** synthetic 생성 가정에 따라 효과 크기(lift)는 과장될 수 있다. 본 결과는 **인과 주장**이 아니라 **방향성/프레임 검증**에 초점을 둔다.
 
-> **Note (limitation):** synthetic 생성 가정(전환/재방문 로직)에 따라 효과 크기(lift)는 과장될 수 있어, 본 결과는 **인과 주장보다 방향성/프레임 검증** 에 초점을 둔다.
+---
 
-### Python validation (EDA / distribution / simple stats)
+### Python validation (EDA / distribution)
 
-아래 그래프는 `DM_timesplit_60_180_final`을 Python에서 다시 집계/시각화해,
-SQL에서 확인한 “C1→C5 단조 패턴”이 **표(평균)뿐 아니라 분포/추세 관점에서도 동일하게 보이는지**를 보강한다.
-
-### Python Validation — Retention trend (day 174–180)
-> **Purpose:** Consistency(C1–C5)와 180d retention의 단조 관계를 Python에서 재확인한다.  
-> **Result:** SQL에서 확인한 **C1→C5 상승 패턴이 동일하게 재현**된다.
-
+#### Python Validation — Retention trend (day 174–180)
+> **Purpose:** Consistency(C1–C5)와 180d 리텐션의 단조 관계를 Python에서 재확인한다.  
+> **Result:** **C1→C5 리텐션 우상향 패턴이 동일하게 재현**된다.
 ![](<figures(python)/fig_line_retention_174_180_by_consistency_segment_v1_1.png>)
 
-
-**Python Validation — Distribution (buyers-only, log1p revenue)**  
-> **Purpose:** 평균이 outlier에 의해 왜곡될 수 있어, 구매자만 대상으로 `log1p(revenue_60_180)` 분포를 세그먼트별로 비교한다.  
-> **Result:** 중앙값/분포에서도 **C1→C5 우상향 경향이 유지**되어, 평균 기반 결론을 보강한다.
-
-
+#### Python Validation — Distribution (buyers-only, log1p revenue)
+> **Purpose:** 평균 왜곡(outlier) 가능성을 줄이기 위해 구매자만 대상으로 `log1p(revenue_60_180)` 분포를 세그먼트별로 비교한다.  
+> **Result:** 중앙값/분포에서도 **C1→C5 우상향 경향이 유지**되어 평균 기반 결론을 보강한다.
 ![](<figures(python)/fig_violin_log1p_revenue_60_180_buyers_only_by_consistency_segment_v1_1.png>)
 
+<details>
+<summary><b>Appendix — Bootstrap CI (C5 − C1, purchase_rate_60_180)</b></summary>
 
-**Python Validation — Bootstrap CI (C5 − C1, purchase_rate_60_180)**  
-> **Purpose:** C5와 C1의 구매율 차이를 부트스트랩으로 추정해 불확실성(95% CI)을 함께 제시한다.  
-> **Result:** 관측 차이(pp)가 **95% CI 범위에서도 일관**하게 나타나, 효과 크기 방향성 증명한.
+> **Purpose:** C5와 C1의 구매율 차이를 bootstrap으로 추정해 95% CI로 불확실성을 함께 제시한다.  
+> **Result:** 구매율 차이(**+41.8%p**)가 **95% CI에서도 일관**하게 나타나 방향성 결론을 보강한다.
 
 ![](<figures(python)/fig_bootstrap_ci_c5_minus_c1_purchase_rate_60_180_v1_1.png>)
 
+</details>
 
 ---
 
