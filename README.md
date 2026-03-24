@@ -1,4 +1,4 @@
-# 🚀 Activation vs Consistency: 단기 전환(0–14d)과 장기 성장(60–180d)을 분리해 입증한 E-commerce Analytics
+# Activation vs Consistency: 단기 전환(0–14d)과 장기 성장(60–180d)을 분리해 입증한 E-commerce Analytics
 
 **Scope:** “초기 전환(Activation)만으로 장기 LTV/Retention을 설명하기 어렵다”는 문제를, **방문 리듬(Consistency)** 관점에서 검증하고 액션 플랜으로 연결했습니다.  
 (Time-split v1.1 + bootstrap CI + 2×2 factorial A/B로 패턴/개입효과를 검증)
