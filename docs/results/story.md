@@ -3,32 +3,19 @@
 
 ## 0) 분석 핵심 요약 (TL;DR)
 
-**한 줄 결론:** 단기 전환(Activation)만으로는 장기 성과(60–180d)를 설명하기 어렵고, **방문 리듬(Consistency)** 이 장기 KPI를 가장 강하게 분리했다.
+**한 줄 결론:** 단기 전환(Activation)만으로는 장기 성과를 충분히 설명하기 어렵고, **방문 리듬(Consistency)** 이 60–180일 장기 KPI를 더 강하게 분리했다.
 
 ### Key insights
-- **Insight 1 (재검증):** v1.0에서 관찰한 패턴(Activation만으로는 부족하고 Consistency가 장기 성과를 추가로 분리)이 **v1.1 time-split(0–60d 관측 → 60–180d 성과)**에서도 재현됐다.  
-  → Consistency를 “초기 행동 리듬 기반의 선행 신호”로 해석할 근거가 강화된다.  
-  (자세한 근거: v1.1 Result 01–03)
+- **Insight 1:** Time-split 기준(0–60일 관측 → 60–180일 성과)으로 재검증했을 때도, **Activation 단독보다 Consistency가 장기 구매율·리텐션·매출을 더 선명하게 분리**했다.
+- **Insight 2:** **Activation 수준이 같아도** Consistency(C1→C5)에 따라 장기 성과 차이가 크게 벌어졌다.  
+  → 운영 단위는 Activation만이 아니라 **Activation × Consistency persona**로 보는 편이 더 합리적이다.
+- **Insight 3:** 퍼널 병목은 하나가 아니었다.  
+  **초기 14일에는 view→click 구간의 전사 공통 마찰**이 넓게 나타났고,  
+  **30일 기준으로는 저일관성(C1/C2) 세그먼트의 click→cart 취약성**이 더 뚜렷했다.
 
-- **Insight 2 (세그먼트 액션):** **Activation 수준이 같아도** Consistency(C1→C5)에 따라 60–180d 구매율/리텐션이 크게 갈린다.  
-  예: Act_Low(A0–A1)에서도 60–180 구매율이 **1.6%→42.6%(+41.0%p)**, 리텐션이 **20.2%→68.8%(+48.6%p)** 로 상승.  
-  → 운영/개입 단위는 Activation 단독이 아니라 **Activation×Consistency persona**가 더 합리적이다.
-
-- **Insight 3 (개입 효과 관점):** 2×2 factorial A/B(bootstrap CI) 기준, **Consistency uplift는 장기 KPI(60–180 ΔE[rev]) 개선 신호**가 확인된 반면,  
-  Activation uplift는 **초기 전환(0–13일)** 개선에 더 가까웠다.  
-  (Interaction은 0 포함 → 보수적 해석)
-
-- **Insight 4 (Finding #4): 퍼널 병목의 이원화 — “전사 개선” vs “세그먼트 타깃”** *(근거: Finding #4)*  
-  Worst Top10 기준, **14d 병목은 view→click이 전사적으로 넓게 발생**하고(클릭으로 못 넘어가는 세그먼트가 넓게 존재),  
-  **30d 병목은 click→cart가 특히 저일관성(C1/C2)에서 취약**하다.  
-  → “전사 UX 개선(초기 클릭)”과 “저일관성 clickers 타깃 실험(카트 전환)”으로 역할 분담이 명확해진다.
-
-  ### Where to look (repro & evidence)
-- **v1.1 time-split SQL (repro):** `src/sql/analysis/story_core_v1.1/`
-- **Python validation (EDA + bootstrap CI):** `src/python/Python (EDA + Visualisation).ipynb`
-- **2×2 factorial A/B (bootstrap CI):** `src/python/Python_(AB Experiment).ipynb`
-
-> **Method note:** v1.0의 동기간 상관(tautology) 가능성을 줄이기 위해 v1.1에서 **0–60 관측 / 60–180 성과**로 time-split 재검증했다.
+### So what
+- 전사적으로는 **초기 클릭 유도(view→click)** 개선이 필요하고,
+- 세그먼트 단위로는 **저일관성 clickers의 click→cart 전환 실험**이 우선 과제다.
 
 ---
 
