@@ -3,209 +3,90 @@
 
 ## 0) 분석 핵심 요약 (TL;DR)
 
-**한 줄 결론:** 단기 전환(Activation)만으로는 장기 성과를 충분히 설명하기 어렵고, **방문 리듬(Consistency)** 이 60–180일 장기 KPI를 더 강하게 분리했다.
+**한 줄 결론:** 단기 전환(Activation)만으로는 장기 성과(60–180d)를 설명하기 어렵고, **방문 리듬(Consistency)** 이 장기 KPI를 가장 강하게 분리했다.
 
 ### Key insights
-- **Insight 1:** Time-split 기준(0–60일 관측 → 60–180일 성과)으로 재검증했을 때도, **Activation 단독보다 Consistency가 장기 구매율·리텐션·매출을 더 선명하게 분리**했다.
-- **Insight 2:** **Activation 수준이 같아도** Consistency(C1→C5)에 따라 장기 성과 차이가 크게 벌어졌다.  
-  → 운영 단위는 Activation만이 아니라 **Activation × Consistency persona**로 보는 편이 더 합리적이다.
-- **Insight 3:** 퍼널 병목은 하나가 아니었다.  
-  **초기 14일에는 view→click 구간의 전사 공통 마찰**이 넓게 나타났고,  
-  **30일 기준으로는 저일관성(C1/C2) 세그먼트의 click→cart 취약성**이 더 뚜렷했다.
+- **Insight 1 (재검증):** v1.0에서 관찰한 패턴(Activation만으로는 부족하고 Consistency가 장기 성과를 추가로 분리)이 **v1.1 time-split(0–60d 관측 → 60–180d 성과)**에서도 재현됐다.  
+  → Consistency를 “초기 행동 리듬 기반의 선행 신호”로 해석할 근거가 강화된다.  
+  (자세한 근거: v1.1 Result 01–03)
 
-### So what
-- 전사적으로는 **초기 클릭 유도(view→click)** 개선이 필요하고,
-- 세그먼트 단위로는 **저일관성 clickers의 click→cart 전환 실험**이 우선 과제다.
+- **Insight 2 (세그먼트 액션):** **Activation 수준이 같아도** Consistency(C1→C5)에 따라 60–180d 구매율/리텐션이 크게 갈린다.  
+  예: Act_Low(A0–A1)에서도 60–180 구매율이 **1.6%→42.6%(+41.0%p)**, 리텐션이 **20.2%→68.8%(+48.6%p)** 로 상승.  
+  → 운영/개입 단위는 Activation 단독이 아니라 **Activation×Consistency persona**가 더 합리적이다.
 
----
+- **Insight 3 (개입 효과 관점):** 2×2 factorial A/B(bootstrap CI) 기준, **Consistency uplift는 장기 KPI(60–180 ΔE[rev]) 개선 신호**가 확인된 반면,  
+  Activation uplift는 **초기 전환(0–13일)** 개선에 더 가까웠다.  
+  (Interaction은 0 포함 → 보수적 해석)
 
-## 1) Problem
+- **Insight 4 (Finding #4): 퍼널 병목의 이원화 — “전사 개선” vs “세그먼트 타깃”** *(근거: Finding #4)*  
+  Worst Top10 기준, **14d 병목은 view→click이 전사적으로 넓게 발생**하고(클릭으로 못 넘어가는 세그먼트가 넓게 존재),  
+  **30d 병목은 click→cart가 특히 저일관성(C1/C2)에서 취약**하다.  
+  → “전사 UX 개선(초기 클릭)”과 “저일관성 clickers 타깃 실험(카트 전환)”으로 역할 분담이 명확해진다.
 
-초기 전환(Activation) 지표는 서비스 초반 성과를 빠르게 확인하는 데 유용하다.  
-하지만 **초기 전환이 높다고 해서 장기 리텐션이나 장기 매출까지 자동으로 보장되지는 않는다.**  
-실무에서는 비슷한 수준의 초기 반응을 보인 사용자라도, 이후 얼마나 **규칙적으로 다시 방문하는지**에 따라 장기 성과가 크게 달라질 수 있다.
+  ### Where to look (repro & evidence)
+- **v1.1 time-split SQL (repro):** `src/sql/analysis/story_core_v1.1/`
+- **Python validation (EDA + bootstrap CI):** `src/python/Python (EDA + Visualisation).ipynb`
+- **2×2 factorial A/B (bootstrap CI):** `src/python/Python_(AB Experiment).ipynb`
 
-이 프로젝트는 이 지점에 주목했다. 핵심 질문은 다음과 같다.  
-**“초기 전환만으로 장기 성과를 설명할 수 있는가, 아니면 방문 리듬(Consistency)이 추가적인 설명력을 가지는가?”**
-
-만약 Activation만 보고 사용자를 해석하면, 단기 성과가 좋아 보이는 세그먼트에 과도하게 집중하고, 반대로 **초기 전환은 낮더라도 장기 가치가 높은 사용자군**을 놓칠 수 있다.  
-이 경우 액션도 전사 공통 개선에 머물고, 실제로는 **어떤 세그먼트를 먼저 개선해야 하는지**를 놓치게 된다.
-
-그래서 본 프로젝트에서는 **Activation**, **Consistency**, **장기 성과(구매·리텐션·매출)** 를 분리해서 보았고,  
-동기간 지표 해석의 한계를 줄이기 위해 **0–60일은 관측 구간, 60–180일은 성과 구간**으로 나누는 **Time-split 기준**을 적용했다.  
-이를 통해 Consistency가 장기 성과를 설명하는 선행 신호로 해석될 수 있는지 재검증하고자 했다.
+> **Method note:** v1.0의 동기간 상관(tautology) 가능성을 줄이기 위해 v1.1에서 **0–60 관측 / 60–180 성과**로 time-split 재검증했다.
 
 ---
 
-## 2) Key Definitions
+## 1) Definitions (v1.0 기준)
 
-### 2.1 Activation stage (첫 14일)
-Activation은 가입 후 첫 14일 동안 사용자가 퍼널의 어느 단계까지 도달했는지를 기준으로 본 초기 전환 신호다.  
-본 프로젝트에서는 14일 내 이벤트 발생 여부(reach)를 만든 뒤, 단계 우선순위에 따라 A0~A5로 라벨링했다.
-
-- A0: no activity
-- A1: view
-- A2: click
-- A3: add_to_cart
-- A4: checkout
+### 1.1 Activation stage (첫 14일)
+- A0: no activity  
+- A1: view  
+- A2: click  
+- A3: add_to_cart  
+- A4: checkout  
 - A5: purchase
 
-### 2.2 Consistency (관측 0–60일)
-Consistency는 가입 후 관측 구간 동안 사용자가 얼마나 규칙적인 리듬으로 다시 방문했는지를 나타내는 지표다.  
-세션 기반 지표(예: active_days, intervisit_cv 등)를 바탕으로 score를 만들고, 이를 **C1(하위) ~ C5(상위)** 로 구간화했다.
+> 사용 DM: `DM_user_window` (has_view_14d ~ has_purchase_14d)  
+> Note: Activation stage(첫 14일)는 14일 내 이벤트 발생 여부(reach)를 만든 뒤, **단계 우선순위**(purchase가 가장 높음)로 A0~A5를 라벨링했다.
 
-### 2.3 Outcomes (성과 60–180일)
-Outcomes는 가입 후 60–180일 구간에서 나타난 장기 성과를 의미한다.  
-본 프로젝트에서는 구매율, 평균매출, 리텐션을 중심으로 비교했다.
+### 1.2 Consistency (0~180일, v1.0)
+- 세션 기반 지표(예: active_days, intervisit_cv 등)로 Consistency score를 만들고,
+- score를 **퀸타일로 C1(하위) - C5(상위)** 로 구간화
 
----
+> 사용 DM: `DM_consistency_180d`
 
-### 3.1 Result 01 — Persona snapshot (Activation × Consistency)
+### 1.3 Long-term outcomes (0~180일, v1.0)
+- 구매/매출: `DM_ltv_180d`
+- 리텐션: `DM_retention_cohort` (day 180 정의 포함)
 
-> Persona는 **Activation(초기 14d)** × **Consistency(0–60d 방문 리듬)** 조합으로 정의했다.  
-> Legend(Activation): **A/D = early purchase(14d 구매 있음)**, **B/C = no early purchase(14d 구매 없음)**  
-> Legend(Consistency): **Burst·Observer = low consistency**, **Steady·Loyal = high consistency**
-
-**Key takeaway**
-- Time-split(관측 0–60d → 성과 60–180d) 기준에서도 persona별 **매출·구매율·리텐션**이 뚜렷하게 갈렸다.
-- 특히 **C_Steady(14d 구매율 0.0%)가 A_Burst(69.1%)보다도** 60–180d 구매율(**32.6% vs 13.8%**)과 평균매출(**88,489 vs 41,280**)이 높아, **Consistency가 장기 성과를 가르는 핵심 축**임을 보여준다.
-
-**Evidence**
-- **(Activation 통제: 14d 구매율 0.0% 내부 비교)** **B_Observer → C_Steady**
-  - 구매율(60–180d): **17.0% → 32.6% (+15.6%p)**
-  - 평균매출(60–180d): **41,882 → 88,489 (2.1×)**
-  - 리텐션(마지막 주): **41.3% → 59.3% (+18.0%p)**
-- **(Early purchase가 높아도 Consistency에 따라 장기 성과가 갈림)** **A_Burst(69.1%) vs D_Loyal(67.7%)**
-  - 구매율(60–180d): **13.8% vs 34.3% (+20.5%p)**
-  - 평균매출(60–180d): **41,280 vs 104,139 (2.5×)**
-  - 리텐션(마지막 주): **54.3% vs 75.0% (+20.7%p)**
-- **Persona 분포(샘플 비중):**
-  - **B_Observer:** 50.9% (n=15,280)
-  - **C_Steady:** 37.2% (n=11,171)
-  - **A_Burst:** 6.0% (n=1,808)
-  - **D_Loyal:** 5.8% (n=1,741)
-
-**So what**
-- 초기 구매 여부(Activation)만으로 장기 성과를 판단하면 놓치는 그룹이 생긴다.
-- 따라서 KPI 해석과 액션 설계는 Activation뿐 아니라 **재방문 리듬(Consistency)** 까지 포함한 **persona 단위**로 보는 편이 더 합리적이다.
-
-**Figure**
-- `persona_result.png` — Persona snapshot (Activation × Consistency)
-
-**Query**
-- `src/sql/analysis/story_core_v1.1/Persona_Analysis.sql`
-
-> **Note (limitation):** synthetic 생성 가정/노이즈로 인해 persona의 **절대 순위**는 달라질 수 있다.  
-> 본 결과는 **Activation vs Consistency의 역할 분리(프레임)** 이 time-split에서도 재현되는지에 초점을 둔다.
+> v1.1 검증에서는 **관측(0–60d) / 성과(60–180d)** time-split으로 동일 패턴을 재검증한다.
 
 ---
 
-### 3.2 Result 02 — Consistency → Outcomes
+## 2) Finding #1 — Activation만으로는 부족하다: 같은 단계에서도 Consistency가 180일 성과를 가른다 (v1.0)
 
-**Key takeaway**
-- Time-split(관측 0–60d → 성과 60–180d) 기준에서도, **Consistency가 높을수록 장기 구매율·매출·리텐션이 함께 상승**했다.
-- 즉, 초기 60일의 방문 리듬은 이후 60–180일 성과를 설명하는 **핵심 선행 신호**로 해석할 수 있다.
+### Key takeaway
+- 같은 Activation stage 안에서도 Consistency(C1→C5)에 따라 180일 성과가 극단적으로 갈린다. 예를 들어 **A1_view**에서 180d 구매율은 **6.0% → 69.8% (+63.8%p)** 까지 벌어진다.
 
-**Evidence**
-- 구매율(60–180d): **C1 4.9% → C5 46.7% (+41.8%p)**
-- 평균매출(60–180d): **10,247 → 142,561 (13.9×)**
-- 리텐션(마지막 주, day 174–180): **25.7% → 76.7% (+51.0%p)**
+### Evidence
+- **Purchase rate (180d)**
+  - **A1_view**: **C1 6.0% → C3 25.2% → C5 69.8%**
+  - **A2_click**: **C1 16.5% → C3 33.4% → C5 81.3%**
+- **Avg revenue (180d)**
+  - **A1_view**: **11,231 → 56,727 → 246,750** (C1→C5 약 **22.0x**)
+  - **A0_no_activity**에서도 **3,543 → 110,716**로 격차가 큼
+- **Retention (week 173–179)**
+  - **A1_view**: **25.8% → 46.4% → 80.7%**
+  - **A2_click**: **40.9% → 56.3% → 86.3%**
+- **Note (sample size)**: **A0_no_activity–C5**는 **n=198**로 작아 변동성이 있을 수 있으나, 모든 Activation stage에서 **C1 < C3 < C5**의 단조 패턴은 일관적이다.
 
-**So what**
-- 장기 성과를 해석할 때는 Activation만 볼 것이 아니라, **Consistency를 별도의 핵심 축으로 함께 봐야 한다.**
-- 이후 액션 설계에서도 “초기 반응이 있었는가”뿐 아니라, **그 사용자가 얼마나 규칙적으로 다시 돌아오는가**를 함께 반영해야 한다.
-- 다음 결과에서는 이를 한 단계 더 나아가, **같은 Activation 수준 안에서도 Consistency 차이가 장기 성과를 가르는지**를 확인한다.
+### So what
+- 따라서 “초기 퍼널 도달(Activation)”만으로 장기 LTV를 판단하면 같은 Activation stage 내부의 승자/패자를 놓친다. 즉, **‘재방문 리듬(Consistency)’** 를 함께 봐야 세그먼트 기반 액션이 가능해진다.
 
-**Figure**
-- `Consistency_outcome.png` — Time-split: Consistency (0–60d) → Outcomes (60–180d)
+### Figure 01 — Activation × Consistency × (Purchase / Revenue / Retention)
+- Query: `src/sql/analysis/00_story_core/01_final_activation_x_consistency_ltv180d_retention_point.sql`
+![](./figures/01_figure_a.png)
 
-**Query**
-- `src/sql/analysis/story_core_v1.1/04_timesplit__consistency_0_60_segment__outcomes_60_180.sql`
-
-> **Note (limitation):** synthetic 생성 가정에 따라 효과 크기(lift)는 과장될 수 있다.  
-> 본 결과는 인과 주장이라기보다 **방향성과 분석 프레임 검증**에 초점을 둔다.
-
----
-
-### 3.3 Result 03 — Activation × Consistency → Outcomes
-
-**Key takeaway**
-- Time-split(관측 0–60d → 성과 60–180d)에서도 **같은 Activation 수준 안에서 Consistency(C1→C5)에 따라 장기 성과가 크게 갈렸다.**
-- 즉, 초기 전환만으로는 장기 가치를 충분히 설명할 수 없었고, **같은 출발선 안에서도 방문 리듬 차이가 이후 성과를 갈랐다.**
-
-**Evidence**
-- **Act_Low (A0–A1)** 내부 비교
-  - 구매율(60–180d): **1.6% → 42.6% (+41.0%p)**
-  - 리텐션(마지막 주): **20.2% → 68.8% (+48.6%p)**
-  - (C1→C5)
-- **Act_High (A4–A5)** 내부 비교
-  - 구매율(60–180d): **6.8% → 41.8% (+35.0%p)**
-  - 리텐션(마지막 주): **41.4% → 82.9% (+41.5%p)**
-  - (C1→C5)
-- 동일 Activation bucket 내부에서도 **Consistency가 높아질수록 구매율·리텐션이 단조 상승**했다.
-
-**So what**
-- Activation만으로 타깃팅하면 **초기 전환은 낮지만 리듬이 좋은 high-consistency 유저**를 과소평가할 수 있다.
-- 따라서 운영/개입 단위는 Activation 단독이 아니라 **Activation × Consistency persona**로 보는 편이 더 합리적이다.
-
-**Figure**
-- `Activation_x_consistency_outcome.png` — Activation (0–14d) × Consistency (0–60d) → Outcomes (60–180d)
-
-**Query**
-- `src/sql/analysis/story_core_v1.1/05_activation14d_x_consistency0_60d_summary.sql`
-
-> **Note (limitation):** synthetic 데이터 특성상 효과 크기(lift)는 가정에 좌우될 수 있다.  
-> 본 결과는 인과추정보다 **관계/프레임 검증**에 초점을 둔다.
-
----
-
-## 4) Python Validation
-
-SQL 기반 time-split 결과를 Python에서 다시 확인해,  
-**분포·추세·불확실성 관점에서도 동일한 방향성이 유지되는지** 점검했다.
-
-### 4.1 Validation focus
-- **Retention trend:** Consistency(C1–C5)와 장기 리텐션의 단조 관계가 유지되는지 확인
-- **Revenue distribution:** 평균 왜곡(outlier) 가능성을 줄이고, 분포/중앙값 기준에서도 동일 패턴이 보이는지 확인
-- **Bootstrap CI:** 핵심 차이(C5 − C1)가 표본 변동성을 고려해도 일관적인지 확인
-
-### 4.2 Key takeaway
-- Python 시각화와 bootstrap CI에서도, **Consistency가 높을수록 장기 성과가 우상향하는 패턴**이 동일하게 재현됐다.
-- 즉, SQL 집계 결과는 단순 평균치만의 산물이 아니라, **분포와 불확실성을 함께 보더라도 유지되는 방향성**으로 해석할 수 있다.
-
-### 4.3 Evidence
-
-#### (1) Retention trend (day 174–180)
-> **Purpose:** Consistency(C1–C5)와 장기 리텐션의 단조 관계를 Python에서 재확인한다.  
-> **Result:** **C1→C5 리텐션 우상향 패턴이 동일하게 재현**된다.
-
-![](<figures(python)/fig_line_retention_174_180_by_consistency_segment_v1_1.png>)
-
-#### (2) Revenue distribution (buyers-only, log1p revenue)
-> **Purpose:** 평균 왜곡(outlier) 가능성을 줄이기 위해 구매자만 대상으로 `log1p(revenue_60_180)` 분포를 세그먼트별로 비교한다.  
-> **Result:** 중앙값/분포에서도 **C1→C5 우상향 경향이 유지**되어 평균 기반 결론을 보강한다.
-
-![](<figures(python)/fig_violin_log1p_revenue_60_180_buyers_only_by_consistency_segment_v1_1.png>)
-
-#### (3) Bootstrap CI — C5 minus C1 (purchase_rate_60_180)
-> **Purpose:** C5와 C1의 구매율 차이를 bootstrap으로 추정해 95% CI로 불확실성을 함께 제시한다.  
-> **Result:** 구매율 차이(**+41.8%p**)가 **95% CI에서도 일관**하게 나타나 방향성 결론을 보강한다.
-
-![](<figures(python)/fig_bootstrap_ci_c5_minus_c1_purchase_rate_60_180_v1_1.png>)
-
-### 4.4 So what
-- SQL 결과에서 확인한 **Consistency → 장기 성과** 패턴은, Python 기준으로도 **추세·분포·불확실성** 관점에서 같은 방향으로 확인됐다.
-- 따라서 본 프로젝트의 핵심 해석은 단순 집계치 하나에 의존한 결론이 아니라,  
-  **여러 관점에서 반복 확인된 방향성**으로 볼 수 있다.
-
-**Notebook**
-- `src/python/Python (EDA + Visualisation).ipynb`
-
-**Figures**
-- `docs/results/figures(python)/`
-
-> **Note:** synthetic 데이터 기반이므로 절대 수치 자체보다,  
-> **Consistency가 장기 성과를 반복적으로 분리하는 구조가 유지되는지**에 초점을 두고 해석했다.
+> **주의(해석 한계, v1.0):**  
+> Consistency 지표와 180일 성과가 같은 기간(0–180d) 안에서 함께 계산되기 때문에,  
+> “예측”이라기보다 “동기간 상관 패턴”이 강하게 섞여 있을 수 있다.  
+> 그래서 다음 단계(v1.1)에서 Time-split으로 분리 검증한다.
 
 ---
 
