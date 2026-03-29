@@ -37,30 +37,22 @@
 
 ---
 
-## 1) Definitions (v1.0 기준)
+## 2) Key Definitions
 
-### 1.1 Activation stage (첫 14일)
-- A0: no activity  
-- A1: view  
-- A2: click  
-- A3: add_to_cart  
-- A4: checkout  
-- A5: purchase
+### 2.1 Activation (초기 14일)
+Activation은 가입 후 **초기 14일 동안 사용자가 얼마나 빠르게 핵심 행동 단계에 도달했는지**를 나타내는 지표다.  
+본 프로젝트에서는 view, click, add_to_cart, checkout, purchase 단계 도달 여부를 기준으로 초기 전환 수준을 구분했다.  
+이는 서비스 초반 반응과 단기 전환 강도를 보여주는 신호로 사용했다.
 
-> 사용 DM: `DM_user_window` (has_view_14d ~ has_purchase_14d)  
-> Note: Activation stage(첫 14일)는 14일 내 이벤트 발생 여부(reach)를 만든 뒤, **단계 우선순위**(purchase가 가장 높음)로 A0~A5를 라벨링했다.
+### 2.2 Consistency (관측 0–60일)
+Consistency는 가입 후 **0–60일 동안 사용자가 얼마나 규칙적인 리듬으로 다시 방문했는지**를 나타내는 지표다.  
+단순 방문량뿐 아니라 active days, 방문 간격의 변동성, 주간 방문 안정성 등을 함께 반영해 점수화했다.  
+이는 사용자의 반복 방문 습관과 장기 관계 형성 가능성을 보여주는 신호로 해석했다.
 
-### 1.2 Consistency (0~180일, v1.0)
-- 세션 기반 지표(예: active_days, intervisit_cv 등)로 Consistency score를 만들고,
-- score를 **퀸타일로 C1(하위) - C5(상위)** 로 구간화
-
-> 사용 DM: `DM_consistency_180d`
-
-### 1.3 Long-term outcomes (0~180일, v1.0)
-- 구매/매출: `DM_ltv_180d`
-- 리텐션: `DM_retention_cohort` (day 180 정의 포함)
-
-> v1.1 검증에서는 **관측(0–60d) / 성과(60–180d)** time-split으로 동일 패턴을 재검증한다.
+### 2.3 Outcomes (성과 60–180일)
+Outcomes는 가입 후 **60–180일 구간에서 나타난 장기 성과**를 의미한다.  
+본 프로젝트에서는 구매율, 리텐션, 매출(Revenue) 지표를 중심으로 성과를 비교했다.  
+이는 초기 반응 이후 실제로 장기 가치가 어떻게 분리되는지를 확인하기 위한 결과 지표로 사용했다.
 
 ---
 
