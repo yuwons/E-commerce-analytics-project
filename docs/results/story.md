@@ -192,8 +192,9 @@ SQL 기반 time-split 결과를 Python에서 다시 확인해,
 - **Bootstrap CI:** 핵심 차이(C5 − C1)가 표본 변동성을 고려해도 일관적인지 확인
 
 ### 4.2 Key takeaway
-- Python 시각화와 bootstrap CI에서도, **Consistency가 높을수록 장기 성과가 우상향하는 패턴**이 동일하게 재현됐다.
-- 즉, SQL 집계 결과는 단순 평균치만의 산물이 아니라, **분포와 불확실성을 함께 보더라도 유지되는 방향성**으로 해석할 수 있다.
+- Python 시각화와 bootstrap CI에서도, **Consistency가 높을수록 장기 성과가 더 높게 나타나는 방향성**이 동일하게 재현됐다.
+- 즉, SQL 집계 결과는 단순 평균치 하나에 의존한 결론이 아니라,  
+  **추세·분포·불확실성 관점에서도 반복 확인된 패턴**으로 해석할 수 있다.
 
 ### 4.3 Evidence
 
@@ -216,9 +217,10 @@ SQL 기반 time-split 결과를 Python에서 다시 확인해,
 ![](<figures(python)/fig_bootstrap_ci_c5_minus_c1_purchase_rate_60_180_v1_1.png>)
 
 ### 4.4 So what
-- SQL 결과에서 확인한 **Consistency → 장기 성과** 패턴은, Python 기준으로도 **추세·분포·불확실성** 관점에서 같은 방향으로 확인됐다.
-- 따라서 본 프로젝트의 핵심 해석은 단순 집계치 하나에 의존한 결론이 아니라,  
-  **여러 관점에서 반복 확인된 방향성**으로 볼 수 있다.
+- SQL에서 확인한 **Consistency → 장기 성과** 패턴은 Python 기준으로도  
+  **추세(retention), 분포(revenue), 불확실성(bootstrap CI)** 관점에서 같은 방향으로 확인됐다.
+- 따라서 본 프로젝트의 핵심 해석은 단일 집계치에 의존한 결과라기보다,  
+  **여러 분석 관점에서 일관되게 재확인된 패턴**으로 보는 편이 적절하다.
 
 **Notebook**
 - `src/python/Python (EDA + Visualisation).ipynb`
