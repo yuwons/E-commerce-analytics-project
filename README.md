@@ -1,44 +1,51 @@
 # Activation vs Consistency: 단기 전환(0–14d)과 장기 성장(60–180d)을 분리해 본 E-commerce Analytics
 
-**Scope:** “초기 전환(Activation)만으로 장기 LTV/Retention을 설명하기 어렵다”는 문제를, **방문 리듬(Consistency)** 관점에서 검토하고 액션 방향으로 연결했습니다.  
-(Time-split v1.1과 Python validation을 중심으로 패턴을 재확인)
+**Core question:** 초기 전환(Activation)만으로 장기 LTV/Retention을 충분히 설명할 수 있는가,  
+아니면 **방문 리듬(Consistency)** 이 장기 성과를 더 선명하게 분리하는가?
+
+**Main frame:** v1.1 **Time-split** 기준(관측 0–60d / 성과 60–180d)으로 핵심 패턴을 재검증하고,  
+Python validation과 2×2 A/B experiment를 **supporting layer**로 추가했다.
 
 **Stack:** `BigQuery (Raw→Optimized→Data Mart)`, `SQL`, `Python (EDA + Bootstrap CI)`, `Tableau`
 
 ---
 
-## 결론 요약 (Conclusion)
+## Conclusion
 
-### 결론 (Decision)
-**장기 성장(60–180d) 관점에서 핵심 레버는 Activation이 아니라 Consistency였다.**
+### Main takeaway
+**장기 성장(60–180d) 관점에서, Activation alone was not enough.  
+Consistency was the clearer separator of downstream outcomes.**
 
-Time-split(0–60 관측 / 60–180 성과)에서도 Consistency가 높을수록 장기 성과가 단조 상승했고,  
-Python validation에서도 동일한 방향성이 재확인됐다.
+Time-split(0–60 관측 / 60–180 성과) 기준에서도 Consistency가 높을수록 장기 성과가 단조 상승했고,  
+Python validation에서도 같은 방향성이 반복 확인됐다.
 
-### Key Evidence snapshot
+### Key evidence snapshot
 
 | 지표 (60–180d) | Low Consistency (C1) | High Consistency (C5) | 개선 폭 |
 |---|---:|---:|---:|
 | 구매율 | 4.9% | 46.7% | ~9.5× (+41.8%p) |
 | 마지막 주 리텐션 | 25.7% | 76.7% | ~3.0× (+51.0%p) |
 
-### What this suggests
-1. 장기 KPI(60–180 매출/리텐션)를 목표로 한다면, Activation 단독보다 **Consistency를 함께 보는 해석 프레임**이 더 중요하다.
-2. 유저 타깃팅/운영 단위는 Activation 단독이 아니라 **Activation × Consistency persona**로 설계하는 편이 합리적이다.
-3. 퍼널 개선은 전사 공통 마찰과 세그먼트 취약 마찰을 구분해 접근할 필요가 있다.
+### What this means
+1. 장기 KPI(60–180 매출/리텐션)를 해석할 때는 Activation 단독보다 **Consistency를 함께 보는 프레임**이 더 유효했다.
+2. 유저 해석과 타깃팅 단위는 Activation 단독이 아니라 **Activation × Consistency persona**가 더 실용적이었다.
+3. Funnel/action은 main result와 같은 급의 결론이 아니라, 이를 바탕으로 한 **operational hypothesis**로 해석하는 것이 적절하다.
 
-### Where to look
-- v1.1 time-split SQL: `src/sql/analysis/story_core_v1.1/`
-- Python validation: `src/python/Python (EDA + Visualisation).ipynb`
-- A/B experiment: `src/python/Python_(AB Experiment).ipynb`
-- Detailed write-up: currently being revised
+### Quick links
+- **Story (main write-up):** `docs/results/story.md`
+- **v1.1 time-split SQL:** `src/sql/analysis/story_core_v1.1/`
+- **Python validation:** `src/python/Python (EDA + Visualisation).ipynb`
+- **A/B experiment:** `src/python/Python_(AB Experiment).ipynb`
+- **Tableau / figures:** `docs/results/figures_v1.1/`, `docs/results/figures(python)/`
 
-## 이 프로젝트에서 보여주는 것
-- **Data pipeline & modeling:** BigQuery Raw→Optimized→Data Mart 설계
-- **Analytics & validation:** Activation×Consistency를 Time-split(v1.1)과 Python validation으로 재확인
+## What this project demonstrates
+- **Data pipeline & modeling:** BigQuery Raw → Optimized → Data Mart 설계
+- **Analytics:** Activation × Consistency 프레임으로 장기 KPI를 해석
+- **Validation:** Time-split(v1.1), Python validation, 2×2 factorial A/B experiment
 - **Delivery:** Tableau로 KPI/세그먼트 결과 시각화
 
-> Method note: 0–60 관측 / 60–180 성과로 분리(Time-split v1.1)해 동기간 상관/누수 리스크를 줄이고 패턴을 재검토했습니다.
+> Method note: v1.0 exploratory baseline에서 패턴을 먼저 확인한 뒤,  
+> v1.1에서는 0–60 관측 / 60–180 성과로 분리해 더 엄격하게 재검증했습니다.
 
 ---
 
