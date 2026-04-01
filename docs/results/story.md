@@ -275,52 +275,84 @@ SQL 기반 time-split 결과를 Python에서 다시 확인해,
 
 ## 6) Action Implications
 
-> **Note:** 아래 액션 제안은 v1.1 time-split main result를 바탕으로 한 해석에,  
-> **v1.0의 14d/30d funnel diagnostic**을 운영 관점에서 결합해 정리한 operational hypothesis다.
+> **Note:** 아래 액션 제안은 v1.1 time-split main result를 바탕으로,  
+> persona는 **Activation(첫 14일)** × **Consistency(관측 0–60일)** 기준으로 해석하고,  
+> 초기 funnel friction은 **first 30d transition** 기준으로 진단해 정리한 **operational hypothesis**다.  
+> 즉, main result와 동일한 수준의 검증 결과라기보다,  
+> 이를 실제 개선 과제로 연결하기 위한 **우선순위 프레임**으로 해석하는 것이 적절하다.
 
-핵심 결과를 종합하면, 퍼널 개선은 하나의 공통 액션으로 해결되기보다  
-**전사 공통 마찰**과 **세그먼트별 취약 마찰**을 나눠서 접근하는 편이 더 합리적이다.
+핵심 결과를 종합하면, 액션은 하나의 공통 개선안으로 끝내기보다  
+**대규모 사용자 기반에 반복적으로 나타난 초기 마찰을 먼저 줄이고**,  
+그 이후에 구현 난이도와 기대 효과를 기준으로 후속 액션을 정렬하는 편이 더 합리적이었다.
 
-### 6.1 전사 개선: view→click
-
-**Key takeaway**
-- 초기 14일 기준 funnel diagnostic에서는 **view→click 구간의 마찰이 전사적으로 넓게 나타났다.**
-- 즉, 특정 세그먼트만의 문제가 아니라 여러 사용자군에서 공통적으로 **초기 클릭 유도 단계**가 약한 구간으로 해석할 수 있다.
-
-**Evidence**
-- 14일 Worst Top10 bottleneck 기준에서 **view→click** 이 가장 넓게 반복적으로 관찰됐다.
-- 이는 상품을 보더라도 다음 행동(click)으로 넘어가지 못하는 사용자가 전반적으로 많다는 뜻이다.
-
-**Recommended actions**
-- 상품 진입 직후 핵심 혜택/가치 제안을 더 빨리 보이게 하는 **정보 구조 실험**
-- 클릭 유도 CTA의 위치/문구/가시성을 바꾸는 **UI A/B 테스트**
-- 첫 탐색 흐름에서 불필요한 선택지를 줄여 **초기 탐색 마찰을 낮추는 UX 개선**
-
-**So what**
-- 이 구간은 특정 persona만 타깃팅하기보다, **전사 공통 UX 개선 과제**로 다루는 편이 적절하다.
-- 즉, 초기 퍼널에서는 **“더 많은 사용자가 다음 행동으로 넘어가게 만드는 것”** 이 우선 과제다.
-
-### 6.2 세그먼트 타깃 개선: A2_click × low-consistency click→cart
+### 6.1 전사 우선 과제: Click→Cart friction reduction
 
 **Key takeaway**
-- 30일 기준 funnel diagnostic에서는 **click→cart 구간의 취약성이 특히 A2_click × low-consistency(C1/C2) 조합에서 두드러졌다.**
-- 즉, 전체 사용자 공통 문제라기보다 **특정 세그먼트 조합에서 장바구니 진입 마찰이 더 크게 나타난다**는 신호로 해석할 수 있다.
+- 초기 funnel diagnostic에서는 **Click→Cart 구간이 세그먼트 전반에서 가장 빈번하게 관찰된 초기 병목**이었다.
+- 따라서 첫 개선 우선순위는 특정 세그먼트만의 미세 타깃팅보다,  
+  **장바구니 진입 마찰을 전반적으로 낮추는 전사 공통 개선**에 두는 편이 더 타당했다.
 
 **Evidence**
-- 30일 Worst Top10 bottleneck 기준에서 **click→cart** 이 low-consistency 구간에 상대적으로 더 집중됐다.
-- 특히 상품 클릭까지는 도달했지만 장바구니 진입으로 이어지지 못하는 사용자가 **A2_click × low-consistency(C1/C2)** 조합에서 두드러졌다.
-- 이는 “관심은 보였지만 행동 리듬이 약한 사용자”에게서 cart 진입 마찰이 더 크게 작동할 가능성을 시사한다.
+- first 30d transition 기준으로 볼 때, **Click→Cart**가 여러 세그먼트에서 반복적으로 나타난 핵심 병목이었다.
+- 이 구간은 초기 funnel 안에서도 비교적 앞단에 위치해,  
+  개선 시 더 넓은 사용자 범위에 downstream 영향을 줄 가능성이 있다.
+- 또한 대규모 사용자 기반을 넓게 커버할 수 있는 구간이라는 점에서,  
+  개별 세그먼트 전용 액션보다 먼저 검토할 가치가 높았다.
 
 **Recommended actions**
-- 최근 본 상품 재노출 / 장바구니 CTA 강조 / 옵션 선택 단계 단순화 같은 **세그먼트 타깃 UX 실험**
-- 이탈 직후 다시 돌아오게 만드는 **리마인드 메시지 / CRM A/B 테스트**
-- `A2_click × low-consistency` 유저를 대상으로 **click→cart 전환 전용 실험군**을 따로 구성해 개입 효과 측정
+- 상품 상세에서 장바구니로 넘어가는 **CTA 위치/문구/가시성 개선**
+- 옵션 선택, 가격/혜택 확인, 장바구니 진입 동선 등 **진입 마찰 단순화**
+- 상세페이지 내 핵심 정보 배치 조정으로 **다음 행동 유도 강화**
 
 **So what**
-- 이 구간은 전사 공통 개선보다 **세그먼트 타깃 실험**이 더 적합하다.
-- 즉, 퍼널 액션은 하나로 묶기보다  
-  **초기 클릭(view→click)은 전사 개선**,  
-  **장바구니 진입(click→cart)은 특정 세그먼트 타깃 개선**으로 역할을 나누는 편이 더 실무적이다.
+- 첫 액션은 세그먼트별 미세 최적화보다,  
+  **Click→Cart 구간의 공통 마찰을 줄이는 Quick Win 성격의 개선**으로 두는 편이 더 실용적이다.
+- 즉, 초기 funnel에서 “더 많은 사용자가 장바구니 단계로 넘어가게 만드는 것”이  
+  가장 먼저 검토할 전사 과제였다.
+
+**Figure**
+- `docs/results/figures_v1.1/Overall Bottleneck (30d, strict, time-split segment).png` — Overall bottleneck frequency (30d, strict, time-split segment)
+
+**Query**
+- `src/sql/analysis/story_core_v1.1/Overall Bottleneck(30d, strict, time-split segment).sql`
+  
+### 6.2 후속 검토 과제: browse-to-cart nudges and lower-priority tests
+
+**Key takeaway**
+- Click→Cart friction reduction 이후의 후속 액션 후보로는  
+  **탐색→장바구니 전환 보조(nudges)** 가 가장 유력했다.
+- 반면 **View→Click 메시지 테스트**와 **Checkout optimization**은  
+  각각 낮은 구현 난이도 또는 특정 구간 개선 의미는 있었지만,  
+  현재 기준에서는 상대적 우선순위가 더 낮았다.
+
+**Evidence**
+- browse-to-cart nudges는 장바구니 진입을 보조할 수 있어 잠재 영향은 크지만,  
+  핵심 병목을 직접 단순화하는 액션보다는 **한 단계 간접적**이다.
+- 반면 노출 타이밍, 트리거 설계, 운영 로직 등까지 고려하면  
+  구현 난이도는 더 높게 볼 필요가 있었다.
+- View→Click 메시지 테스트는 빠르게 시도할 수 있지만,  
+  현재 diagnostic 기준에서 가장 큰 병목은 아니었다.
+- Checkout optimization은 중요하지 않다는 뜻은 아니지만,  
+  funnel 하단 구간 특성상 전체 사용자 기반 관점에서는 우선순위를 뒤로 두는 편이 타당했다.
+
+**Recommended actions**
+- 최근 탐색 상품 재노출, 장바구니 CTA 강조, 행동 기반 넛지 등  
+  **탐색→장바구니 전환 보조 실험**
+- 초기 클릭 유도 카피/배너/노출 방식에 대한 **경량 메시지 테스트**
+- 결제 UX/주문 플로우 관련 개선은 **후순위 과제로 관리**
+
+**So what**
+- 액션 우선순위는  
+  **1) Click→Cart friction reduction → 2) browse-to-cart nudges → 3) lower-priority tests**  
+  순으로 정리하는 편이 현재 결과와 가장 잘 맞았다.
+- 즉, 가장 넓게 작동하는 초기 마찰을 먼저 줄이고,  
+  그다음 더 복잡한 보조 액션과 후순위 실험으로 확장하는 구조가 적절했다.
+
+**Figure**
+- `docs/results/figures_v1.1/Worst Segment Top 8 (30d, strict, time-split segment).png` — Priority segments with highest Click→Cart drop-off (30d, strict, time-split segment)
+
+**Query**
+- `src/sql/analysis/story_core_v1.1/Worst Segment Top 8 (30d, strict, time-split segment).sql`
 
 ---
 
