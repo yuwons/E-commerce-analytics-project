@@ -6,6 +6,10 @@
 **Main frame:** v1.1 **Time-split** 기준(관측 0–60d / 성과 60–180d)으로 핵심 패턴을 재검증하고,  
 Python validation과 2×2 A/B experiment를 **supporting layer**로 추가했다.
 
+**Action layer:** Funnel/action은 main result와 같은 급의 결론이 아니라,  
+**Activation(14d) × Consistency(0–60d) persona**와 **초기 30일 funnel diagnostic**을 바탕으로 정리한  
+**operational hypothesis**로 해석했다.
+
 **Stack:** `BigQuery (Raw→Optimized→Data Mart)`, `SQL`, `Python (EDA + Bootstrap CI)`, `Tableau`
 
 ---
@@ -27,9 +31,11 @@ Python validation에서도 같은 방향성이 반복 확인됐다.
 | 마지막 주 리텐션 | 25.7% | 76.7% | ~3.0× (+51.0%p) |
 
 ### What this means
-1. 장기 KPI(60–180 매출/리텐션)를 해석할 때는 Activation 단독보다 **Consistency를 함께 보는 프레임**이 더 유효했다.
+1. 장기 KPI(60–180d 매출/리텐션)를 해석할 때는 Activation 단독보다 **Consistency를 함께 보는 프레임**이 더 유효했다.
 2. 유저 해석과 타깃팅 단위는 Activation 단독이 아니라 **Activation × Consistency persona**가 더 실용적이었다.
-3. Funnel/action은 main result와 같은 급의 결론이 아니라, 이를 바탕으로 한 **operational hypothesis**로 해석하는 것이 적절하다.
+3. Funnel/action은 main result와 같은 급의 결론이 아니라,  
+   **Activation(14d) × Consistency(0–60d) persona**와 **초기 30일 funnel diagnostic**을 바탕으로 정리한  
+   **operational hypothesis**로 해석하는 것이 적절하다.
 
 ### Quick links
 - **Story (main write-up):** `docs/results/story.md`
@@ -42,6 +48,7 @@ Python validation에서도 같은 방향성이 반복 확인됐다.
 - **Data pipeline & modeling:** BigQuery Raw → Optimized → Data Mart 설계
 - **Analytics:** Activation × Consistency 프레임으로 장기 KPI를 해석
 - **Validation:** Time-split(v1.1), Python validation, 2×2 factorial A/B experiment
+- **Operational translation:** 초기 30일 funnel diagnostic을 통해 분석 결과를 우선 개선 과제로 연결
 - **Delivery:** Tableau로 KPI/세그먼트 결과 시각화
 
 > Method note: v1.0 exploratory baseline에서 패턴을 먼저 확인한 뒤,  
