@@ -316,7 +316,7 @@ SQL 기반 time-split 결과를 Python에서 다시 확인해,
 **Query**
 - `src/sql/analysis/story_core_v1.1/Overall Bottleneck(30d, strict, time-split segment).sql`
   
-### 6.2 후속 검토 과제: browse-to-cart nudges and lower-priority tests
+### 6.2 후속 검토 과제: browse-to-cart nudges and segment-aware follow-ups
 
 **Key takeaway**
 - Click→Cart friction reduction 이후의 후속 액션 후보로는  
@@ -334,6 +334,8 @@ SQL 기반 time-split 결과를 Python에서 다시 확인해,
   현재 diagnostic 기준에서 가장 큰 병목은 아니었다.
 - Checkout optimization은 중요하지 않다는 뜻은 아니지만,  
   funnel 하단 구간 특성상 전체 사용자 기반 관점에서는 우선순위를 뒤로 두는 편이 타당했다.
+- Worst Segment Top 8 기준으로도 Click→Cart drop-off는 특정 segment 조합에서 더 크게 나타났고,
+  이는 broad UX 개선 이후 **segment-aware follow-up action**을 검토할 근거가 됐다.
 
 **Recommended actions**
 - 최근 탐색 상품 재노출, 장바구니 CTA 강조, 행동 기반 넛지 등  
