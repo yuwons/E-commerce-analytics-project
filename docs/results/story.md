@@ -369,12 +369,18 @@ SQL 기반 time-split 결과를 Python에서 다시 확인해,
 
 ### 7.2 Main result vs action evidence
 
-본 문서의 **main result**는 v1.1 Time-split 기준에서  
-Consistency가 장기 구매율·리텐션·매출을 더 강하게 분리했다는 점이다.
+본 문서의 **main result**는 v1.1 Time-split 기준에서,  
+**Consistency가 장기 구매율·리텐션·매출을 더 강하게 분리했다**는 점이다.
 
 반면 funnel/action 파트는  
-v1.0의 14d/30d diagnostic을 운영 관점에서 확장한 **action hypothesis**에 가깝다.  
-즉, main result와 action evidence는 **같은 레벨의 검증 결과가 아니라 역할이 다르다.**
+persona를 **Activation(첫 14일)** × **Consistency(관측 0–60일)** 기준으로 해석하고,  
+초기 funnel friction을 **first 30d transition** 기준으로 진단해  
+실행 우선순위로 연결한 **operational hypothesis**에 가깝다.
+
+즉, main result와 action evidence는  
+**같은 수준의 검증 결과가 아니라 역할이 다르다.**  
+main result는 장기 성과를 설명하는 핵심 분석 결과이고,  
+action evidence는 이를 실제 개선 과제로 번역하기 위한 운영적 해석이다.
 
 ### 7.3 What remains valuable
 
